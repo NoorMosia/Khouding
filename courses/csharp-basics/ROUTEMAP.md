@@ -804,7 +804,9 @@ Ch.1 "The Foundations" → **Oberösterreich** (lit, starting province). Ch.2 "I
 > starts doing real text work: validate, extract, transform, assemble.
 
 > **Chapter scope decisions (banked, read before authoring any Ch.8 section):**
-> - **5 teaching sections + boss** (like Ch.4-7). Ordered so nothing is used before it is taught.
+> - **6 teaching sections + boss.** Ordered so nothing is used before it is taught. (One more than the Ch.4-7
+>   norm: 8.6 file I/O is the chapter capstone, it reads a real file and splits it into an array, pulling
+>   8.1-8.5 and Ch.7 together.)
 > - **Does NOT re-teach Ch.2.** Interpolation (`$"..."`), `+` joining for output, and `F2` number formatting
 >   are assumed known and used freely. Ch.8 owns the *inside* of a string: indexing, `char`, length, the
 >   search/reshape/split/join methods, and char-by-char building.
@@ -832,11 +834,30 @@ Ch.1 "The Foundations" → **Oberösterreich** (lit, starting province). Ch.2 "I
 >   we write the loop by hand is 8.5 (char-by-char building/validation), which ties the chapter back to Ch.7
 >   iteration. **OUT:** `StringBuilder`, regex, `Format`/composite format strings, spans, `TryParse`-style
 >   robustness (named only), and anything culture-specific.
+> - **File I/O (8.6) uses a PROVIDED, read-only file and keeps the oracle unchanged.** The deliberate 2016-era
+>   teaching is `StreamReader` / `StreamWriter` wrapped in `using` (open, read/write in some unit, close, the
+>   `using` is taught, not optional, because an undisposed stream is the classic locked-file/unflushed bug).
+>   The modern one-call forms (`File.ReadAllLines` -> `string[]`, `File.ReadAllText`, `File.WriteAllText`) are
+>   **named with an Output: block but NOT drilled**, and introduced with an explicit standing note: **the
+>   durable knowledge is the mental model (open, read/write, close), not the exact method names, which are
+>   always a lookup away.** Grading model (decided, FLAVOR A, keeps the stdin/stdout oracle one-shaped):
+>   - A problem is given **one fixed, known, read-only input file** staged as a workspace asset (shown in the
+>     top bar like a cheatsheet; fixed path e.g. `data.txt`, so no path is passed on stdin). The program reads
+>     it and prints the answer to **stdout**; the oracle compares stdout exactly as for every other problem.
+>     `problem.yaml`/`expected.json` are unchanged except that a problem declares the asset file to stage.
+>   - **Writing is taught via write-then-read-back-to-stdout:** a `StreamWriter` problem writes a scratch file,
+>     reopens it with `StreamReader`, and prints what it read, so a Run still produces visible stdout and the
+>     grade stays stdout-only. **No file-content grading (Flavor B) anywhere**, the oracle never becomes
+>     two-shaped, and Chapters 1-7 are untouched (only 8.6 problems opt into a staged asset).
+>   - The only runner change is additive: stage the one declared asset file into the working dir before the
+>     run. **OUT:** per-case input files, grading on a file's final contents, arbitrary paths, appending,
+>     directories, `File.Exists`/deletion, streams over anything but the provided text file.
 > - **Ordering:** 8.1 string as text (`Length`, `s[i]`, `char`, immutability); 8.2 searching (`Contains`,
 >   `IndexOf`, `StartsWith`/`EndsWith`); 8.3 transforming (`ToUpper`/`ToLower`, `Trim`, `Replace`,
 >   `Substring`, all returning new strings); 8.4 splitting & joining (`Split` -> `string[]`, `string.Join`,
 >   building from pieces, ties to Ch.7); 8.5 building & parsing char by char (loop over `s.Length`, count /
->   validate / assemble).
+>   validate / assemble); 8.6 file I/O (`StreamReader`/`StreamWriter` + `using` over a provided file; `File.*`
+>   named; read a file and split it into an array, the chapter capstone).
 
 ## 8.1, A string is text you can measure and index
 - **One idea:** a string is a read-only sequence of characters with a length, reachable by index.
@@ -923,21 +944,61 @@ Ch.1 "The Foundations" → **Oberösterreich** (lit, starting province). Ch.2 "I
   `char.IsLetter` / `char.ToUpper`; build a string by `result = result + c;` (immutability); empty string ->
   empty result.
 
+## 8.6, Reading and writing files
+- **One idea:** read text from a file and write text to one, then treat the contents as the strings and arrays
+  you already know.
+- **Reading:** motivation first (standing style): every program so far got its text from `ReadLine` (stdin);
+  real programs also read text that already lives in a file. Open a file with a `StreamReader`, read it a line
+  at a time (`ReadLine()` until `null`) or all at once (`ReadToEnd()`); write with a `StreamWriter`
+  (`WriteLine`). **`using` is taught, not optional:** `using (var reader = new StreamReader(path)) { ... }`
+  (or `using var reader = ...;`) so the file is closed and flushed for you, an undisposed stream is the
+  classic locked-file / unflushed-write bug. The payoff that pulls the chapter together: read the file, then
+  `Split` the contents into a `string[]` and walk it with the Ch.7 array loop, apply 8.1-8.5 to each piece.
+  **Then, briefly, the modern one-liners:** `File.ReadAllLines(path)` returns a `string[]` directly,
+  `File.ReadAllText`, `File.WriteAllText`, shown with an Output: block, **no exercises**. Standing note made
+  explicit to the student: **the lasting knowledge is the model (open, read or write in some unit, close),
+  not the specific class or method names, those are always a lookup away; recognising the shape is what
+  transfers.**
+- **Execution model (decided):** the problem is given **one fixed, read-only input file** as a workspace asset
+  (shown in the top bar like a cheatsheet, at a known path such as `data.txt`). The program reads that file
+  and prints its answer to **stdout**; grading is the usual stdout match (Flavor A, oracle unchanged). Writing
+  is practised with the **write-then-read-back-to-stdout** shape (write a scratch file with `StreamWriter`,
+  reopen with `StreamReader`, print what was read) so a Run always shows output and the grade stays
+  stdout-only. No grading on a file's final contents.
+- **Quiz:** what a `StreamReader` does; why wrap it in `using` (closes/flushes; avoids a locked or unflushed
+  file); what `ReadLine()` returns at end of file (`null`); what `File.ReadAllLines` returns (a `string[]`);
+  T/F the specific method name matters more than the open/read/close model (false, the model is the point).
+- **Problems (~10, moderate):** print the number of lines in the provided file; print the first line; print
+  every line (read loop); print the file upper-cased line by line (ties 8.3); split a known line of the file
+  into words and print the count (ties 8.4 + Ch.7); count the lines that contain a read word (ties 8.2); total
+  the numbers on the file's lines (read + `int.Parse` per line, ties Ch.2/Ch.7); write-then-read-back a
+  transformed copy and print it; a `File.ReadAllLines` variant is shown in the reading but NOT drilled; fix a
+  bug: a `StreamReader` used without `using` / a read loop that never checks for `null`. *(Skill = open, read,
+  close over a provided file; feed the contents into strings + arrays. Provided file staged as an asset;
+  answers to stdout. Vary file contents across cases.)*
+- **Cheatsheet:** `using (var r = new StreamReader(path)) { string line; while ((line = r.ReadLine()) != null)
+  { ... } }`; `StreamWriter` + `WriteLine`; `using` closes/flushes; `File.ReadAllLines` -> `string[]`,
+  `File.ReadAllText`, `File.WriteAllText` (one-call forms, named); the model (open/read-write/close) is the
+  durable part, method names are a lookup.
+
 ## 8.T, CHAPTER 8 TEST (region boss)
-- **Integrative scenarios combining 8.1-8.5 (and Ch.1-7):** measure and index a string (8.1), search it
-  (8.2), transform it (8.3), split/join around an array (8.4), and walk it char by char to count/validate/
-  build (8.5). The "real text work" region boss.
+- **Integrative scenarios combining 8.1-8.6 (and Ch.1-7):** measure and index a string (8.1), search it
+  (8.2), transform it (8.3), split/join around an array (8.4), walk it char by char to count/validate/build
+  (8.5), and read a provided file and process its contents (8.6). The "real text work" region boss.
 - Examples of pool scenarios: length and first/last char; does it contain / start with a read piece; index of
   a substring (or -1); upper/lower/trim/replace a line (use the return value); first-N or from-index
   substring; split a sentence and count/print the words; join words with a separator; count a char or the
-  vowels/digits; validate all-digits; reverse or filter a string by building it char by char; a fix-the-broken
-  (ignored return value, `s[i] = c` immutability error, off-by-one `s[Length]`, -1 search mishandled,
-  rows/cols-style index mix).
-- **Pool ~20, draw 10, light at 6.** ~24h window; fresh draw on retry; no lockouts. Inputs via stdin (a line,
-  or count-then-lines, or a string plus a number); cases **vary the text (content, length, empty, single char,
-  mixed case, spaces)** so a hardcoded answer fails. Every solution stays in bounds; expecteds via the oracle
-  (invariant culture).
-- **Workspace:** `cheatsheets/` folder = gathered sheets from 8.1-8.5 (plus Ch.1-7 as a library).
+  vowels/digits; validate all-digits; reverse or filter a string by building it char by char; **read the
+  provided file and count its lines / print a chosen line / split a line into words / total its numbers
+  (8.6)**; a fix-the-broken (ignored return value, `s[i] = c` immutability error, off-by-one `s[Length]`, -1
+  search mishandled, a `StreamReader` without `using` or a read loop that never checks `null`).
+- **Pool ~20, draw 10, light at 6.** ~24h window; fresh draw on retry; no lockouts. Most problems take input
+  via stdin (a line, or count-then-lines, or a string plus a number); the **file-I/O family instead reads one
+  provided, read-only asset file** (staged like a cheatsheet, fixed path) and prints to stdout, grading stays
+  the usual stdout match (Flavor A; no file-content grading). Cases **vary the text / file contents (content,
+  length, empty, single char, mixed case, spaces)** so a hardcoded answer fails. Every solution stays in
+  bounds; expecteds via the oracle (invariant culture).
+- **Workspace:** `cheatsheets/` folder = gathered sheets from 8.1-8.6 (plus Ch.1-7 as a library).
 
 ---
 

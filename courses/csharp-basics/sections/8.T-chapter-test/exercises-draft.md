@@ -6,22 +6,25 @@
 ---
 
 ## What this boss is
-The Chapter 8 region boss. Integrative: combines 8.1-8.5 (and Chapters 1-7) into realistic text scenarios.
+The Chapter 8 region boss. Integrative: combines 8.1-8.6 (and Chapters 1-7) into realistic text scenarios.
 No new material. Passing it lights the Chapter 8 region on the map.
 
-## Skills it integrates (8.1-8.5 + Ch.1-7)
+## Skills it integrates (8.1-8.6 + Ch.1-7)
 - 8.1 measure & index (`Length`, `s[i]` as a `char`, first/last, immutability)
 - 8.2 searching (`Contains`, `IndexOf` with the -1 sentinel, `StartsWith`/`EndsWith`)
 - 8.3 transforming (`ToUpper`/`ToLower`, `Trim`, `Replace`, `Substring`, all return new strings)
 - 8.4 splitting & joining (`Split` -> `string[]`, `string.Join`, the round trip; ties to Ch.7)
 - 8.5 char-by-char (loop over `s.Length`: count / validate / build; `char.IsDigit`/`IsLetter`)
+- 8.6 file I/O (`StreamReader`/`StreamWriter` + `using` over a provided file; read it and feed strings+arrays)
 - Ch.1-7: types, input, arithmetic, decisions, loops, methods, and arrays, all operating on text
 
 ## Scope boundary
-- **Input IS used** (stdin). Shapes: a single **line** (`ReadLine`, already a string, no parse); the
-  **count-then-lines** shape (read `n`, then `n` strings) for the split/join family; or a **string plus a
-  number/char** (e.g. a line and an index, or a line and a target). Prompts on their own line where used;
-  prompt text is graded.
+- **Input IS used.** Most problems read **stdin**: a single **line** (`ReadLine`, already a string, no parse);
+  the **count-then-lines** shape (read `n`, then `n` strings) for the split/join family; or a **string plus a
+  number/char** (e.g. a line and an index, or a line and a target). The **file-I/O family (G) instead reads
+  one provided, read-only asset file** (staged like a cheatsheet at a fixed path) and prints to stdout,
+  grading is still the usual stdout match (Flavor A; no file-content grading, oracle stays one-shaped).
+  Prompts on their own line where used; prompt text is graded.
 - Full string toolkit from this chapter, plus everything before. **Methods are used, not reimplemented**
   (except the deliberate char-walk family). **OUT:** `StringBuilder`, regex, `Format`/composite format
   strings, culture-specific behaviour, `char` arithmetic / ASCII codes, LINQ.
@@ -41,12 +44,13 @@ No new material. Passing it lights the Chapter 8 region on the map.
 |--------|----------|--------------------|
 | A, string as text | 2 | `Length`, index a char, first/last (8.1) |
 | B, searching | 4 | `Contains` / `IndexOf` (-1) / `StartsWith` / `EndsWith` (8.2) |
-| C, transforming | 5 | `ToUpper`/`ToLower` / `Trim` / `Replace` / `Substring` (8.3) |
+| C, transforming | 4 | `ToUpper`/`ToLower` / `Trim` / `Replace` / `Substring` (8.3) |
 | D, split & join | 4 | `Split` -> array -> loop, `string.Join` (8.4) |
-| E, char walk | 3 | count / validate / build char by char (8.5) |
-| F, fix the broken program | 2 | a planted string bug |
+| E, char walk | 2 | count / validate / build char by char (8.5) |
+| F, file I/O | 2 | read a provided file, feed strings + arrays (8.6) |
+| G, fix the broken program | 2 | a planted string or file bug |
 
-*(2 + 4 + 5 + 4 + 3 + 2 = 20. Draw of 10 pulls a mix across families + difficulties.)*
+*(2 + 4 + 4 + 4 + 2 + 2 + 2 = 20. Draw of 10 pulls a mix across families + difficulties.)*
 
 ## Per-family intent (bones)
 - **A, string as text:** read a line; print its length, or the first/last char, or the char at a read index.
@@ -63,11 +67,17 @@ No new material. Passing it lights the Chapter 8 region on the map.
 - **E, char walk:** count a read char or the vowels/digits; validate all-digits (True/False); build a filtered
   or reversed string char by char. Variants change text incl. empty (zero/empty result) and single char.
   Integrates 8.5 (and Ch.7 iteration).
-- **F, fix the broken program:** a string program with a planted bug. Variants (pick 2 across attempts): an
-  ignored return value (`s.ToUpper();` then print `s`); `s[i] = c` immutability error (CS0200); an off-by-one
-  `s[s.Length]`; treating `IndexOf`'s -1 as a real position; `string.Join` with swapped arguments. Proves
-  reading & repairing string code. The committed solution for every fix problem compiles, runs, and stays in
-  bounds.
+- **F, file I/O:** read the one provided, read-only file and process it: count its lines, print a chosen line,
+  split a line into words and count them, or total the numbers on its lines. Answer to stdout; grading is the
+  usual stdout match (the file is a staged asset, not stdin). Variants change the provided file's contents
+  (incl. an empty file and a single line). Integrates 8.6 (and 8.2-8.5 + Ch.7 per line). `using` + null-checked
+  read loop; stay in bounds.
+- **G, fix the broken program:** a string or file program with a planted bug. Variants (pick 2 across
+  attempts): an ignored return value (`s.ToUpper();` then print `s`); `s[i] = c` immutability error (CS0200);
+  an off-by-one `s[s.Length]`; treating `IndexOf`'s -1 as a real position; `string.Join` with swapped
+  arguments; a `StreamReader` used without `using`, or a read loop that never checks for `null`. Proves
+  reading & repairing the chapter's code. The committed solution for every fix problem compiles, runs, and
+  stays in bounds.
 
 ## Notes
 - **Vary the text (content, length, empty, single char, mixed case, spaces); stay in bounds** (Ch.8
@@ -77,6 +87,9 @@ No new material. Passing it lights the Chapter 8 region on the map.
 - **Immutability is the running theme:** transforms return new strings (use the return value); `s[i] = c` does
   not compile; build by concatenation. **-1 means not found** in searches.
 - **Methods used, not reimplemented**, except the char-walk family (the one place the loop is the point).
+- **File-I/O family (F):** reads ONE provided, read-only asset file (staged like a cheatsheet, fixed path),
+  answers on stdout, Flavor A, no file-content grading, so the oracle stays one-shaped. `using` + null-checked
+  read loop; vary the provided file's contents across cases.
 - Prompts on their own line; prompt text is graded output.
 - Country-neutral drill content (a chapter test MAY carry light flavor, not used here by default).
-- `cheatsheets/` gathers 8.1-8.5 (+ Ch.1-7 as a library).
+- `cheatsheets/` gathers 8.1-8.6 (+ Ch.1-7 as a library).
