@@ -1006,7 +1006,144 @@ Ch.1 "The Foundations" → **Oberösterreich** (lit, starting province). Ch.2 "I
 > *(Chapters renumbered after splitting the old Chapter 1 at 1.5: input/convert/format became **Chapter 2, Input & Interaction** (authored in detail above), so every downstream chapter shifted up by one. 9 chapters now map cleanly to Austria's 9 Bundesländer.)*
 
 - Ch.8, Strings in depth (indexing, common `string` methods, building/parsing). *(Entry authored above.)*
-- Ch.9, Built-in collections (`List<T>`: using it, not implementing it).
+- Ch.9, Built-in collections (`List<T>`: using it, not implementing it). *(Entry authored below.)*
 - **Course Exam**, whole-course integrative scenarios, pool, course-wide cheatsheet library.
 
 *(These are the likely regions, listed so the whole territory is visible. They get the same section-level treatment as Ch.1/Ch.2 once the grain is approved.)*
+
+---
+
+# CHAPTER 9, Collections
+*Region theme: the program stops knowing the collection size at compile time and starts growing it as the data arrives.*
+*Map: its own Bundesland (region title + province TBD when authored).*
+
+> **Why this chapter exists / scope:** Chapter 7 introduced arrays, which are perfect when the element count is
+> fixed at creation time. But many real programs build a list of things one item at a time without knowing how
+> many there will be. `List<T>` solves that: it grows as you add to it, and everything else (indexing, looping,
+> searching) works like a smarter array. This chapter is "using `List<T>`, not implementing it": the student
+> learns the operations the standard library provides, not how a growable array works internally. Rests on
+> Ch.7 (arrays as the before-picture), Ch.5 (loops), and Ch.6 (methods).
+
+> **Chapter scope decisions (banked, read before authoring any Ch.9 section):**
+> - **5 teaching sections + boss** (like Ch.4-8). Ordered so nothing is used before it is taught.
+> - **`List<T>` only.** This chapter does not teach `Dictionary`, `Queue`, `Stack`, `HashSet`, or other
+>   generic collections. Those are "later course" material. One growable sequence type, learned fully.
+> - **`using System.Collections.Generic;` is required.** Every solution includes it. The reading explains why
+>   (the class lives in that namespace); it does not need deep treatment.
+> - **Element types kept simple:** `int`, `string`, occasionally `double`. No custom classes as elements.
+> - **The oracle is UNCHANGED (stdout-match).** The count-then-values input pattern still applies: read `n`,
+>   then `n` values into a list using `Add`. Anti-hardcoding is the same varied-input rule: vary the list's
+>   contents and size (incl. **size 0** and **size 1**) across cases so a hardcoded answer fails. The list can
+>   also be built by reading values until a sentinel (e.g. until the user types "stop"), which is an honest
+>   list-building scenario not possible with a fixed array; named in the reading, drilled optionally.
+> - **`List<T>` is a reference type** (like arrays from 7.4): passing one to a method means the method and
+>   the caller share the same list. Element mutations are visible to the caller. Reassigning the parameter
+>   does not affect the caller. This is the deliberate 9.5 echo of 7.4, with the same teaching shape.
+> - **Ordering:**
+>   9.1 introducing `List<T>` (create with `new List<int>()`, `Add`, access `list[i]`, `.Count`, comparison
+>   to a fixed array as the motivation);
+>   9.2 iterating a list (`for (i < list.Count)`, `foreach (int x in list)`, same patterns as 7.2 but on a
+>   list; zero-count edge required; filter/map loop shapes carry over);
+>   9.3 modifying a list (`Add`, `Remove(value)`, `RemoveAt(index)`, `Insert(index, value)`, `Clear()`; the
+>   key contrast with fixed arrays: size changes after creation; patterns around size change);
+>   9.4 list operations (`Contains`, `IndexOf` (-1 if absent); the 7.3 aggregate loop patterns (sum, max/min,
+>   count-matching, search) applied to a list; these are the same loops, same sentinel, different container);
+>   9.5 lists and methods (pass a `List<T>` to a method: same reference behaviour as 7.4 arrays; the method
+>   can add/remove/change elements and the caller sees it; return a `List<T>` from a method; comparison to 7.4
+>   by-value vs reference to consolidate; **closing beat in the reading: building a list from a file and
+>   writing a list to a file, combining 8.6 `StreamReader`/`StreamWriter` + 9.1 `Add`; shown as one
+>   reading-only beat, no new problems, cheatsheet gets a small "Files + lists" block**).
+> - **OUT of scope:** `Dictionary`, `Queue`, `Stack`, `HashSet`, `SortedList`, LINQ (`.Select`, `.Where`,
+>   `.OrderBy`, etc.), `IEnumerable`/`IList` interfaces, iterator patterns, `List.Sort()` as a drilled skill
+>   (mention it but do not drill), `Capacity` and internal resizing, thread safety. Building a custom
+>   collection class is the next course (OOP).
+
+## 9.1, Introducing List\<T\>
+- **One idea:** a `List<T>` is a growable collection of one type, used like an array but without a fixed size.
+- **Reading:** motivation first (standing style): the student has arrays, but arrays require knowing the count
+  up front. Show a problem that reads values until some condition, where the count is not known in advance.
+  Then introduce `List<int>`: `new List<int>()` starts empty; `list.Add(x)` appends an element; `list[i]`
+  accesses by index (zero-based, same as arrays); `list.Count` is the current element count. `using
+  System.Collections.Generic;` is needed. Side-by-side with the array: same indexing syntax, same zero-based
+  rule, but the size is not set at creation.
+- **Quiz:** what `new List<int>()` gives (empty list, not fixed-size); what `Add` does (appends); what
+  `.Count` returns; the index of the first element; whether you need a `using` directive (yes, the namespace).
+- **Problems (~10, moderate):** create a list and add a read count's worth of values; print `.Count`; access
+  `list[0]` and `list[list.Count-1]`; add values until a sentinel ("stop"), then print count; compare print-
+  Count-of-a-list vs Length-of-an-array; access a read index; fix an off-by-one (`list[list.Count]`).
+  *(Skill = create, add, index, Count. Vary size incl. 0 and 1. Country-neutral.)*
+- **Cheatsheet:** `new List<int>()`, `list.Add(x)`, `list[i]`, `list.Count`, `using
+  System.Collections.Generic;`, valid range `0..Count-1`, `ArgumentOutOfRangeException` for bad index (named).
+
+## 9.2, Iterating a list
+- **One idea:** visit every element of a list with a loop, using the same patterns as Chapter 7.2.
+- **Reading:** `for (int i = 0; i < list.Count; i++)` with `list[i]`; `foreach (int x in list)` read-only.
+  Zero-count = loop runs zero times. Filter/map loop shapes carry over unchanged. The only new thing is
+  `list.Count` replacing `a.Length`.
+- **Quiz:** the right bound (`list.Count`, not `<=`); `foreach` read-only; zero-count case; can `foreach`
+  change elements (no); how filter/map translate.
+- **Problems (~12, full):** print each element; print with 1-based positions; filter positives; doubled map;
+  sum; reverse order; count matching a test; fix off-by-one bound `<= list.Count`. *(Vary count incl. 0
+  and 1. Carries over from 7.2 with List instead of array.)*
+- **Cheatsheet:** `for (i < list.Count)`, `foreach (T x in list)` read-only; filter/map as loop shapes;
+  zero-count runs zero times.
+
+## 9.3, Modifying a list
+- **One idea:** a list can grow and shrink after creation: add, remove, insert, and clear.
+- **Reading:** motivation first: a fixed array's size cannot change; a list can. `list.Add(x)` appends.
+  `list.Remove(x)` removes the FIRST element equal to `x` (returns a `bool`, `true` if found). `list.RemoveAt(i)`
+  removes by index. `list.Insert(i, x)` inserts at a position. `list.Clear()` removes all. Each of these
+  changes `.Count`. The key observable: the same variable holds a different-sized list after these calls.
+- **Quiz:** what `Remove` returns (bool); difference between `Remove(x)` and `RemoveAt(i)`; what happens to
+  indices after removal; what `Clear` does to `.Count`; can you `Remove` a value not present (yes, returns false).
+- **Problems (~12, full):** add items one by one; remove a read value; remove by index; insert at a position;
+  clear and print the new count; build a list, remove all negatives (loop + Remove); after removal print
+  remaining; fix a stale-index bug (using an index from before a removal).
+  *(Vary list size and the target value. Include a remove-not-present case (returns false).)*
+- **Cheatsheet:** `Add(x)`, `Remove(x)` (bool, removes first match), `RemoveAt(i)`, `Insert(i, x)`, `Clear()`;
+  all change `.Count`; valid indices still `0..Count-1` after every change.
+
+## 9.4, List operations
+- **One idea:** compute a result from a list by looping: the same aggregate patterns as 7.3, now on a list.
+- **Reading:** `Contains(x)` (bool); `IndexOf(x)` (index or -1, same sentinel as 7.3/8.2); sum, max/min
+  (seed from `list[0]`, n >= 1), count-matching, average. The patterns are the same as 7.3; the only change
+  is `list.Count` and `list[i]`. This section deliberately points back to 7.3: the same loop shapes work on
+  any indexed, count-bearing sequence.
+- **Quiz:** what `Contains` returns; what `IndexOf` returns when absent; max/min seeding; empty list rules
+  (sum/count fine at 0; max/min need at least one element).
+- **Problems (~12, full):** sum; average (double); max; min; count above threshold; Contains (True/False);
+  IndexOf (-1 if absent); conditional sum (only positives); fix max seeded at 0 (wrong for all-negative);
+  a count of distinct... no. Keep to 7.3 direct parallels. *(Vary size incl. 0; all-negative for max.)*
+- **Cheatsheet:** `Contains(x)` bool; `IndexOf(x)` int/-1; sum/max/min/count/average loop patterns;
+  seed max/min from `list[0]`; empty-list rules.
+
+## 9.5, Lists and methods
+- **One idea:** pass a list to a method; the method and the caller share the same list.
+- **Reading:** a `List<T>` is a reference type, like an array. `static void DoubleAll(List<int> list)` can
+  `list[i] *= 2` and the caller sees the changed list. `static List<int> Build(int n)` can create and return
+  a new list. The by-value contrast from 6.4 and the array contrast from 7.4 both apply: a plain `int` is
+  copied, an array is shared by reference, a `List<T>` is shared by reference. Reassigning the parameter
+  (`list = new List<int>()`) does NOT affect the caller.
+- **Quiz:** does changing an element inside a method affect the caller (yes); does adding to the list inside
+  a method affect the caller (yes, same list); does reassigning the parameter affect the caller (no); return
+  type for a method that returns a `List<int>` (`List<int>`).
+- **Problems (~10, full):** a method that sums a list; a method that doubles all elements in place; a method
+  that removes all negatives in place; a build-and-return list method; a method that adds n elements; the
+  value-vs-reference contrast (int param unchanged, list element changed); fix a method that reassigns the
+  parameter instead of modifying elements.
+  *(Ties 7.4 and 6.4. Main drives I/O; static helpers; vary list size incl. 0.)*
+- **Cheatsheet:** `List<int>` parameter; element changes visible to caller; add/remove inside a method visible;
+  reassigning the parameter is NOT visible; `List<int>` return type; `using System.Collections.Generic;`.
+
+## 9.T, CHAPTER 9 TEST (region boss)
+- **Integrative scenarios combining 9.1-9.5 (and Ch.1-8):** create and populate a list, iterate it
+  (for/foreach), modify it (add/remove/insert/clear), compute over it (sum/max/min/contains/indexOf), and
+  pass it to/return it from methods.
+- Examples of pool scenarios: build a list from input, print its count and an element; sum / average / max of
+  a list; filter by looping and removing (or collecting); contains / indexOf; add a value at a chosen position;
+  a method that doubles all in place; a method that returns a built list; fix the broken (stale-index after
+  removal, max seeded at 0, `list[list.Count]` off-by-one, reassign-the-parameter).
+- **Pool ~20, draw 10, light at 6.** ~24h window; fresh draw on retry; no lockouts. Inputs via stdin
+  (count-then-values, or read until sentinel). Cases **vary the list contents and size (incl. 0 and 1)** so a
+  fixed answer fails. Every solution stays in bounds; expecteds via the oracle.
+- **Workspace:** `cheatsheets/` folder = gathered sheets from 9.1-9.5 (plus Ch.1-8 as a library).

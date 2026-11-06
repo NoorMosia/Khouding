@@ -1,0 +1,72 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Scope: 9.2 (for i<list.Count; foreach read-only; filter/map shapes; i<Count not <=; count-0 runs 0
+# times). Assumes Ch.1-8 and 9.1. Modification is 9.3.
+
+section: csharp-basics/9.2-iterating-a-list
+pass: 5
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "Which loop header visits every valid index of a list exactly once?"
+    options:
+      - { id: a, text: "for (int i = 0; i < list.Count; i++)" }
+      - { id: b, text: "for (int i = 0; i <= list.Count; i++)" }
+      - { id: c, text: "for (int i = 1; i < list.Count; i++)" }
+      - { id: d, text: "for (int i = 0; i < list.Count - 1; i++)" }
+    answer: a
+    rationale: "Start at 0, stop before Count. Using <= reads list[list.Count] and crashes; starting at 1 skips the first element."
+
+  - id: q2
+    type: truefalse
+    prompt: "A `foreach` loop on a list lets you change elements by assigning to the loop variable."
+    answer: false
+    rationale: "foreach is read-only. Assigning to the loop variable does not change the list. Use an indexed for."
+
+  - id: q3
+    type: mcq
+    prompt: "If a list has 0 elements, how many times does `foreach (int x in list)` run its body?"
+    options:
+      - { id: a, text: "0" }
+      - { id: b, text: "1" }
+      - { id: c, text: "it throws" }
+      - { id: d, text: "it runs once with x = 0 (the default)" }
+    answer: a
+    rationale: "An empty list has no elements; the body never runs."
+
+  - id: q4
+    type: mcq
+    prompt: "To print only the positive elements of a list, which loop shape fits?"
+    options:
+      - { id: a, text: "foreach with an if guard: if (x > 0) Console.WriteLine(x)" }
+      - { id: b, text: "for with an if guard: if (list[i] > 0) and also set list[i] = 0 for negatives" }
+      - { id: c, text: "a while loop over list.Count" }
+      - { id: d, text: "foreach does not support filtering" }
+    answer: a
+    rationale: "The filter shape: loop with foreach, guard the print with an if. The loop does not change the list."
+
+  - id: q5
+    type: mcq
+    prompt: "What is the key difference between iterating a list and iterating an array?"
+    options:
+      - { id: a, text: "list.Count replaces a.Length; everything else is the same" }
+      - { id: b, text: "lists cannot be iterated with foreach" }
+      - { id: c, text: "lists use 1-based indexes" }
+      - { id: d, text: "you must use an iterator object for lists" }
+    answer: a
+    rationale: "The loop patterns are identical; only the bound expression changes from a.Length to list.Count."
+
+  - id: q6
+    type: truefalse
+    prompt: "Using `i <= list.Count` as the loop condition is a compile error."
+    answer: false
+    rationale: "It compiles fine and crashes at runtime with ArgumentOutOfRangeException when i equals Count."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the comparison to stop the loop at the last valid index:  for (int i = 0; i ____ list.Count; i++)"
+    accept: ["<"]
+    rationale: "i < list.Count stops after the last valid index (Count - 1). Using <= goes one too far."

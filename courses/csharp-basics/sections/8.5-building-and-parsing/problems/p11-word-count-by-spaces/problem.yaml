@@ -1,0 +1,15 @@
+id: p11-word-count-by-spaces
+title: Word count by counting spaces
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Count spaces, print spaces+1. Non-empty; single spaces. Vary count; include 1 word (0 spaces).
+cases:
+  - { stdin: "one two three", note: "2 spaces: 3 words" }
+  - { stdin: "hello", note: "0 spaces: 1 word" }
+  - { stdin: "a b c d e", note: "4 spaces: 5 words" }
+  - { stdin: "just two", note: "1 space: 2 words" }

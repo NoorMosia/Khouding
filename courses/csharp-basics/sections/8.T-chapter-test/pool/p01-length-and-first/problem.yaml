@@ -1,0 +1,15 @@
+id: p01-length-and-first
+title: Length and first character
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# A (8.1): print Length then s[0]. Non-empty input. Vary text.
+cases:
+  - { stdin: "hello", note: "5 then h" }
+  - { stdin: "a", note: "single char: 1 then a" }
+  - { stdin: "Hello World", note: "11 then H" }
+  - { stdin: "programming", note: "11 then p" }

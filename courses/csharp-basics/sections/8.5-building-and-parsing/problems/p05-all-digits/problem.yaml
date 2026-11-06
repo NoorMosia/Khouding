@@ -1,0 +1,15 @@
+id: p05-all-digits
+title: All digits
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Validate all-digit. True/False. Empty string gives True (stated convention).
+cases:
+  - { stdin: "12345", note: "True" }
+  - { stdin: "123a5", note: "one letter: False" }
+  - { stdin: "hello", note: "no digits: False" }
+  - { stdin: "", note: "empty: True (no character fails)" }

@@ -1,0 +1,39 @@
+# Chapter 9 region boss, machine-readable source of truth.
+
+id: csharp-basics/9.T
+kind: chapter-test
+title: Chapter 9 Test
+
+draw: 10
+light_at: 6
+window_hours: 24
+shuffle: true
+
+# Pool = 20. All list programs are deterministic per stdin (and per provided file for family F).
+pool:
+  # A, introduce & build (9.1)
+  - p01-build-and-count
+  - p02-sentinel-count
+  - p03-first-and-last
+  # B, iterate (9.2)
+  - p04-print-each
+  - p05-filter-positive
+  - p06-double-each
+  - p07-sum-list
+  # C, modify (9.3)
+  - p08-remove-value
+  - p09-insert-at
+  - p10-clear-count
+  - p11-remove-all-matching
+  # D, operations (9.4)
+  - p12-maximum
+  - p13-contains
+  - p14-index-of
+  - p15-average
+  - p16-count-above
+  # E, lists in methods (9.5)
+  - p17-sum-method
+  - p18-double-all
+  # F, fix the broken program
+  - p19-fix-loop-bound
+  - p20-fix-max-seed

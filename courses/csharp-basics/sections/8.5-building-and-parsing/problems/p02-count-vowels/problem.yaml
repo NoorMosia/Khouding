@@ -1,0 +1,15 @@
+id: p02-count-vowels
+title: Count vowels
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Count a e i o u (both cases). Vary counts; empty -> 0.
+cases:
+  - { stdin: "hello", note: "2 vowels (e, o)" }
+  - { stdin: "AEIOU", note: "5 uppercase vowels" }
+  - { stdin: "bcdfg", note: "no vowels: 0" }
+  - { stdin: "", note: "empty: 0" }

@@ -1,0 +1,1 @@
+# Pool p17, A sum method (9.5). static int Sum(List<int> list) returns total.

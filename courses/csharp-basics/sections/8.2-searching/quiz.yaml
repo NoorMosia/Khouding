@@ -1,0 +1,77 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 8.2 (Contains -> bool; IndexOf -> index or -1; StartsWith/EndsWith -> bool; read-only,
+# case-sensitive; -1 is the not-found sentinel). Assumes Ch.1-7 and 8.1. Transforms are 8.3.
+
+section: csharp-basics/8.2-searching
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `s.Contains(\"ab\")` return?"
+    options:
+      - { id: a, text: "a bool: whether \"ab\" occurs in s" }
+      - { id: b, text: "the index of \"ab\"" }
+      - { id: c, text: "the number of times \"ab\" occurs" }
+      - { id: d, text: "a new string" }
+    answer: a
+    rationale: "Contains answers yes/no as a bool. The index is what IndexOf returns."
+
+  - id: q2
+    type: mcq
+    prompt: "What does `s.IndexOf(part)` return when `part` is not in `s`?"
+    options:
+      - { id: a, text: "-1" }
+      - { id: b, text: "0" }
+      - { id: c, text: "s.Length" }
+      - { id: d, text: "it throws" }
+    answer: a
+    rationale: "IndexOf returns -1 for not-found, the same sentinel as Chapter 7.3 array search."
+
+  - id: q3
+    type: mcq
+    prompt: "For `s = \"hello world\"`, what is `s.IndexOf(\"o\")`?"
+    options:
+      - { id: a, text: "4, the first occurrence" }
+      - { id: b, text: "7, the second occurrence" }
+      - { id: c, text: "both 4 and 7" }
+      - { id: d, text: "-1" }
+    answer: a
+    rationale: "IndexOf returns the FIRST occurrence, index 4."
+
+  - id: q4
+    type: mcq
+    prompt: "Which checks whether a filename ends with \".txt\"?"
+    options:
+      - { id: a, text: "file.EndsWith(\".txt\")" }
+      - { id: b, text: "file.StartsWith(\".txt\")" }
+      - { id: c, text: "file.Contains(\".txt\") only" }
+      - { id: d, text: "file.IndexOf(\".txt\") == 0" }
+    answer: a
+    rationale: "EndsWith tests the suffix. Contains would be true even if .txt were in the middle."
+
+  - id: q5
+    type: truefalse
+    prompt: "For `s = \"Hello\"`, `s.Contains(\"hello\")` is true."
+    answer: false
+    rationale: "Search is case-sensitive here: capital H does not match lowercase h."
+
+  - id: q6
+    type: truefalse
+    prompt: "Using an `IndexOf` result of -1 as an index into the string is safe."
+    answer: false
+    rationale: "-1 is not a valid index; using it throws IndexOutOfRangeException. Check for -1 first."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the value `IndexOf` returns when the target is absent:  s.IndexOf(x) == ____"
+    accept: ["-1"]
+    rationale: "-1 is the not-found sentinel."

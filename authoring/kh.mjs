@@ -117,6 +117,24 @@ function generateForProblem(problemDir) {
   const results = [];
   try {
     runner.prepare(solutionPaths);
+
+    // Flavor A: if the problem declares asset_files, copy them into workdir
+    // so the solution can open them by name (e.g. "data.txt").
+    // asset_files is optional; problems without it are completely unaffected.
+    if (spec.asset_files && spec.asset_files[language]) {
+      const assetList = spec.asset_files[language];
+      if (!Array.isArray(assetList)) {
+        throw new Error(`${yamlPath}: asset_files.${language} must be an array`);
+      }
+      const assetPaths = assetList.map((f) => {
+        const p = join(problemDir, f);
+        if (!existsSync(p))
+          throw new Error(`${yamlPath}: asset file not found: ${f}`);
+        return p;
+      });
+      runner.stageAssets(assetPaths);
+    }
+
     for (const c of spec.cases) {
       const stdinStr = String(c.stdin);
       const rawOut = runner.run(stdinStr);

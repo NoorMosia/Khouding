@@ -1,0 +1,14 @@
+id: p08-longest-line
+title: Longest line
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+asset_files:
+  csharp: [data.txt]
+# Print the longest line. Structural: one case.
+cases:
+  - { stdin: "", note: "the longest line in data.txt" }

@@ -1,0 +1,1 @@
+# Pool p19, Fix the loop bound (9.2). i <= list.Count crashes; fix to i < list.Count.

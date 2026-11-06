@@ -1,0 +1,1 @@
+# Pool p10, Clear and count (9.3). Clear; print Count (always 0).

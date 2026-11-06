@@ -1,0 +1,1 @@
+﻿# Pool p04, Print each element (9.2). foreach walk on a list.

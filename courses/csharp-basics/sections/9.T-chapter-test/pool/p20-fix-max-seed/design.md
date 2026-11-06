@@ -1,0 +1,1 @@
+# Pool p20, Fix the max seed (9.4). max seeded at 0 wrong for all-negative; fix: seed from list[0].

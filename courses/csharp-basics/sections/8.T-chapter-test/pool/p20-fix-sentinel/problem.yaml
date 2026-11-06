@@ -1,0 +1,15 @@
+id: p20-fix-sentinel
+title: Fix the sentinel
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# G: starter uses IndexOf -1 as position. Fix: guard and print "not found". Vary present/absent.
+cases:
+  - { stdin: "hello world\nworld", note: "found at 6" }
+  - { stdin: "hello world\nxyz", note: "not found" }
+  - { stdin: "abcabc\nabc", note: "found at 0" }
+  - { stdin: "test\nz", note: "not found" }

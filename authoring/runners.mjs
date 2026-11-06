@@ -68,6 +68,17 @@ function csharpRunner() {
     language: "csharp",
     ext: "cs",
 
+    stageAssets(assetPaths) {
+      // Copy read-only asset files (e.g. data.txt for 8.6 file-I/O problems) into
+      // the working directory so the solution can open them by name.
+      // Called after prepare() and before any run(). Additive: problems without
+      // asset_files never call this and are completely unaffected.
+      if (!workdir) throw new Error("stageAssets called before prepare()");
+      for (const p of assetPaths) {
+        copyFileSync(p, join(workdir, basename(p)));
+      }
+    },
+
     prepare(solutionPaths) {
       mkdirSync(WORK_BASE, { recursive: true });
       workdir = mkdtempSync(join(WORK_BASE, "cs-"));
@@ -112,10 +123,12 @@ ${solutionPaths.map((p) => `    <Compile Include="${basename(p)}" />`).join("\n"
       // launching the built sol.dll directly, which Smart App Control is more
       // likely to block (see the SAC note at the top of this file).
       // --no-build reuses prepare()'s build so this stays fast.
+      // cwd: workdir ensures the process's working directory is the project
+      // folder, so solutions can open files by name (e.g. "data.txt" in 8.6).
       const res = runProcess(
         "dotnet",
         ["run", "-c", "Release", "--no-build", "--project", workdir],
-        { input: stdin, env: CS_ENV }
+        { input: stdin, cwd: workdir, env: CS_ENV }
       );
       if (res.code !== 0) {
         throw new Error(

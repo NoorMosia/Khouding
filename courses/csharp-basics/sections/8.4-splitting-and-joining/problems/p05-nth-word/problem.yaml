@@ -1,0 +1,15 @@
+id: p05-nth-word
+title: Nth word
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# parts[i]; index is valid. Vary index: first, middle, last.
+cases:
+  - { stdin: "one two three\n1", note: "two" }
+  - { stdin: "one two three\n0", note: "one (first)" }
+  - { stdin: "one two three\n2", note: "three (last)" }
+  - { stdin: "alpha beta gamma delta\n2", note: "gamma" }

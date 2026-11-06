@@ -1,0 +1,15 @@
+id: p11-contains-and-index
+title: Contains and index
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Print Contains then IndexOf on two lines. Note: absent gives False then -1.
+cases:
+  - { stdin: "hello world\nworld", note: "True then 6" }
+  - { stdin: "hello world\nxyz", note: "False then -1" }
+  - { stdin: "abcabc\nabc", note: "True then 0" }
+  - { stdin: "hi\nbye", note: "False then -1" }

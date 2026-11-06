@@ -1,0 +1,1 @@
+# Pool p06, Each doubled (9.2). Map loop shape.

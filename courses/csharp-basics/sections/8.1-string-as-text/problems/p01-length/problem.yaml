@@ -1,0 +1,15 @@
+id: p01-length
+title: Length of a line
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read a line, print s.Length. Vary content/length incl. a one-char line and a line with a space.
+cases:
+  - { stdin: "hello", note: "5" }
+  - { stdin: "a", note: "edge - single char: 1" }
+  - { stdin: "two words", note: "space counts: 9" }
+  - { stdin: "programming", note: "longer: 11" }

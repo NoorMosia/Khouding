@@ -1,0 +1,15 @@
+id: p03-contains
+title: Contains
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# B (8.2): Contains. Vary present/absent, case.
+cases:
+  - { stdin: "hello world\nworld", note: "True" }
+  - { stdin: "hello world\nxyz", note: "False" }
+  - { stdin: "Hello\nhello", note: "case: False" }
+  - { stdin: "abcabc\nbca", note: "True mid" }

@@ -1,0 +1,1 @@
+# Pool p08, Remove a value (9.3). Print Count after removal.

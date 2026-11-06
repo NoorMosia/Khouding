@@ -1,0 +1,15 @@
+id: p04-last-word
+title: Last word
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# parts[Length-1]. Vary last word; include single-word line.
+cases:
+  - { stdin: "hello world", note: "world" }
+  - { stdin: "one two three", note: "three" }
+  - { stdin: "end", note: "single word: end" }
+  - { stdin: "a b c d", note: "d" }

@@ -1,0 +1,15 @@
+id: p14-fix-ignored-return
+title: Fix the ignored return value
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter ignores s.ToUpper() and prints s (unchanged). Fix: use the return value. Vary input case.
+cases:
+  - { stdin: "hello", note: "HELLO (starter prints hello)" }
+  - { stdin: "mixed Case", note: "MIXED CASE" }
+  - { stdin: "ALREADY", note: "ALREADY" }
+  - { stdin: "one more", note: "ONE MORE" }

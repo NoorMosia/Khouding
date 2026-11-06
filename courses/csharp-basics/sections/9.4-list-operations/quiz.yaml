@@ -1,0 +1,70 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# Scope: 9.4 (Contains bool; IndexOf -1 if absent; sum/avg/(double)sum/Count; max/min seed from list[0];
+# empty-list rules). Assumes Ch.1-8 and 9.1-9.3. Methods are 9.5.
+
+section: csharp-basics/9.4-list-operations
+pass: 5
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `list.IndexOf(x)` return when `x` is not in the list?"
+    options:
+      - { id: a, text: "-1" }
+      - { id: b, text: "list.Count" }
+      - { id: c, text: "0" }
+      - { id: d, text: "it throws" }
+    answer: a
+    rationale: "-1 is the not-found sentinel, same as 7.3 array search and 8.2 string search."
+
+  - id: q2
+    type: mcq
+    prompt: "Why seed `max` with `list[0]` instead of 0?"
+    options:
+      - { id: a, text: "if every element is negative, a seed of 0 would wrongly win" }
+      - { id: b, text: "list[0] is always the maximum" }
+      - { id: c, text: "0 is too small to compare" }
+      - { id: d, text: "it makes no difference" }
+    answer: a
+    rationale: "Seeding at 0 breaks when all values are negative; list[0] is always a real element."
+
+  - id: q3
+    type: mcq
+    prompt: "Which expression gives the average of a list as a double?"
+    options:
+      - { id: a, text: "(double)sum / list.Count" }
+      - { id: b, text: "sum / list.Count" }
+      - { id: c, text: "(double)(sum / list.Count)" }
+      - { id: d, text: "sum / (double)list.Count" }
+    answer: a
+    rationale: "Cast sum before dividing so the division is floating-point. Both B and C do integer division first. D also works but A is the conventional form."
+
+  - id: q4
+    type: truefalse
+    prompt: "Summing an empty list (Count = 0) is well defined and gives 0."
+    answer: true
+    rationale: "The loop runs zero times, so sum stays at 0. Max, min, and average require Count >= 1."
+
+  - id: q5
+    type: mcq
+    prompt: "What does `list.Contains(x)` return?"
+    options:
+      - { id: a, text: "a bool: true if x is anywhere in the list" }
+      - { id: b, text: "the index of x" }
+      - { id: c, text: "the count of x's occurrences" }
+      - { id: d, text: "a new list without x" }
+    answer: a
+    rationale: "Contains answers yes/no as a bool. IndexOf gives the index."
+
+  - id: q6
+    type: truefalse
+    prompt: "When iterating to find the max, the loop should start at index 1 (because index 0 is the seed)."
+    answer: true
+    rationale: "max = list[0] seeds from index 0, so the loop compares the rest starting at index 1."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the start value for a not-found search:  int found = ____;"
+    accept: ["-1"]
+    rationale: "-1 is the sentinel for not found, since it is not a valid index."

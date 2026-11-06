@@ -1,0 +1,15 @@
+id: p10-at-start
+title: Occurs at the start
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# IndexOf(part) == 0. Vary at-start, later, absent (-1 != 0 -> False).
+cases:
+  - { stdin: "hello world\nhello", note: "at start: True" }
+  - { stdin: "hello world\nworld", note: "later (index 6): False" }
+  - { stdin: "hello world\nxyz", note: "absent (-1): False" }
+  - { stdin: "abcabc\nabc", note: "at start: True" }

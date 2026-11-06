@@ -1,0 +1,15 @@
+id: p05-first-and-last
+title: First and last
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Print s[0] then s[Length-1]. Vary text incl. single char (first==last).
+cases:
+  - { stdin: "hello", note: "h then o" }
+  - { stdin: "x", note: "edge - single char: x then x" }
+  - { stdin: "program", note: "p then m" }
+  - { stdin: "ab", note: "a then b" }

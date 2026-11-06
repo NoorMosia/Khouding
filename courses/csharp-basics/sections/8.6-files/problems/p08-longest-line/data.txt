@@ -1,0 +1,4 @@
+short
+a medium length line
+the very longest line in the whole file
+tiny

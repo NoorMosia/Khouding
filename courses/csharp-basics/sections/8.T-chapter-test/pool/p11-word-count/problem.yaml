@@ -1,0 +1,15 @@
+id: p11-word-count
+title: Word count
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# D (8.4): Split(' ').Length. Vary counts including 1.
+cases:
+  - { stdin: "one two three", note: "3" }
+  - { stdin: "hello", note: "1" }
+  - { stdin: "a b c d e", note: "5" }
+  - { stdin: "just two", note: "2" }

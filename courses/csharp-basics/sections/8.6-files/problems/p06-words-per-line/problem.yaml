@@ -1,0 +1,17 @@
+id: p06-words-per-line
+title: Words per line
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+asset_files:
+  csharp: [data.txt]
+# Read a separator char from stdin, split each line on it, print the piece count per line. Vary the sep.
+cases:
+  - { stdin: " ", note: "split on space: word counts" }
+  - { stdin: "a", note: "split on 'a': different counts" }
+  - { stdin: "e", note: "split on 'e': different counts" }
+  - { stdin: "z", note: "sep absent: each line is 1 piece" }

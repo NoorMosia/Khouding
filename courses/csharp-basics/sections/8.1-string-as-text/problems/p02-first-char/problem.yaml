@@ -1,0 +1,15 @@
+id: p02-first-char
+title: First character
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Print s[0]. Vary first char incl. a single-char line. Input non-empty.
+cases:
+  - { stdin: "hello", note: "h" }
+  - { stdin: "apple", note: "a" }
+  - { stdin: "z", note: "edge - single char: z" }
+  - { stdin: "Ok then", note: "O (capital)" }

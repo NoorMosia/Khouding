@@ -1,0 +1,71 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# Scope: 9.5 (List<T> parameter shared; element mutation visible; Add/Remove inside method visible;
+# reassigning parameter NOT visible; List<T> return type; three-way contrast).
+# Assumes Ch.1-8 and 9.1-9.4.
+
+section: csharp-basics/9.5-lists-and-methods
+pass: 5
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "A method does `list[0] = list[0] + 1` on its `List<int>` parameter. What does the caller see?"
+    options:
+      - { id: a, text: "the increased value: the method changed the shared list" }
+      - { id: b, text: "the original value: the list was copied" }
+      - { id: c, text: "a compile error" }
+      - { id: d, text: "the default 0" }
+    answer: a
+    rationale: "A List<T> is passed by reference; element mutations are visible to the caller. Same as 7.4 arrays."
+
+  - id: q2
+    type: truefalse
+    prompt: "Passing a plain `int` to a method and changing the parameter also changes the caller's int."
+    answer: false
+    rationale: "An int is a value type and is copied. The method changes its own copy. This is the contrast with lists."
+
+  - id: q3
+    type: mcq
+    prompt: "Inside a method, `list = new List<int>();` is run. What does the caller see?"
+    options:
+      - { id: a, text: "no change: reassigning the parameter does not affect the caller" }
+      - { id: b, text: "the caller's list becomes empty" }
+      - { id: c, text: "a compile error" }
+      - { id: d, text: "the caller's list gains a new element" }
+    answer: a
+    rationale: "The parameter is a copy of the reference. Reassigning it repoints only the method's copy. Only element/Add/Remove changes reach the caller."
+
+  - id: q4
+    type: mcq
+    prompt: "What is the return type of a method that builds and returns a List<int>?"
+    options:
+      - { id: a, text: "List<int>" }
+      - { id: b, text: "int" }
+      - { id: c, text: "void" }
+      - { id: d, text: "int[]" }
+    answer: a
+    rationale: "Declare the return type as List<int>."
+
+  - id: q5
+    type: mcq
+    prompt: "A method calls `list.Add(99)` on its `List<int>` parameter. After the call, what is `list.Count` in the caller?"
+    options:
+      - { id: a, text: "one more than before (the Add is visible)" }
+      - { id: b, text: "unchanged (Add does not reach the caller)" }
+      - { id: c, text: "0 (the list is cleared)" }
+      - { id: d, text: "it throws" }
+    answer: a
+    rationale: "Add mutates the shared list; the caller sees the new Count and the new element."
+
+  - id: q6
+    type: truefalse
+    prompt: "A `List<T>` parameter behaves the same as an array parameter: element mutations are visible to the caller."
+    answer: true
+    rationale: "Both arrays and lists are reference types. The same sharing rule applies."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the parameter type for a method that receives a List<int>:  static int Sum(____ list)"
+    accept: ["List<int>"]
+    rationale: "The parameter type is List<int>."

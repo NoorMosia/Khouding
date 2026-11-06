@@ -1,0 +1,15 @@
+id: p09-write-then-read
+title: Write then read back
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# No asset_files: this problem WRITES scratch.txt then reads it back. Vary input word.
+cases:
+  - { stdin: "hello", note: "HELLO" }
+  - { stdin: "world", note: "WORLD" }
+  - { stdin: "test", note: "TEST" }
+  - { stdin: "abc", note: "ABC" }

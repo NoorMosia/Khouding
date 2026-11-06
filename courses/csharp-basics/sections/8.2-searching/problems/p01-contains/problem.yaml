@@ -1,0 +1,15 @@
+id: p01-contains
+title: Contains a substring
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read line + substring, print Contains (True/False). Vary present/absent, case, position.
+cases:
+  - { stdin: "hello world\nworld", note: "present: True" }
+  - { stdin: "hello world\nxyz", note: "absent: False" }
+  - { stdin: "Hello\nhello", note: "case differs: False" }
+  - { stdin: "abcabc\nbca", note: "present mid: True" }

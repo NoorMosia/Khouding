@@ -1,0 +1,1 @@
+# Pool p09, Insert at position (9.3). Insert and print all elements.

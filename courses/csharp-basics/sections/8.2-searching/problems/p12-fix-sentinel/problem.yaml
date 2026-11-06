@@ -1,0 +1,16 @@
+id: p12-fix-sentinel
+title: Fix the sentinel
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter uses IndexOf result as an index without a -1 check (crashes on absent). Fix: guard first.
+# Statement: print "found at <i>" if present, else "not found".
+cases:
+  - { stdin: "hello world\nworld", note: "found at 6" }
+  - { stdin: "hello world\nxyz", note: "not found (would crash in the starter)" }
+  - { stdin: "abcabc\nabc", note: "found at 0" }
+  - { stdin: "test\nz", note: "not found" }

@@ -1,0 +1,15 @@
+id: p01-toupper
+title: Upper case
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# ToUpper; vary mixed case, already all-upper, single char. Use the return value.
+cases:
+  - { stdin: "hello", note: "HELLO" }
+  - { stdin: "Hello World", note: "HELLO WORLD" }
+  - { stdin: "ALREADY", note: "already upper: ALREADY" }
+  - { stdin: "a", note: "single char: A" }

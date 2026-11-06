@@ -1,0 +1,73 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Scope: 9.1 (new List<int>(); Add; list[i] zero-based; list.Count; valid range 0..Count-1;
+# using System.Collections.Generic required; ArgumentOutOfRangeException for bad index).
+# Assumes Ch.1-8. Iteration is 9.2, modification is 9.3.
+
+section: csharp-basics/9.1-introducing-list
+pass: 5
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "How do you create an empty list of integers?"
+    options:
+      - { id: a, text: "new List<int>()" }
+      - { id: b, text: "new int[]()" }
+      - { id: c, text: "new List(int)" }
+      - { id: d, text: "List.Create<int>()" }
+    answer: a
+    rationale: "new List<int>() creates an empty growable list of integers."
+
+  - id: q2
+    type: mcq
+    prompt: "After `list.Add(10); list.Add(20); list.Add(30);`, what is `list.Count`?"
+    options:
+      - { id: a, text: "3" }
+      - { id: b, text: "30" }
+      - { id: c, text: "0" }
+      - { id: d, text: "2 (the last index)" }
+    answer: a
+    rationale: "Count is the number of elements. Three Add calls give Count = 3."
+
+  - id: q3
+    type: mcq
+    prompt: "For a list with 4 elements, which expression gives the last element?"
+    options:
+      - { id: a, text: "list[list.Count - 1]" }
+      - { id: b, text: "list[list.Count]" }
+      - { id: c, text: "list.Last" }
+      - { id: d, text: "list[4]" }
+    answer: a
+    rationale: "The last index is Count - 1. list[list.Count] is out of range and throws."
+
+  - id: q4
+    type: truefalse
+    prompt: "You can use `List<int>` without any `using` directive as long as you type the full name."
+    answer: false
+    rationale: "Without `using System.Collections.Generic;`, the compiler cannot find List<>; you get CS0246."
+
+  - id: q5
+    type: mcq
+    prompt: "What does `list.Add(x)` do?"
+    options:
+      - { id: a, text: "appends x to the end of the list" }
+      - { id: b, text: "inserts x at index 0" }
+      - { id: c, text: "replaces the last element with x" }
+      - { id: d, text: "adds x to every element" }
+    answer: a
+    rationale: "Add appends x at the end, increasing Count by 1."
+
+  - id: q6
+    type: truefalse
+    prompt: "Reading `list[list.Count]` on a non-empty list is caught by the compiler."
+    answer: false
+    rationale: "It compiles fine and throws ArgumentOutOfRangeException at runtime; the last valid index is Count - 1."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the using directive needed to use List<T>:  using System.Collections.____;"
+    accept: ["Generic"]
+    rationale: "List<T> lives in the System.Collections.Generic namespace."

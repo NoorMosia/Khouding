@@ -1,0 +1,15 @@
+id: p12-capitalise-first
+title: Capitalise the first letter
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# char.ToUpper(s[0]) + s.Substring(1). Input has Length >= 1. Vary case/content.
+cases:
+  - { stdin: "hello", note: "Hello" }
+  - { stdin: "world", note: "World" }
+  - { stdin: "already", note: "Already" }
+  - { stdin: "a", note: "edge - single char: A" }

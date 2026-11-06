@@ -1,0 +1,15 @@
+id: p01-count-char
+title: Count a character
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Count occurrences of a read char. Vary count: 0, 1, several. Empty line -> 0.
+cases:
+  - { stdin: "hello\nl", note: "2 l's" }
+  - { stdin: "hello\nz", note: "absent: 0" }
+  - { stdin: "banana\na", note: "3 a's" }
+  - { stdin: "\na", note: "empty string: 0" }

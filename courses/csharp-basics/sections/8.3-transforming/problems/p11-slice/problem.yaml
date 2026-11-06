@@ -1,0 +1,15 @@
+id: p11-slice
+title: A slice
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Substring(start, length). Vary start and length; all in bounds.
+cases:
+  - { stdin: "hello world\n3\n5", note: "lo wo" }
+  - { stdin: "programming\n0\n4", note: "prog" }
+  - { stdin: "abcdef\n2\n3", note: "cde" }
+  - { stdin: "hello\n1\n3", note: "ell" }

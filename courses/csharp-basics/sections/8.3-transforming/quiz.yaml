@@ -1,0 +1,77 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 8.3 (ToUpper/ToLower/Trim/Replace/Substring, ALL return new strings; the ignored-return-value
+# bug; Substring(start) vs Substring(start, length); chaining). Assumes Ch.1-7, 8.1, 8.2.
+
+section: csharp-basics/8.3-transforming
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: truefalse
+    prompt: "After `s.ToUpper();`, the variable `s` holds the upper-cased text."
+    answer: false
+    rationale: "ToUpper returns a new string; the original s is unchanged. You must store or print the return value."
+
+  - id: q2
+    type: mcq
+    prompt: "What does `s.Trim()` do?"
+    options:
+      - { id: a, text: "returns a new string with leading and trailing whitespace removed" }
+      - { id: b, text: "removes all spaces from the string" }
+      - { id: c, text: "trims s to a maximum length" }
+      - { id: d, text: "removes the first and last character" }
+    answer: a
+    rationale: "Trim strips only leading and trailing whitespace; spaces in the middle are kept. It returns a new string."
+
+  - id: q3
+    type: mcq
+    prompt: "What does `\"hello\".Substring(1, 3)` return?"
+    options:
+      - { id: a, text: "\"ell\" (3 chars from index 1)" }
+      - { id: b, text: "\"ello\" (from index 1 to end)" }
+      - { id: c, text: "\"hel\" (first 3 chars)" }
+      - { id: d, text: "\"lo\" (last 2 chars)" }
+    answer: a
+    rationale: "Substring(1, 3) starts at index 1 and takes 3 characters: 'e', 'l', 'l'."
+
+  - id: q4
+    type: mcq
+    prompt: "What does `\"hello\".Substring(2)` return?"
+    options:
+      - { id: a, text: "\"llo\" (from index 2 to the end)" }
+      - { id: b, text: "\"he\" (first 2 chars)" }
+      - { id: c, text: "\"ell\" (3 chars)" }
+      - { id: d, text: "nothing" }
+    answer: a
+    rationale: "Substring(start) takes from that index to the end of the string."
+
+  - id: q5
+    type: mcq
+    prompt: "Which correctly upper-cases `s` and stores the result?"
+    options:
+      - { id: a, text: "s = s.ToUpper();" }
+      - { id: b, text: "s.ToUpper();" }
+      - { id: c, text: "ToUpper(s);" }
+      - { id: d, text: "s.upper = true;" }
+    answer: a
+    rationale: "ToUpper returns the new string; you must assign it back to s (or store it elsewhere)."
+
+  - id: q6
+    type: truefalse
+    prompt: "`\"hello\".Replace(\"l\", \"r\")` replaces only the first occurrence of 'l'."
+    answer: false
+    rationale: "Replace replaces every occurrence, returning \"herro\"."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the method that removes leading and trailing whitespace:  s.____()"
+    accept: ["Trim"]
+    rationale: "Trim() strips leading and trailing whitespace and returns the new string."

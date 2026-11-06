@@ -1,0 +1,15 @@
+id: p01-word-count
+title: Word count
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Split(' ').Length; vary word counts including 1 word.
+cases:
+  - { stdin: "one two three", note: "3" }
+  - { stdin: "hello", note: "1 word" }
+  - { stdin: "a b c d e", note: "5" }
+  - { stdin: "just two", note: "2" }

@@ -1,0 +1,15 @@
+id: p02-tolower
+title: Lower case
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# ToLower; vary mixed case, already all-lower, single char.
+cases:
+  - { stdin: "HELLO", note: "hello" }
+  - { stdin: "Hello World", note: "hello world" }
+  - { stdin: "already", note: "already lower: already" }
+  - { stdin: "A", note: "single char: a" }

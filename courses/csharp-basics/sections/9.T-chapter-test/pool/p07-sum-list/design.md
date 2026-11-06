@@ -1,0 +1,1 @@
+# Pool p07, Sum (9.2). Accumulate over a list.

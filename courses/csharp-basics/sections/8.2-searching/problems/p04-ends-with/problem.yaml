@@ -1,0 +1,15 @@
+id: p04-ends-with
+title: Ends with a suffix
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read line + suffix, print EndsWith (True/False). Vary match/mismatch (e.g. file extensions).
+cases:
+  - { stdin: "report.txt\n.txt", note: "True" }
+  - { stdin: "report.txt\n.csv", note: "False" }
+  - { stdin: "data.TXT\n.txt", note: "case differs: False" }
+  - { stdin: "notes\nnotes", note: "whole string is a suffix: True" }

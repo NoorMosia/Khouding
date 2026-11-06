@@ -1,0 +1,15 @@
+id: p09-reverse
+title: Reverse by building
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Build the reversed string. Vary length; single char and empty edge.
+cases:
+  - { stdin: "hello", note: "olleh" }
+  - { stdin: "abc", note: "cba" }
+  - { stdin: "a", note: "edge - single char: a" }
+  - { stdin: "", note: "empty: empty line" }

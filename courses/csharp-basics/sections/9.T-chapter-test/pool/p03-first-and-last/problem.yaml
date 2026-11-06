@@ -1,0 +1,14 @@
+id: p03-first-and-last
+title: First and last
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+cases:
+  - { stdin: "4\n10\n20\n30\n40", note: "10 then 40" }
+  - { stdin: "1\n7", note: "7 then 7" }
+  - { stdin: "3\n-5\n0\n5", note: "-5 then 5" }
+  - { stdin: "2\n99\n1", note: "99 then 1" }

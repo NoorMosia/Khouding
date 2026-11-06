@@ -1,0 +1,76 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# Scope: 9.3 (Add/Remove(bool)/RemoveAt/Insert/Clear; index shift after removal/insertion;
+# Remove absent = false, no throw; backward loop for safe removal).
+# Assumes Ch.1-8 and 9.1-9.2. Operations (Contains/IndexOf/aggregates) are 9.4.
+
+section: csharp-basics/9.3-modifying-a-list
+pass: 5
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `list.Remove(x)` return when `x` is not in the list?"
+    options:
+      - { id: a, text: "false; the list is unchanged" }
+      - { id: b, text: "true; it removes nothing" }
+      - { id: c, text: "it throws an exception" }
+      - { id: d, text: "-1" }
+    answer: a
+    rationale: "Remove returns false when the value is absent and leaves the list unchanged. It never throws for a missing value."
+
+  - id: q2
+    type: mcq
+    prompt: "After `list.RemoveAt(0)` on a list {10, 20, 30}, what is `list[0]`?"
+    options:
+      - { id: a, text: "20 (the former index 1 shifted down)" }
+      - { id: b, text: "10 (unchanged)" }
+      - { id: c, text: "0 (default)" }
+      - { id: d, text: "it throws" }
+    answer: a
+    rationale: "RemoveAt shifts all elements above the removed index down by one. The former index 1 becomes index 0."
+
+  - id: q3
+    type: truefalse
+    prompt: "After `list.Clear()`, the variable `list` is null."
+    answer: false
+    rationale: "Clear removes all elements but the list still exists and has Count = 0. You can Add to it again."
+
+  - id: q4
+    type: mcq
+    prompt: "After `list.Insert(1, 99)` on a list {10, 20, 30}, what is `list[2]`?"
+    options:
+      - { id: a, text: "20 (the former index 1 shifted up)" }
+      - { id: b, text: "30" }
+      - { id: c, text: "99" }
+      - { id: d, text: "10" }
+    answer: a
+    rationale: "Insert at index 1 shifts the former index 1 (20) and above up by one. list = {10,99,20,30}; list[2] = 20."
+
+  - id: q5
+    type: mcq
+    prompt: "Why is a backward loop safer than a forward loop when removing elements?"
+    options:
+      - { id: a, text: "removing at index i only shifts elements above i, which have already been visited" }
+      - { id: b, text: "backward loops are faster" }
+      - { id: c, text: "the list must be sorted for backward removal" }
+      - { id: d, text: "there is no difference; both work correctly" }
+    answer: a
+    rationale: "In a backward loop, removing index i shifts only higher indexes, which have already been processed. A forward loop skips the element that slides into the removed position."
+
+  - id: q6
+    type: mcq
+    prompt: "For a list {5, 5, 5}, after `list.Remove(5)`, what is `list.Count`?"
+    options:
+      - { id: a, text: "2 (only the first 5 is removed)" }
+      - { id: b, text: "0 (all 5s are removed)" }
+      - { id: c, text: "3 (nothing removed; returns false)" }
+      - { id: d, text: "it depends on position" }
+    answer: a
+    rationale: "Remove removes only the FIRST occurrence. One 5 is removed, leaving Count = 2."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the method that removes all elements and sets Count to 0:  list.____()"
+    accept: ["Clear"]
+    rationale: "Clear() removes every element; Count becomes 0."

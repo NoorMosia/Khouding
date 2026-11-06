@@ -1,0 +1,12 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        string s = Console.ReadLine();
+        int i = int.Parse(Console.ReadLine());
+        Console.WriteLine(s[i]);
+        Console.WriteLine(s[s.Length - 1]);
+    }
+}

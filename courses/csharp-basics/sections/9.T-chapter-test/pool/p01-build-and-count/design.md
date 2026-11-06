@@ -1,0 +1,1 @@
+# Pool p01, Build and count (9.1). Read n, add n values, print Count.

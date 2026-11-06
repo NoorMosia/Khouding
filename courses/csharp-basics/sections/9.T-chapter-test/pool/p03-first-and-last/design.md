@@ -1,0 +1,1 @@
+# Pool p03, First and last (9.1). Print list[0] then list[Count-1]. n >= 1.

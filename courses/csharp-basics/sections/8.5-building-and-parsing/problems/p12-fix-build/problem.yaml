@@ -1,0 +1,15 @@
+id: p12-fix-build
+title: Fix the build
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter has result + c; (CS0201). Fix: result = result + c;. Vary digit counts.
+cases:
+  - { stdin: "abc123", note: "123" }
+  - { stdin: "12345", note: "12345" }
+  - { stdin: "hello", note: "no digits: empty" }
+  - { stdin: "a1b2c3", note: "123" }

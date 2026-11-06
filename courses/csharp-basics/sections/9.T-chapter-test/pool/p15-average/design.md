@@ -1,0 +1,1 @@
+# Pool p15, Average (9.4). (double)sum/Count. n >= 1.

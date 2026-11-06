@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 8.6 (StreamReader/StreamWriter; using closes the file; ReadLine returns null at EOF;
+# write-then-read-back; File.ReadAllLines named; model = open/read-write/close is the durable part).
+# Assumes Ch.1-7 and 8.1-8.5.
+
+section: csharp-basics/8.6-files
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `reader.ReadLine()` return when it reaches the end of the file?"
+    options:
+      - { id: a, text: "null" }
+      - { id: b, text: "an empty string" }
+      - { id: c, text: "0" }
+      - { id: d, text: "it throws an exception" }
+    answer: a
+    rationale: "ReadLine() returns null at end of file. The standard loop checks for null: while ((line = reader.ReadLine()) != null)."
+
+  - id: q2
+    type: truefalse
+    prompt: "You can safely omit the `using` block for a `StreamWriter` as long as you call `Close()` yourself."
+    answer: false
+    rationale: "using is the recommended pattern because it guarantees the file is closed and flushed even if an exception is thrown. Calling Close() manually works but is less safe."
+
+  - id: q3
+    type: mcq
+    prompt: "Why is `using` important for a `StreamWriter`?"
+    options:
+      - { id: a, text: "it flushes the final buffer and closes the file, so the written content is not lost" }
+      - { id: b, text: "it makes the writer write faster" }
+      - { id: c, text: "it is only needed for StreamReader, not StreamWriter" }
+      - { id: d, text: "it is optional; the file is always complete" }
+    answer: a
+    rationale: "Without using (or an explicit Close/Flush), the final buffer may not reach the file. The write appears to succeed but the file ends up empty or truncated."
+
+  - id: q4
+    type: mcq
+    prompt: "What is the purpose of `File.ReadAllLines(\"data.txt\")`?"
+    options:
+      - { id: a, text: "it reads all lines and returns a string[]" }
+      - { id: b, text: "it reads the file one character at a time" }
+      - { id: c, text: "it opens the file for writing" }
+      - { id: d, text: "it prints the file to the console" }
+    answer: a
+    rationale: "File.ReadAllLines is a one-call convenience that opens, reads every line into a string[], and closes. It is the same string[] you have used since Chapter 7."
+
+  - id: q5
+    type: truefalse
+    prompt: "When you open a StreamReader without a using block, the file is always closed as soon as the ReadLine loop finishes."
+    answer: false
+    rationale: "Without using, the file handle is not released until the garbage collector runs, which may be much later. This can leave the file locked for other programs."
+
+  - id: q6
+    type: mcq
+    prompt: "The exact `StreamReader` class name changes in different languages and frameworks. The lasting knowledge from this section is:"
+    options:
+      - { id: a, text: "the model: open, read or write in some unit, close" }
+      - { id: b, text: "the exact spelling of StreamReader" }
+      - { id: c, text: "that files only work in C#" }
+      - { id: d, text: "that ReadLine is the only way to read a file" }
+    answer: a
+    rationale: "Method names are a lookup. The transferable skill is recognising the open/read-write/close shape, which appears in every language that has file I/O."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the class used to read a file line by line:  using (var reader = new ____(\"data.txt\"))"
+    accept: ["StreamReader"]
+    rationale: "StreamReader wraps a file and lets you call ReadLine() per line."

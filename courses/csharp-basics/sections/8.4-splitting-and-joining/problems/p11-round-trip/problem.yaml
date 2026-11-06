@@ -1,0 +1,15 @@
+id: p11-round-trip
+title: Round trip with a new separator
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Split on space, join with "-". Vary word counts.
+cases:
+  - { stdin: "one two three", note: "one-two-three" }
+  - { stdin: "hello world", note: "hello-world" }
+  - { stdin: "just one", note: "just-one" }
+  - { stdin: "a b c d e", note: "a-b-c-d-e" }

@@ -1,0 +1,14 @@
+id: p01-line-count
+title: Line count
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+asset_files:
+  csharp: [data.txt]
+# Count lines in data.txt (5 lines). No stdin: one structural case.
+cases:
+  - { stdin: "", note: "data.txt has 5 lines" }

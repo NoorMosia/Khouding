@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 8.1 (s.Length; zero-based char indexing s[i]; first/last; char is its own type; strings are
+# immutable, s[i]=c is a compile error; valid range 0..Length-1, out-of-range throws at runtime).
+# Assumes Ch.1-7. Search is 8.2, transforms are 8.3.
+
+section: csharp-basics/8.1-string-as-text
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `s.Length` give for `s = \"hello\"`?"
+    options:
+      - { id: a, text: "5, the number of characters" }
+      - { id: b, text: "4, the last index" }
+      - { id: c, text: "the first character" }
+      - { id: d, text: "the whole string" }
+    answer: a
+    rationale: "Length is the count of characters. The last index is Length - 1 (4 here)."
+
+  - id: q2
+    type: mcq
+    prompt: "What is the index of the first character of a string?"
+    options:
+      - { id: a, text: "0" }
+      - { id: b, text: "1" }
+      - { id: c, text: "-1" }
+      - { id: d, text: "it depends on the length" }
+    answer: a
+    rationale: "Strings are zero-based, like arrays: the first character is s[0]."
+
+  - id: q3
+    type: mcq
+    prompt: "For `s = \"hello\"`, which expression gives the last character?"
+    options:
+      - { id: a, text: "s[s.Length - 1]" }
+      - { id: b, text: "s[s.Length]" }
+      - { id: c, text: "s[5]" }
+      - { id: d, text: "s.Last" }
+    answer: a
+    rationale: "The last index is Length - 1. s[s.Length] is out of range and throws at runtime."
+
+  - id: q4
+    type: mcq
+    prompt: "What type is `s[0]`?"
+    options:
+      - { id: a, text: "char, a single character" }
+      - { id: b, text: "string, a one-letter string" }
+      - { id: c, text: "int" }
+      - { id: d, text: "bool" }
+    answer: a
+    rationale: "Indexing a string yields a char (single quotes, 'h'), not a one-character string."
+
+  - id: q5
+    type: truefalse
+    prompt: "`s[0] = 'H';` changes the first character of the string."
+    answer: false
+    rationale: "Strings are immutable: s[i] = c is a compile error (CS0200). You make a new string instead."
+
+  - id: q6
+    type: truefalse
+    prompt: "Reading `s[s.Length]` is caught by the compiler before the program runs."
+    answer: false
+    rationale: "It compiles and throws IndexOutOfRangeException at runtime; the last valid index is Length - 1."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the expression for the number of characters in a string s:  s.____"
+    accept: ["Length"]
+    rationale: "s.Length is the character count."

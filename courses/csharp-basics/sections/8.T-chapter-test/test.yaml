@@ -1,0 +1,47 @@
+# Chapter 8 region boss, machine-readable source of truth.
+# A TEST is pooled: a single attempt draws `draw` problems from `pool`, and
+# passing `light_at` of them lights the chapter region on the map.
+# The oracle CLI generates each pool problem's expecteds from its solution.cs,
+# exactly as for a section problem (including asset_files for family F).
+
+id: csharp-basics/8.T
+kind: chapter-test
+title: Chapter 8 Test
+
+draw: 10            # problems served in a single attempt
+light_at: 6         # pass this many of the draw to light Chapter 8 (~60%)
+window_hours: 24    # generous attempt window; miss it or fall short and it just
+                    # does not light, a retry draws a fresh set. No lockouts, ever.
+shuffle: true
+
+# The bank (20). A single attempt draws 10, weighted to a mix of difficulties.
+# All string/file programs are deterministic per stdin (and per the provided file for
+# family F), so the oracle gen/check work exactly as for section problems.
+pool:
+  # A, string as text (8.1)
+  - p01-length-and-first
+  - p02-index-and-last
+  # B, searching (8.2)
+  - p03-contains
+  - p04-index-of
+  - p05-starts-ends
+  - p06-index-of-char
+  # C, transforming (8.3)
+  - p07-toupper
+  - p08-trim-show
+  - p09-replace
+  - p10-substring
+  # D, split & join (8.4)
+  - p11-word-count
+  - p12-print-words
+  - p13-join-words
+  - p14-round-trip
+  # E, char walk (8.5)
+  - p15-count-digits
+  - p16-keep-letters
+  # F, file I/O (8.6)
+  - p17-file-lines
+  - p18-file-with-word
+  # G, fix the broken program
+  - p19-fix-ignored-return
+  - p20-fix-sentinel

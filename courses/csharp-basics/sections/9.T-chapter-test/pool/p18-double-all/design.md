@@ -1,0 +1,1 @@
+# Pool p18, Double all in place (9.5). void DoubleAll mutates; caller prints.

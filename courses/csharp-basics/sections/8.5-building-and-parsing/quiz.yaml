@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 8.5 (foreach (char c in s); for over s.Length; char.IsDigit/IsLetter; count / validate all /
+# build by concatenation; result=""; empty string gives zero/empty; no compiler error for missed assign).
+# Assumes Ch.1-7 and 8.1-8.4.
+
+section: csharp-basics/8.5-building-and-parsing
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `foreach (char c in s)` give you on each iteration?"
+    options:
+      - { id: a, text: "the next character of s as a char" }
+      - { id: b, text: "the index of the next character" }
+      - { id: c, text: "a one-character string" }
+      - { id: d, text: "the remaining substring" }
+    answer: a
+    rationale: "foreach over a string hands you each character as a char, in order."
+
+  - id: q2
+    type: mcq
+    prompt: "What does `char.IsDigit('7')` return?"
+    options:
+      - { id: a, text: "true" }
+      - { id: b, text: "false" }
+      - { id: c, text: "7 (the numeric value)" }
+      - { id: d, text: "a compile error" }
+    answer: a
+    rationale: "char.IsDigit returns true for '0' through '9'."
+
+  - id: q3
+    type: truefalse
+    prompt: "Forgetting to write `result = result + c;` (writing just `result + c;`) is a compile error."
+    answer: true
+    rationale: "result + c; is a standalone expression statement, which CS0201 rejects. The fix is result = result + c;."
+
+  - id: q4
+    type: mcq
+    prompt: "You want to count vowels in s. Which is the correct pattern?"
+    options:
+      - { id: a, text: "int count = 0; foreach (char c in s) { if (\"aeiou\".Contains(c)) count++; }" }
+      - { id: b, text: "int count = s.Length; foreach (char c in s) { if (!\"aeiou\".Contains(c)) count--; }" }
+      - { id: c, text: "s.Count('aeiou')" }
+      - { id: d, text: "foreach (char c in s) count = c;" }
+    answer: a
+    rationale: "Start at 0, add 1 for each character that passes the test. Option b works too but A is the natural pattern."
+
+  - id: q5
+    type: truefalse
+    prompt: "For an empty string, a `foreach (char c in s)` loop runs zero times."
+    answer: true
+    rationale: "An empty string has no characters; the loop body never executes, so count stays 0 and a built result stays empty."
+
+  - id: q6
+    type: mcq
+    prompt: "To build a string of only the letters in s, you start with:"
+    options:
+      - { id: a, text: "string result = \"\";" }
+      - { id: b, text: "string result = s;" }
+      - { id: c, text: "string result; (unassigned)" }
+      - { id: d, text: "char result = ' ';" }
+    answer: a
+    rationale: "Start with an empty string and concatenate chosen characters one by one."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the helper that tests whether a char is a letter:  char.____(c)"
+    accept: ["IsLetter"]
+    rationale: "char.IsLetter(c) returns true for letter characters."

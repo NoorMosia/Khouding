@@ -1,0 +1,1 @@
+# Pool p02, Sentinel count (9.1). Read until "stop", print count.

@@ -1,0 +1,15 @@
+id: p10-upper-each-word
+title: Upper-case each word
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Split, ToUpper each, Join with " ". Vary case and word count.
+cases:
+  - { stdin: "hello world", note: "HELLO WORLD" }
+  - { stdin: "one two three", note: "ONE TWO THREE" }
+  - { stdin: "ALREADY", note: "single already-upper: ALREADY" }
+  - { stdin: "a b c d", note: "A B C D" }

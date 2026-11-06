@@ -1,0 +1,77 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 8.4 (Split -> string[]; .Length/index/loop from Ch.7 apply; string.Join(sep, arr); separator
+# first in Join; edges: no-separator gives 1 piece; round trip). Assumes Ch.1-7 and 8.1-8.3.
+
+section: csharp-basics/8.4-splitting-and-joining
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `\"one two three\".Split(' ')` return?"
+    options:
+      - { id: a, text: "a string[] of three elements" }
+      - { id: b, text: "an int (the word count)" }
+      - { id: c, text: "a string with spaces removed" }
+      - { id: d, text: "the first word" }
+    answer: a
+    rationale: "Split returns a string[]. All Chapter 7 array operations (Length, index, loop) apply."
+
+  - id: q2
+    type: mcq
+    prompt: "For `parts = \"hello world\".Split(' ')`, what is `parts.Length`?"
+    options:
+      - { id: a, text: "2" }
+      - { id: b, text: "11 (the string length)" }
+      - { id: c, text: "1" }
+      - { id: d, text: "5" }
+    answer: a
+    rationale: "One space splits 'hello world' into two pieces: parts[0] = \"hello\", parts[1] = \"world\"."
+
+  - id: q3
+    type: mcq
+    prompt: "What is the correct argument order for `string.Join`?"
+    options:
+      - { id: a, text: "separator first, then the array: string.Join(sep, arr)" }
+      - { id: b, text: "array first, then the separator: string.Join(arr, sep)" }
+      - { id: c, text: "the array only; separator is always a comma" }
+      - { id: d, text: "it does not matter" }
+    answer: a
+    rationale: "Separator comes first: string.Join(\", \", parts). Swapping the args is the most common bug."
+
+  - id: q4
+    type: mcq
+    prompt: "What does `string.Join(\"-\", new string[]{\"a\",\"b\",\"c\"})` produce?"
+    options:
+      - { id: a, text: "\"a-b-c\"" }
+      - { id: b, text: "\"-a-b-c-\"" }
+      - { id: c, text: "\"abc\"" }
+      - { id: d, text: "three separate lines" }
+    answer: a
+    rationale: "Join places the separator BETWEEN elements, not around them."
+
+  - id: q5
+    type: truefalse
+    prompt: "Splitting `\"hello\"` (no spaces) on `' '` gives a string[] of length 0."
+    answer: false
+    rationale: "Splitting a string with no separator gives a one-element array of the whole string: length 1."
+
+  - id: q6
+    type: truefalse
+    prompt: "You can loop over the result of `Split` with a `foreach` loop, just like any other string[]."
+    answer: true
+    rationale: "Split returns a plain string[]; all Chapter 7 array operations apply, including foreach."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the method that splits s on a comma:  s.____(',')"
+    accept: ["Split"]
+    rationale: "Split takes the separator character and returns a string[]."

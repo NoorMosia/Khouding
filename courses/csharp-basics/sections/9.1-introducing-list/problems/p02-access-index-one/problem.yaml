@@ -1,0 +1,15 @@
+id: p02-access-index-one
+title: Access index 1
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Add 3 values, print list[1]. Vary middle value.
+cases:
+  - { stdin: "10\n20\n30", note: "20" }
+  - { stdin: "1\n99\n3", note: "99" }
+  - { stdin: "0\n0\n0", note: "0" }
+  - { stdin: "-5\n8\n-3", note: "8" }

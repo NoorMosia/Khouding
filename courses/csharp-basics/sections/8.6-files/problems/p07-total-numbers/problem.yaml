@@ -1,0 +1,17 @@
+id: p07-total-numbers
+title: Total the numbers
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+asset_files:
+  csharp: [data.txt]
+# Read each line as int, sum, multiply by stdin multiplier. Vary multiplier.
+cases:
+  - { stdin: "1", note: "sum * 1 = 100" }
+  - { stdin: "2", note: "sum * 2 = 200" }
+  - { stdin: "3", note: "sum * 3 = 300" }
+  - { stdin: "0", note: "sum * 0 = 0" }

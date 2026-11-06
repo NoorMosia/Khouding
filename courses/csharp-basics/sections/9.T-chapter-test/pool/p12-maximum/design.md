@@ -1,0 +1,1 @@
+# Pool p12, Maximum (9.4). Running max seeded from list[0]. n >= 1.

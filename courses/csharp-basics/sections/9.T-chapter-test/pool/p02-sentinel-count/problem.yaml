@@ -1,0 +1,14 @@
+id: p02-sentinel-count
+title: Sentinel count
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+cases:
+  - { stdin: "10\n20\n30\nstop", note: "3" }
+  - { stdin: "stop", note: "0" }
+  - { stdin: "7\nstop", note: "1" }
+  - { stdin: "1\n2\n3\n4\n5\nstop", note: "5" }

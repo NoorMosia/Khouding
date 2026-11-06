@@ -1,0 +1,14 @@
+id: p10-fix-read-loop
+title: Fix the read loop
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+asset_files:
+  csharp: [data.txt]
+# Starter calls ReadLine() twice per iteration (skips alternate lines). Fix: store in a variable.
+cases:
+  - { stdin: "", note: "all four lines" }

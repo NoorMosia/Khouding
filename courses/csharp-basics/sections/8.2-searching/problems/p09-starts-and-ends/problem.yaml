@@ -1,0 +1,15 @@
+id: p09-starts-and-ends
+title: Starts and ends
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read line, prefix, suffix; print StartsWith(prefix) && EndsWith(suffix). Vary both/one/neither.
+cases:
+  - { stdin: "report.txt\nrep\n.txt", note: "both: True" }
+  - { stdin: "report.txt\nrep\n.csv", note: "prefix ok, suffix no: False" }
+  - { stdin: "report.txt\nlog\n.txt", note: "prefix no: False" }
+  - { stdin: "report.txt\nlog\n.csv", note: "neither: False" }
