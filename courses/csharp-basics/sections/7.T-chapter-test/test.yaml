@@ -1,0 +1,48 @@
+# Chapter 7 region boss, machine-readable source of truth.
+# A TEST is pooled: a single attempt draws `draw` problems from `pool`, and
+# passing `light_at` of them lights the chapter region on the map.
+# The oracle CLI generates each pool problem's expecteds from its solution.cs,
+# exactly as for a section problem.
+
+id: csharp-basics/7.T
+kind: chapter-test
+title: Chapter 7 Test
+
+draw: 10            # problems served in a single attempt
+light_at: 6         # pass this many of the draw to light Chapter 7 (~60%)
+window_hours: 24    # generous attempt window; miss it or fall short and it just
+                    # does not light, a retry draws a fresh set. No lockouts, ever.
+shuffle: true
+
+# The bank (20). A single attempt draws 10, weighted to a mix of difficulties.
+# Every problem reads values into an array (the count-then-values pattern) and computes
+# over it. Cases VARY the contents and length (including 0 and 1 where the operation is
+# defined there), so a solution that assumes a fixed size or hardcodes an answer fails.
+# 2D problems vary both dimensions. Every committed solution stays in bounds.
+pool:
+  # A, declare & access (7.1)
+  - p01-length-and-last
+  - p02-read-and-index
+  # B, iterate (7.2)
+  - p03-print-each
+  - p04-reverse
+  - p05-filter-positive
+  - p06-double-each
+  # C, operations (7.3)
+  - p07-sum
+  - p08-average
+  - p09-maximum
+  - p10-minimum
+  - p11-count-over
+  - p12-index-of
+  # D, arrays & methods (7.4)
+  - p13-sum-method
+  - p14-double-all
+  - p15-range-method
+  - p16-reverse-method
+  # E, multidimensional (7.5)
+  - p17-sum-grid
+  - p18-grid-table
+  # F, fix the broken program (debug across 7.1-7.5)
+  - p19-fix-loop-bound
+  - p20-fix-max-seed

@@ -1,0 +1,16 @@
+id: p09-fix-out-of-scope
+title: Fix the out-of-scope use
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Debug: a helper references score, a variable that only exists in Main (CS0103). Fix by adding a parameter
+# and passing the value in. Main reads score; method prints score + 10.
+cases:
+  - { stdin: "5",  note: "15" }
+  - { stdin: "0",  note: "10" }
+  - { stdin: "-4", note: "6" }
+  - { stdin: "90", note: "100" }

@@ -1,0 +1,12 @@
+id: p14-private-locals
+title: Private locals
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# D: Main has its own x (prints 1), Helper has its own x (prints 99). No input.
+cases:
+  - { stdin: "", note: "1 then 99" }

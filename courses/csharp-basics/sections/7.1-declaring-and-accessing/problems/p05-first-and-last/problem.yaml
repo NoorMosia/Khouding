@@ -1,0 +1,15 @@
+id: p05-first-and-last
+title: First and last
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read 4 numbers into an array, print a[0] then a[a.Length-1]. Vary values incl. equal ends.
+cases:
+  - { stdin: "10\n20\n30\n40", note: "normal" }
+  - { stdin: "5\n5\n5\n5", note: "ends equal" }
+  - { stdin: "-1\n0\n9\n-8", note: "negatives" }
+  - { stdin: "100\n1\n1\n2", note: "big first" }

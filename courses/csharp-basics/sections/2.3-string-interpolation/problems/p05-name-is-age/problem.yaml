@@ -1,0 +1,15 @@
+id: p05-name-is-age
+title: Name is age
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Two holes of mixed types: a string and a parsed int.
+cases:
+  - { stdin: "Ada\n36",   note: typical }
+  - { stdin: "Grace\n85", note: older }
+  - { stdin: "Jun\n0",    note: age zero }
+  - { stdin: "Al\n7",     note: short name, small age }

@@ -1,0 +1,16 @@
+id: p11-sum-multiples
+title: Sum of multiples
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Stepped accumulate: read n and k, sum the multiples of k from k up to and including n. n < k -> 0.
+cases:
+  - { stdin: "10\n3", note: "3+6+9 = 18 (12 > 10)" }
+  - { stdin: "10\n5", note: "5+10 = 15" }
+  - { stdin: "4\n5",  note: "n < k: no multiples -> 0" }
+  - { stdin: "10\n1", note: "1+2+...+10 = 55" }
+  - { stdin: "12\n4", note: "4+8+12 = 24" }

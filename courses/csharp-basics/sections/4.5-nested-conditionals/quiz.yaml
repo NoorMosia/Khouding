@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 4.5 (an if/else body can contain another if/else; a decision tree; the flatten-vs-nest
+# judgment, flat && when independent, nest when the inner question only matters after the outer;
+# else binds to the nearest if). Assumes 4.1-4.4. switch is 4.6.
+
+section: csharp-basics/4.5-nested-conditionals
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "In this code, what prints for n = 5?  if (n > 0) { if (n > 100) { Console.WriteLine(\"big\"); } else { Console.WriteLine(\"small\"); } } else { Console.WriteLine(\"neg\"); }"
+    options:
+      - { id: a, text: "small" }
+      - { id: b, text: "big" }
+      - { id: c, text: "neg" }
+      - { id: d, text: "nothing" }
+    answer: a
+    rationale: "5 > 0 enters the outer branch; 5 > 100 is false, so the inner else prints small."
+
+  - id: q2
+    type: mcq
+    prompt: "For the same code, what prints for n = -4?"
+    options:
+      - { id: a, text: "neg, the inner check is never reached" }
+      - { id: b, text: "small" }
+      - { id: c, text: "big" }
+      - { id: d, text: "neg then small" }
+    answer: a
+    rationale: "-4 fails n > 0, so control goes straight to the outer else. The inner if is inside the positive branch and never runs."
+
+  - id: q3
+    type: truefalse
+    prompt: "`if (a) { if (b) { X } }` produces the same output as `if (a && b) { X }`."
+    answer: true
+    rationale: "When the only goal is to run X when both are true, the nested form and the flat && are equivalent. Prefer the flat && for readability."
+
+  - id: q4
+    type: mcq
+    prompt: "When is nesting the better shape rather than a flat `&&`?"
+    options:
+      - { id: a, text: "when the inner question only makes sense after the outer is true, or the branches lead to different outputs" }
+      - { id: b, text: "always, nesting is clearer than &&" }
+      - { id: c, text: "never, a flat && can always replace a nest" }
+      - { id: d, text: "only when there are exactly two conditions" }
+    answer: a
+    rationale: "Nest when the inner question depends on the outer being true, or when different branches need different outputs. A flat && only captures a single combined yes."
+
+  - id: q5
+    type: truefalse
+    prompt: "Without braces, an `else` binds to the nearest unmatched `if` above it."
+    answer: true
+    rationale: "C# attaches a brace-less else to the closest if. Braces make the pairing explicit and avoid the surprise."
+
+  - id: q6
+    type: mcq
+    prompt: "Why wrap nested branches in braces even when a branch is a single statement?"
+    options:
+      - { id: a, text: "so an else pairs with the if you intend and the structure you see is what runs" }
+      - { id: b, text: "braces make the program run faster" }
+      - { id: c, text: "C# refuses to compile a brace-less if" }
+      - { id: d, text: "indentation controls which if an else binds to" }
+    answer: a
+    rationale: "Braces make the pairing explicit; indentation does not affect binding. The compiler ignores layout, so braces are how you state structure."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the keyword: nesting means putting one ____ statement inside the body of another."
+    accept: ["if"]
+    rationale: "Nesting places an if inside the body of another if (or else)."

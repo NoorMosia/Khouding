@@ -1,0 +1,12 @@
+id: p01-illegal-digit-start
+title: Fix an illegal name (starts with a digit)
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter does not compile: 2count starts with a digit (CS1001). Rename legally.
+cases:
+  - { stdin: "", note: no-input; rename the illegal identifier so it compiles and prints 10 }

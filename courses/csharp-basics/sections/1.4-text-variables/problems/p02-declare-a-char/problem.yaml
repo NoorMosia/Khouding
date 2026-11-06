@@ -1,0 +1,15 @@
+id: p02-declare-a-char
+title: Declare a char
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Each input is exactly ONE character.
+cases:
+  - { stdin: "A", note: uppercase letter }
+  - { stdin: "z", note: lowercase letter }
+  - { stdin: "7", note: a digit as a char }
+  - { stdin: "?", note: punctuation }

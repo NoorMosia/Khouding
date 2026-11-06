@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>khouding, coding screen (fidelity 2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --font-ui:'Inter',system-ui,sans-serif;
+    --font-serif:'Source Serif 4',Georgia,serif;
+    --font-mono:'JetBrains Mono',monospace;
+    --radius:10px; --radius-sm:6px;
+    --ease:cubic-bezier(.25,.8,.35,1);
+    --t-fast:140ms; --t-med:240ms; --t-slow:300ms;
+  }
+  /* ---------- THEME TOKENS ---------- */
+  [data-theme="dark"]{
+    --bg:#16171d; --surface:#1e2029; --surface-2:#282b36; --editor-bg:#121319;
+    --border:#2c2f3b; --border-soft:#23252f;
+    --text:#e6e6ea; --text-muted:#9a9cab; --text-faint:#595c6b;
+    --accent:#8a8bf0; --accent-fg:#0f0f26; --accent-soft:#242647; --accent-ring:#8a8bf0;
+    --success:#5bc08a; --success-soft:#16301f; --danger:#e08177; --danger-soft:#331d1b;
+    --warn:#d9a441;
+    /* syntax palette is its OWN thing, not the brand accent, tuned for contrast on #121319 */
+    --syn-kw:#9d9bff; --syn-ty:#7fc8e8; --syn-fn:#e4cf8f; --syn-str:#cf9f8a; --syn-num:#86d3b0; --syn-com:#6b6f82;
+    --chip-solved-bg:#16301f; --chip-solved-bd:#2b5438; --chip-solved-fg:#7fd1a0;
+    --chip-try-bg:#332a16; --chip-try-bd:#5a4a24; --chip-try-fg:#d9b45f;
+    --shadow:0 10px 40px rgba(0,0,0,.45);
+  }
+  [data-theme="light"]{
+    --bg:#f9f9fb; --surface:#f0f0f4; --surface-2:#e6e6ee; --editor-bg:#fbfbfd;
+    --border:#e2e2ea; --border-soft:#ececf2;
+    --text:#1d1e26; --text-muted:#696b7a; --text-faint:#a8aab8;
+    --accent:#4f4fc4; --accent-fg:#ffffff; --accent-soft:#e2e2f4; --accent-ring:#4f4fc4;
+    --success:#2f9e63; --success-soft:#e0f0e6; --danger:#c0564a; --danger-soft:#f7e2df;
+    --warn:#b57f1e;
+    --syn-kw:#5a4fd0; --syn-ty:#1f6f99; --syn-fn:#8a6d1e; --syn-str:#a6476b; --syn-num:#1f7d7d; --syn-com:#9ca0ad;
+    --chip-solved-bg:#e0f0e6; --chip-solved-bd:#b6dcc5; --chip-solved-fg:#2f7d57;
+    --chip-try-bg:#f2e8cf; --chip-try-bd:#ddcca0; --chip-try-fg:#9a7d2e;
+    --shadow:0 10px 40px rgba(60,60,90,.18);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:var(--font-ui); background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased; padding:22px;
+    transition:background var(--t-slow) var(--ease), color var(--t-slow) var(--ease);
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important;} }
+
+  .frame{max-width:1200px;margin:0 auto;background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transition:background var(--t-slow) var(--ease),border-color var(--t-slow) var(--ease);}
+
+  /* ---------- top nav ---------- */
+  .nav{height:50px;display:flex;align-items:center;gap:18px;padding:0 16px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .logo{font-family:var(--font-mono);font-weight:600;font-size:16px;display:inline-flex;align-items:center;letter-spacing:-.01em;}
+  .logo .cur{display:inline-block;width:2px;height:15px;background:var(--accent);margin:0 1px;position:relative;top:2px;}
+  .logo .cur::before,.logo .cur::after{content:'';position:absolute;left:-3px;width:8px;height:2px;background:var(--accent);}
+  .logo .cur::before{top:0;}.logo .cur::after{bottom:0;}
+  .crumb{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+  .crumb .sep{opacity:.5;}
+  .nav .right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+  .toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px;}
+  .toggle button{font-family:var(--font-ui);font-size:11.5px;border:none;background:transparent;color:var(--text-muted);padding:4px 11px;border-radius:16px;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .toggle button.sel{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+  .avatar{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:700;}
+
+  /* ---------- workbench ---------- */
+  /* open: full panel, no strip. collapsed: only the thin strip shows. */
+  .wb{display:grid;grid-template-columns:0 316px 1fr;height:620px;transition:grid-template-columns var(--t-med) var(--ease);}
+  .wb.collapsed{grid-template-columns:44px 0 1fr;}
+  .col{display:flex;flex-direction:column;min-height:0;}
+
+  /* the thin strip, only exists when collapsed */
+  .strip{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:14px;padding:12px 0;overflow:hidden;opacity:0;transition:opacity var(--t-fast) var(--ease);}
+  .wb.collapsed .strip{opacity:1;}
+  .strip .sbtn{width:28px;height:28px;border-radius:7px;border:1px solid transparent;background:transparent;color:var(--text-muted);display:grid;place-items:center;cursor:pointer;font-size:12px;transition:all var(--t-fast) var(--ease);}
+  .strip .sbtn:hover{color:var(--accent);background:var(--bg);}
+  .strip .sbtn.active{color:var(--accent);background:var(--accent-soft);}
+
+  /* problem panel */
+  .problem{border-right:1px solid var(--border);background:var(--bg);overflow:auto;transition:opacity var(--t-fast) var(--ease);}
+  .wb.collapsed .problem{opacity:0;pointer-events:none;}
+  .ph-head{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-bottom:1px solid var(--border-soft);}
+  .tag{font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted);letter-spacing:.05em;text-transform:uppercase;}
+  .icon-btn{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);display:grid;place-items:center;cursor:pointer;font-size:11px;transition:all var(--t-fast) var(--ease);}
+  .icon-btn:hover{color:var(--text);border-color:var(--accent);}
+
+  /* rail */
+  .rail{padding:12px 15px;border-bottom:1px solid var(--border-soft);background:var(--surface);}
+  .rail-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .rail-top .lbl{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
+  .rail-top .step{display:flex;gap:6px;}
+  .arr{width:26px;height:24px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);display:grid;place-items:center;font-size:10px;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .arr:hover{border-color:var(--accent);color:var(--accent);}
+  .chips{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;}
+  .chip{height:24px;border-radius:6px;display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .chip:hover{border-color:var(--accent);color:var(--text);}
+  .chip.solved{background:var(--chip-solved-bg);border-color:var(--chip-solved-bd);color:var(--chip-solved-fg);}
+  .chip.attempted{background:var(--chip-try-bg);border-color:var(--chip-try-bd);color:var(--chip-try-fg);}
+  .chip.current{box-shadow:0 0 0 2px var(--accent-ring);color:var(--text);font-weight:700;border-color:transparent;}
+  .rail-legend{display:flex;gap:13px;margin-top:10px;font-family:var(--font-mono);font-size:9.5px;color:var(--text-faint);}
+  .rail-legend span{display:flex;align-items:center;gap:5px;}
+  .sw{width:9px;height:9px;border-radius:3px;border:1px solid var(--border);}
+  .sw.s{background:var(--chip-solved-bg);border-color:var(--chip-solved-bd);} .sw.a{background:var(--chip-try-bg);border-color:var(--chip-try-bd);} .sw.u{background:var(--bg);}
+
+  .pbody{padding:16px 15px;}
+  .pbody h2{font-family:var(--font-serif);font-size:19px;font-weight:600;letter-spacing:-.01em;margin-bottom:10px;}
+  .pbody p{font-size:13px;line-height:1.62;color:var(--text);margin-bottom:12px;}
+  .io{background:var(--surface);border:1px solid var(--border-soft);border-radius:8px;padding:10px 12px;font-family:var(--font-mono);font-size:11.5px;color:var(--text);line-height:1.7;margin-bottom:12px;}
+  .io .k{color:var(--text-muted);display:inline-block;width:30px;}
+  .diff{font-size:12px;color:var(--text-muted);margin-bottom:16px;}
+  .diff b{color:var(--accent);}
+  .pmeta{border-top:1px solid var(--border-soft);padding-top:14px;display:flex;flex-direction:column;gap:12px;}
+  .solved{font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:9px;}
+  .bar{height:6px;flex:1;background:var(--surface-2);border-radius:3px;overflow:hidden;}
+  .bar>span{display:block;height:100%;width:53%;background:var(--accent);border-radius:3px;transition:width var(--t-slow) var(--ease);}
+  .help-slot{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);border:1px dashed var(--border);border-radius:8px;padding:9px;text-align:center;}
+
+  /* editor */
+  .editor-col{min-width:0;background:var(--editor-bg);}
+  .tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:12.5px;}
+  .tab{padding:10px 16px;color:var(--text-muted);border-right:1px solid var(--border-soft);display:flex;gap:8px;align-items:center;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .tab:hover{color:var(--text);}
+  .tab.active{background:var(--editor-bg);color:var(--text);box-shadow:inset 0 -2px 0 var(--accent);}
+  .tab .ro{font-family:var(--font-ui);font-size:9px;background:var(--surface-2);color:var(--text-muted);padding:1px 5px;border-radius:3px;}
+  .gutter-note{margin-left:auto;padding:0 14px;display:flex;align-items:center;font-family:var(--font-mono);font-size:10px;color:var(--text-faint);}
+
+  .code{flex:1;background:var(--editor-bg);padding:12px 0;font-family:var(--font-mono);font-size:13px;line-height:1.75;overflow:auto;min-height:0;}
+
+  /* rendered-markdown cheatsheet reference (NOT a code view) */
+  .cheatview{flex:1;background:var(--editor-bg);padding:22px 26px;overflow:auto;min-height:0;max-width:720px;}
+  .cheatview h1{font-family:var(--font-serif);font-size:20px;font-weight:600;margin-bottom:4px;}
+  .cheatview .lead{color:var(--text-muted);font-size:12.5px;margin-bottom:18px;}
+  .cheatview h2{font-family:var(--font-serif);font-size:15px;font-weight:600;margin:20px 0 8px;color:var(--text);}
+  .cheatview p{font-size:13.5px;line-height:1.6;color:var(--text);margin-bottom:10px;}
+  .cheatview code{font-family:var(--font-mono);font-size:12.5px;background:var(--surface-2);color:var(--accent);padding:1px 6px;border-radius:4px;}
+  .cheatview pre{background:var(--surface);border:1px solid var(--border-soft);border-radius:8px;padding:12px 14px;overflow:auto;margin:10px 0;}
+  .cheatview pre code{background:none;color:var(--text);padding:0;font-size:12.5px;line-height:1.7;display:block;white-space:pre;}
+  .cheatview pre .kw{color:var(--syn-kw);} .cheatview pre .ty{color:var(--syn-ty);} .cheatview pre .num{color:var(--syn-num);} .cheatview pre .com{color:var(--syn-com);font-style:italic;}
+  .cheatview .callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;line-height:1.55;margin:12px 0;}
+  .cheatview table{border-collapse:collapse;margin:10px 0;font-size:13px;width:100%;max-width:420px;}
+  .cheatview th,.cheatview td{border:1px solid var(--border);padding:7px 11px;text-align:left;}
+  .cheatview th{background:var(--surface);font-weight:600;color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+  .cheatview td code{background:none;padding:0;}
+  .cl{display:flex;padding:0 4px;}
+  .cl:hover{background:var(--surface);}
+  .ln{width:42px;text-align:right;padding-right:16px;color:var(--text-faint);user-select:none;flex-shrink:0;}
+  .ct{white-space:pre;color:var(--text);}
+  .kw{color:var(--syn-kw);} .ty{color:var(--syn-ty);} .fn{color:var(--syn-fn);} .str{color:var(--syn-str);} .num{color:var(--syn-num);} .com{color:var(--syn-com);font-style:italic;}
+  .caret{display:inline-block;width:2px;height:15px;background:var(--accent);vertical-align:-3px;animation:bl 1.1s steps(1) infinite;}
+  @keyframes bl{50%{opacity:0;}}
+
+  .toolbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border-top:1px solid var(--border);}
+  .btn{font-family:var(--font-ui);font-size:13px;font-weight:600;padding:8px 18px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:transform var(--t-fast) var(--ease),background var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease);}
+  .btn:hover{border-color:var(--accent);}
+  .btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);}
+  .btn.primary:hover{filter:brightness(1.07);}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .tstat{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:7px;}
+  .savedot{width:6px;height:6px;border-radius:50%;background:var(--success);}
+
+  /* output */
+  .output{border-top:1px solid var(--border);background:var(--surface);height:168px;display:flex;flex-direction:column;transition:height var(--t-med) var(--ease);}
+  .output.expanded{height:380px;}
+  .out-head{display:flex;align-items:center;gap:9px;padding:8px 14px;border-bottom:1px solid var(--border-soft);}
+  .out-title{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);}
+  .out-actions{margin-left:auto;display:flex;gap:12px;font-family:var(--font-mono);font-size:11px;}
+  .out-actions a{color:var(--text-faint);cursor:pointer;transition:color var(--t-fast) var(--ease);}
+  .out-actions a:hover{color:var(--accent);}
+  .out-body{flex:1;padding:12px 14px;font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow:auto;color:var(--text);}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--text-faint);}
+  .dot.ok{background:var(--success);} .dot.bad{background:var(--danger);}
+  .spinner{width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .75s linear infinite;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+  .verdict{display:flex;align-items:center;gap:9px;font-family:var(--font-ui);font-weight:700;font-size:13.5px;margin-bottom:10px;}
+  .verdict.pass{color:var(--success);} .verdict.fail{color:var(--danger);}
+  .fade-in{animation:fade var(--t-med) var(--ease);}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+  .case{background:var(--editor-bg);border:1px solid var(--border-soft);border-radius:8px;padding:10px 12px;margin-top:4px;}
+  .case .r{display:flex;gap:12px;padding:2px 0;}
+  .case .lbl{color:var(--text-muted);width:92px;}
+  .case .exp{color:var(--success);} .case .act{color:var(--danger);}
+  .muted{color:var(--text-muted);} .faint{color:var(--text-faint);}
+  .rollup{margin-top:8px;color:var(--text-muted);font-family:var(--font-ui);font-size:12.5px;}
+  .rollup b{color:var(--accent);}
+
+  .hint{max-width:1200px;margin:16px auto 0;font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint);text-align:center;}
+  .hint b{color:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="frame">
+    <!-- NAV -->
+    <div class="nav">
+      <span class="logo">khoud<span class="cur"></span>ng</span>
+      <span class="crumb">C# Basics <span class="sep">/</span> 1.3 Number variables <span class="sep">/</span> p05 sum-two-ints</span>
+      <div class="right">
+        <div class="toggle"><button id="td" class="sel">Dark</button><button id="tl">Light</button></div>
+        <div class="avatar">N</div>
+      </div>
+    </div>
+
+    <!-- WORKBENCH -->
+    <div class="wb" id="wb">
+      <!-- persistent thin strip -->
+      <div class="strip">
+        <button class="sbtn" id="stripToggle" title="show problem">&#9776;</button>
+      </div>
+      <!-- problem -->
+      <div class="col problem">
+        <div class="ph-head"><span class="tag">Problem</span><button class="icon-btn" id="collapse" title="collapse">&#9664;</button></div>
+        <div class="rail">
+          <div class="rail-top">
+            <span class="lbl" id="railLbl">5 of 15</span>
+            <span class="step"><button class="arr" id="prev">&#9664;</button><button class="arr" id="next">&#9654;</button></span>
+          </div>
+          <div class="chips" id="chips"></div>
+          <div class="rail-legend">
+            <span><span class="sw s"></span>solved</span><span><span class="sw a"></span>tried</span><span><span class="sw u"></span>not yet</span>
+          </div>
+        </div>
+        <div class="pbody">
+          <h2 id="pTitle">Sum two ints</h2>
+          <p id="pDesc">Two baskets of apples are being combined. Read two whole numbers (the count in each basket), store each in its own variable, and print the total number of apples.</p>
+          <div class="io">
+            <div><span class="k">in</span> two lines, each a whole number</div>
+            <div><span class="k">out</span> a single line: their sum</div>
+          </div>
+          <div class="diff">Difficulty <b>&#9679;&#9679;</b></div>
+          <div class="pmeta">
+            <div class="solved"><span>Section 1.3</span><span class="bar"><span></span></span><span>8/15</span></div>
+            <div class="help-slot">ask for help</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- editor -->
+      <div class="col editor-col">
+        <div class="tabs">
+          <div class="tab active" data-tab="starter">starter.cs</div>
+          <div class="tab" data-tab="cheat">cheatsheet.md <span class="ro">reference</span></div>
+          <div class="gutter-note" id="gutterNote">no autocomplete &middot; syntax highlight only</div>
+        </div>
+        <div class="code" id="code"></div>
+        <!-- rendered markdown reference (shown when cheatsheet.md tab active) -->
+        <div class="cheatview" id="cheatview" hidden></div>
+        <div class="toolbar" id="toolbar">
+          <button class="btn" id="runBtn">Run</button>
+          <button class="btn primary" id="submitBtn">Submit</button>
+          <span class="tstat"><span class="savedot"></span>saved &middot; csharp</span>
+        </div>
+        <div class="output" id="output">
+          <div class="out-head"><span class="dot" id="outDot"></span><span class="out-title" id="outTitle">Output</span>
+            <div class="out-actions"><a id="clearBtn">clear</a><a id="expandBtn">&#8599; expand</a></div>
+          </div>
+          <div class="out-body" id="outBody"><span class="faint">Run to see output. Submit to grade against the hidden tests.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hint">interactive: toggle <b>Dark / Light</b> &middot; click <b>Run</b> and <b>Submit</b> &middot; <b>expand</b> the output &middot; step the rail with arrows or click a problem &middot; collapse the panel</div>
+
+<script>
+  const $ = s => document.querySelector(s);
+
+  // ---- theme toggle ----
+  $('#td').onclick = ()=>{document.documentElement.dataset.theme='dark';$('#td').classList.add('sel');$('#tl').classList.remove('sel');};
+  $('#tl').onclick = ()=>{document.documentElement.dataset.theme='light';$('#tl').classList.add('sel');$('#td').classList.remove('sel');};
+
+  // ---- problems (starter + cheatsheet, real 1.3 content) ----
+  const starter = [
+    [['kw','using '],['ty','System'],['','; ']],
+    [['','']],
+    [['kw','class '],['ty','Program']],
+    [['','{']],
+    [['','    '],['kw','static void '],['fn','Main'],['','()']],
+    [['','    {']],
+    [['','        '],['com','// read two numbers, print the total']],
+    [['','        '],['ty','int'],['',' a = '],['ty','int'],['','.'],['fn','Parse'],['','('],['ty','Console'],['','.'],['fn','ReadLine'],['','());']],
+    [['','        '],['ty','int'],['',' b = '],['ty','int'],['','.'],['fn','Parse'],['','('],['ty','Console'],['','.'],['fn','ReadLine'],['','());'],['caret','']],
+    [['','    }']],
+    [['','}']],
+  ];
+  // cheatsheet.md, rendered markdown reference (rich: headings, callout, table, code blocks)
+  const cheatHTML = `
+    <h1>Number variables</h1>
+    <div class="lead">1.3 · this section only. Forgotten older syntax? Look it up, be resourceful. That's part of the craft.</div>
+
+    <h2>Declare and initialise</h2>
+    <pre><code><span class="ty">int</span>    age   = <span class="num">19</span>;      <span class="com">// whole number</span>
+<span class="ty">double</span> price = <span class="num">4.99</span>;    <span class="com">// can be fractional</span></code></pre>
+    <div class="callout"><code>=</code> means <b>"put this value into the variable"</b>. Read it <b>"age gets 19"</b>, not "age equals 19".</div>
+
+    <h2>Choosing the type</h2>
+    <table>
+      <tr><th>value</th><th>type</th></tr>
+      <tr><td>a count of things</td><td><code>int</code> (never 3.5 students)</td></tr>
+      <tr><td>money / measures</td><td><code>double</code> (4.99, 1.72)</td></tr>
+    </table>
+
+    <h2>Reassign</h2>
+    <pre><code><span class="ty">int</span> score = <span class="num">10</span>;
+score = <span class="num">25</span>;   <span class="com">// now 25; the 10 is gone</span></code></pre>
+
+    <h2>Gotcha: int / int drops the fraction</h2>
+    <pre><code><span class="num">7</span> / <span class="num">2</span>      <span class="com">// -> 3   (both int)</span>
+<span class="num">7.0</span> / <span class="num">2</span>    <span class="com">// -> 3.5 (one side double)</span></code></pre>
+  `;
+
+  function renderCode(lines, readonly){
+    const el = $('#code'); el.innerHTML='';
+    lines.forEach((segs,i)=>{
+      const row=document.createElement('div'); row.className='cl';
+      const ln=document.createElement('span'); ln.className='ln'; ln.textContent=i+1;
+      const ct=document.createElement('span'); ct.className='ct';
+      segs.forEach(([cls,txt])=>{
+        if(cls==='caret' && !readonly){const c=document.createElement('span');c.className='caret';ct.appendChild(c);return;}
+        const s=document.createElement('span'); if(cls && cls!=='caret') s.className=cls; s.textContent=txt; ct.appendChild(s);
+      });
+      row.appendChild(ln); row.appendChild(ct); el.appendChild(row);
+    });
+  }
+  renderCode(starter,false);
+  $('#cheatview').innerHTML = cheatHTML;
+
+  // ---- tabs: starter = code editor; cheatsheet.md = rendered reference ----
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active');
+    const isCheat = t.dataset.tab==='cheat';
+    $('#code').hidden = isCheat;
+    $('#cheatview').hidden = !isCheat;
+    // Run/Submit are meaningless on the reference doc; hide the toolbar there
+    $('#toolbar').style.display = isCheat ? 'none' : '';
+    $('#gutterNote').textContent = isCheat ? 'rendered reference · read only' : 'no autocomplete · syntax highlight only';
+  });
+
+  // ---- rail ----
+  const states = ['solved','solved','solved','solved','current','attempted','','','','','','','','',''];
+  let cur = 4;
+  function drawChips(){
+    const c=$('#chips'); c.innerHTML='';
+    states.forEach((st,i)=>{
+      const b=document.createElement('div'); b.className='chip '+(i===cur?'current':st);
+      b.textContent=i+1; b.onclick=()=>{cur=i;syncCur();};
+      c.appendChild(b);
+    });
+    $('#railLbl').textContent=(cur+1)+' of 15';
+  }
+  function syncCur(){ states.forEach((s,i)=>{}); drawChips(); }
+  $('#prev').onclick=()=>{if(cur>0){cur--;drawChips();}};
+  $('#next').onclick=()=>{if(cur<14){cur++;drawChips();}};
+  drawChips();
+
+  // ---- collapse: header arrow collapses; strip hamburger expands ----
+  $('#collapse').onclick=()=>$('#wb').classList.add('collapsed');
+  $('#stripToggle').onclick=()=>$('#wb').classList.remove('collapsed');
+
+  // ---- output: expand ----
+  $('#expandBtn').onclick=()=>{
+    const o=$('#output'); o.classList.toggle('expanded');
+    $('#expandBtn').innerHTML = o.classList.contains('expanded')?'&#8601; collapse':'&#8599; expand';
+  };
+  $('#clearBtn').onclick=()=>{ setIdle(); };
+  function setIdle(){ $('#outDot').className='dot'; $('#outTitle').textContent='Output'; $('#outBody').innerHTML='<span class="faint">Run to see output. Submit to grade against the hidden tests.</span>'; }
+
+  // ---- run / submit (async feel) ----
+  function running(label){
+    $('#outDot').outerHTML='<span class="spinner" id="outDot"></span>';
+    $('#outTitle').textContent=label;
+    $('#outBody').innerHTML='<div class="muted">compiling...</div>';
+  }
+  function resetDot(){ const s=$('#outDot'); if(s && s.classList.contains('spinner')){ s.outerHTML='<span class="dot" id="outDot"></span>'; } }
+
+  $('#runBtn').onclick=()=>{
+    busy(true); running('Running');
+    setTimeout(()=>{ $('#outBody').innerHTML='<div class="muted">program output</div>'; },500);
+    setTimeout(()=>{
+      resetDot(); $('#outDot').className='dot ok'; $('#outTitle').textContent='Output';
+      $('#outBody').innerHTML='<div class="fade-in"><div class="muted">$ input 3, 4</div><div>7</div></div>';
+      busy(false);
+    },1100);
+  };
+
+  $('#submitBtn').onclick=()=>{
+    busy(true); running('Submitting');
+    let n=1; const tick=setInterval(()=>{ n++; if($('#outBody')) $('#outBody').innerHTML='<div class="muted">running test '+n+' of 5</div>'; if(n>=5) clearInterval(tick); },260);
+    // alternate pass/fail each submit so you can see both
+    window._pass = !window._pass;
+    setTimeout(()=>{
+      clearInterval(tick); resetDot(); busy(false);
+      if(window._pass){
+        $('#outDot').className='dot ok'; $('#outTitle').textContent='Result';
+        $('#outBody').innerHTML='<div class="fade-in"><div class="verdict pass">&#10003; Passed 5 of 5 tests</div><div class="rollup">Section 1.3 is now <b>9 of 15</b> solved.</div></div>';
+        // light the current chip green + bump the bar
+        states[cur]='solved'; drawChips(); $('.bar>span')&&($('.bar>span').style.width='60%');
+        const b=document.querySelector('.bar>span'); if(b) b.style.width='60%';
+      } else {
+        $('#outDot').className='dot bad'; $('#outTitle').textContent='Result';
+        $('#outBody').innerHTML='<div class="fade-in"><div class="verdict fail">&#10007; Failed on case 4 of 5</div>'+
+          '<div class="case"><div class="r"><span class="lbl">input</span><span>-5, 2</span></div>'+
+          '<div class="r"><span class="lbl">expected</span><span class="exp">-3</span></div>'+
+          '<div class="r"><span class="lbl">your output</span><span class="act">7</span></div></div>'+
+          '<div class="rollup muted" style="margin-top:10px">The failing case is the signal. Looks like it breaks on negatives.</div></div>';
+        if(states[cur]!=='solved'){states[cur]='attempted';drawChips();}
+      }
+    },1500);
+  };
+
+  function busy(on){ $('#runBtn').disabled=on; $('#submitBtn').disabled=on; }
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+id: p08-next-years-age
+title: Next year's age
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Read an age (int), print age + 1.
+cases:
+  - { stdin: "17", note: typical }
+  - { stdin: "0",  note: newborn }
+  - { stdin: "64", note: older }
+  - { stdin: "99", note: large }

@@ -1,0 +1,15 @@
+id: p17-sum-grid
+title: Sum a grid
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# E (7.5): nested sum over every cell. Vary both dims incl. 1xk and kx1; negatives.
+cases:
+  - { stdin: "2\n3\n1\n2\n3\n4\n5\n6", note: "2x3 sum 21" }
+  - { stdin: "1\n4\n10\n20\n30\n40", note: "1x4 sum 100" }
+  - { stdin: "3\n1\n5\n6\n7", note: "3x1 sum 18" }
+  - { stdin: "2\n2\n-1\n2\n-3\n4", note: "2x2 negatives sum 2" }

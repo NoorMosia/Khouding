@@ -1,0 +1,81 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 1.2 only (Write/WriteLine, blank lines, escapes \n \t \" \\, and comments,
+# which were introduced in this section's reading). Assumes 1.1.
+
+section: csharp-basics/1.2-output-with-writeline
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "Which one moves to a new line after printing?"
+    options:
+      - { id: a, text: "Console.Write" }
+      - { id: b, text: "Console.WriteLine" }
+      - { id: c, text: "both do" }
+      - { id: d, text: "neither does" }
+    answer: b
+    rationale: "WriteLine prints then moves to a new line. Write stays on the same line."
+
+  - id: q2
+    type: truefalse
+    prompt: "`Console.Write(\"Hi\");` adds a newline after the text."
+    answer: false
+    rationale: "Write does not add a newline. Only WriteLine does."
+
+  - id: q3
+    type: mcq
+    prompt: |
+      How many lines does this print?
+        Console.WriteLine("a\nb");
+    options:
+      - { id: a, text: "one line: a\\nb" }
+      - { id: b, text: "two lines: a then b" }
+      - { id: c, text: "three lines" }
+      - { id: d, text: "it does not compile" }
+    answer: b
+    rationale: "\\n inside the string is a newline, so you get two lines. WriteLine then adds one more newline at the end."
+
+  - id: q4
+    type: fillblank
+    prompt: "To print a double-quote character inside a string, you write the two characters: ____"
+    accept: ["\\\"", "backslash quote", "\\ and \""]
+    rationale: "\\\" is the escape for a literal double quote. A plain \" would end the string."
+
+  - id: q5
+    type: mcq
+    prompt: |
+      What does this print?
+        Console.WriteLine("C:\\Temp");
+    options:
+      - { id: a, text: "C:\\\\Temp" }
+      - { id: b, text: "C:\\Temp" }
+      - { id: c, text: "C:Temp" }
+      - { id: d, text: "it does not compile" }
+    answer: b
+    rationale: "\\\\ is the escape for one backslash, so it prints C:\\Temp."
+
+  - id: q6
+    type: mcq
+    prompt: "Which is a LINE comment (ignored to the end of the line)?"
+    options:
+      - { id: a, text: "// note" }
+      - { id: b, text: "/* note */" }
+      - { id: c, text: "# note" }
+      - { id: d, text: "<!-- note -->" }
+    answer: a
+    rationale: "// starts a line comment. /* */ is a block comment. # and <!-- --> are not C# comments."
+
+  - id: q7
+    type: truefalse
+    prompt: "Adding a comment to a program changes what it prints."
+    answer: false
+    rationale: "Comments are ignored by the compiler. They are notes for humans and do not affect output."

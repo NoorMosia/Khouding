@@ -1,0 +1,16 @@
+id: p02-search-target
+title: Search for a target
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# break + flag: read count n, then a target, then n values. Print "found" if the target appears, else "not
+# found". break on the first match. Cases: found first, found late, not found.
+cases:
+  - { stdin: "4\n7\n2\n7\n9\n1", note: "target 7 appears (found)" }
+  - { stdin: "3\n5\n5\n1\n2",    note: "target 5 is the first value (found first pass)" }
+  - { stdin: "3\n8\n1\n2\n3",    note: "target 8 absent -> not found" }
+  - { stdin: "1\n4\n4",          note: "single value equals target -> found" }

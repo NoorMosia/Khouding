@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>wireframes, surrounding pages (fidelity 1)</title>
+<style>
+  :root{
+    --ink:#2b2d31;--line:#c9ccd2;--line-2:#dde0e5;--box:#eef0f3;--box-2:#e4e7ec;
+    --paper:#f7f8fa;--muted:#7a7e86;--faint:#a7abb3;--accent:#6d6f76;
+    --mono:ui-monospace,'Cascadia Code',monospace;--ui:system-ui,sans-serif;--serif:Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--ui);background:#d8dadf;color:var(--ink);padding:30px 26px 120px;}
+  .head{max-width:980px;margin:0 auto 10px;}
+  .head h1{font-size:20px;}
+  .head p{color:#55585f;font-size:14px;line-height:1.6;max-width:760px;margin-top:6px;}
+  .caption{max-width:980px;margin:30px auto 8px;font-family:var(--mono);font-size:12px;color:#44474d;}
+  .caption b{color:#000;}
+
+  .app{max-width:980px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .topnav{height:46px;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid var(--line);background:var(--box);}
+  .logo{font-family:var(--mono);font-weight:700;font-size:15px;}
+  .links{display:flex;gap:16px;font-size:13px;color:var(--muted);}
+  .links a.active{color:var(--ink);font-weight:600;}
+  .topnav .right{margin-left:auto;display:flex;gap:10px;align-items:center;}
+  .ph{background:var(--box-2);border:1px dashed var(--line);border-radius:5px;}
+  .avatar{width:28px;height:28px;border-radius:50%;}
+  .tgl{display:flex;background:var(--box);border:1px solid var(--line);border-radius:18px;padding:3px;}
+  .tgl span{font-size:11px;color:var(--muted);padding:3px 10px;border-radius:14px;}
+  .tgl span.sel{background:var(--paper);color:var(--ink);font-weight:600;}
+  .btn{font-family:var(--ui);font-size:13px;font-weight:600;padding:8px 18px;border-radius:7px;border:1px solid var(--line);background:var(--box-2);color:var(--ink);cursor:pointer;}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn.sm{padding:6px 13px;font-size:12px;}
+
+  /* LANDING */
+  .hero{padding:60px 50px 46px;}
+  .hero .slogan{font-family:var(--serif);font-size:44px;line-height:1.08;max-width:13ch;}
+  .hero .sub{margin-top:18px;font-size:16px;line-height:1.6;color:var(--muted);max-width:48ch;}
+  .hero .cta{margin-top:26px;display:flex;gap:12px;}
+  .hero .meta{margin-top:30px;font-family:var(--mono);font-size:12px;color:var(--faint);}
+  .thesis{display:flex;gap:16px;padding:28px 50px 44px;border-top:1px solid var(--line-2);}
+  .tcard{flex:1;border:1px solid var(--line-2);border-radius:9px;padding:16px;background:var(--box);}
+  .tcard h4{font-size:14px;margin-bottom:6px;}
+  .tcard p{font-size:12.5px;color:var(--muted);line-height:1.55;}
+
+  /* CATALOG */
+  .page{padding:26px 30px 32px;}
+  .page .eyebrow{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .page h2{font-family:var(--serif);font-size:24px;margin:5px 0 4px;}
+  .page .lead{color:var(--muted);font-size:13.5px;margin-bottom:22px;}
+  .ccard{border:1px solid var(--line-2);border-radius:10px;padding:20px;margin-bottom:14px;background:var(--paper);display:flex;gap:18px;align-items:center;}
+  .ccard .thumb{width:70px;height:70px;border-radius:9px;background:var(--box-2);border:1px dashed var(--line);flex-shrink:0;display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .ccard .body{flex:1;}
+  .ccard .ctop{display:flex;align-items:center;gap:10px;}
+  .ccard h3{font-size:16px;}
+  .lang{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:5px;background:var(--box-2);color:var(--muted);}
+  .ccard p{color:var(--muted);font-size:13px;line-height:1.5;margin:7px 0 12px;max-width:52ch;}
+  .meter{height:6px;width:200px;background:var(--box-2);border-radius:4px;overflow:hidden;display:inline-block;vertical-align:middle;}
+  .meter>span{display:block;height:100%;background:#8a8d94;}
+  .ccard .mrow{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+  .ccard.locked{opacity:.6;}
+
+  /* COURSE HOME SHELL */
+  .chero{padding:26px 30px;display:flex;gap:20px;align-items:center;border-bottom:1px solid var(--line-2);}
+  .chero .thumb{width:84px;height:84px;border-radius:12px;background:var(--box-2);border:1px dashed var(--line);display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .chero .meta{flex:1;}
+  .chero h2{font-family:var(--serif);font-size:26px;margin:4px 0 8px;}
+  .chero .headline{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:12px;}
+  .viewtoggle{display:flex;background:var(--box);border:1px solid var(--line);border-radius:8px;padding:3px;}
+  .viewtoggle span{font-size:12.5px;color:var(--muted);padding:6px 14px;border-radius:6px;}
+  .viewtoggle span.sel{background:var(--paper);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+  .shell-body{padding:22px 30px;min-height:160px;display:grid;place-items:center;color:var(--faint);font-family:var(--mono);font-size:12px;border:1px dashed var(--line-2);margin:18px 30px 30px;border-radius:9px;}
+
+  /* PROFILE */
+  .pwrap{display:grid;grid-template-columns:260px 1fr;gap:0;}
+  .pside{border-right:1px solid var(--line-2);padding:26px 24px;}
+  .pside .bigav{width:76px;height:76px;border-radius:50%;background:var(--box-2);border:1px dashed var(--line);margin-bottom:14px;display:grid;place-items:center;font-family:var(--mono);color:var(--faint);}
+  .pside h3{font-size:17px;}
+  .pside .handle{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:2px;}
+  .pside .nav{margin-top:20px;display:flex;flex-direction:column;gap:4px;}
+  .pside .nav a{font-size:13.5px;color:var(--muted);padding:8px 10px;border-radius:7px;}
+  .pside .nav a.active{background:var(--box);color:var(--ink);font-weight:600;}
+  .pmain{padding:26px 28px;}
+  .pmain h2{font-family:var(--serif);font-size:20px;margin-bottom:16px;}
+  .field{margin-bottom:16px;}
+  .field label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;}
+  .field .inp{border:1px solid var(--line);border-radius:7px;padding:9px 12px;font-size:14px;background:var(--paper);color:var(--ink);max-width:340px;}
+  .loginrow{display:flex;align-items:center;gap:12px;border:1px solid var(--line-2);border-radius:8px;padding:11px 14px;margin-bottom:9px;max-width:420px;}
+  .loginrow .ic{width:26px;height:26px;border-radius:6px;background:var(--box-2);border:1px dashed var(--line);}
+  .loginrow .l{flex:1;font-size:13.5px;}
+  .loginrow .st{font-family:var(--mono);font-size:11px;color:var(--muted);}
+  .reserved{border:1px dashed var(--line);border-radius:9px;padding:16px;background:var(--box);color:var(--faint);font-family:var(--mono);font-size:11.5px;text-align:center;margin-top:10px;max-width:420px;}
+</style>
+</head>
+<body>
+  <div class="head">
+    <h1>Surrounding pages, fidelity 1 wireframes</h1>
+    <p>The four pages around the core screens: landing, catalog, course-home shell (wraps the Contents/Map we built), profile. Lower-risk; here as a set to react to the structure.</p>
+  </div>
+
+  <!-- 1. LANDING -->
+  <div class="caption"><b>1. Landing</b> (public / logged-out, the thesis + sign-up). Visible theme toggle, no scroll-tell, real copy.</div>
+  <div class="app">
+    <div class="topnav">
+      <span class="logo">k&#9612;ng</span>
+      <div class="right"><div class="tgl"><span class="sel">Dark</span><span>Light</span></div><button class="btn sm">Log in</button></div>
+    </div>
+    <div class="hero">
+      <div class="slogan">Learn to code like it's 2016.</div>
+      <p class="sub">University-standard courses with a built-in editor that grades your work the way a professor would. No AI writing it for you. You actually learn the craft.</p>
+      <div class="cta"><button class="btn primary">Start C# Basics</button><button class="btn">Browse courses</button></div>
+    </div>
+    <div class="thesis">
+      <div class="tcard"><h4>A real standard</h4><p>Textbook-depth content, not video skimming. Finish a course and you actually know it.</p></div>
+      <div class="tcard"><h4>It grades your code</h4><p>Hidden tests run your work like a judge. The map only fills if you can really do it.</p></div>
+      <div class="tcard"><h4>Your pace</h4><p>Self-paced, nothing locked. Jump around, come back, pick up where you left off.</p></div>
+    </div>
+  </div>
+
+  <!-- 2. CATALOG -->
+  <div class="caption"><b>2. Course catalog / My courses</b> (app home base)</div>
+  <div class="app">
+    <div class="topnav">
+      <span class="logo">k&#9612;ng</span>
+      <div class="right"><div class="tgl"><span class="sel">Dark</span><span>Light</span></div><span class="ph avatar" title="menu"></span></div>
+    </div>
+    <div class="page">
+      <div class="eyebrow">My courses</div>
+      <h2>Keep going</h2>
+      <div class="lead">Self-paced. Nothing locked. Pick up where you left off.</div>
+      <div class="ccard">
+        <div class="body">
+          <div class="ctop"><h3>C# Basics</h3><span class="lang">C#</span></div>
+          <p>Variables, control flow, methods. Built from the logic of the language, drilled with lots of practice.</p>
+          <div class="mrow"><span class="meter"><span style="width:22%"></span></span><span>22% &middot; Chapter 1</span><button class="btn sm primary">Continue</button></div>
+        </div>
+      </div>
+      <div class="ccard locked">
+        <div class="body">
+          <div class="ctop"><h3>Java Basics</h3><span class="lang">soon</span></div>
+          <p>The same spine, in Java. Finishing C# tells you exactly how this will feel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. COURSE HOME SHELL -->
+  <div class="caption"><b>3. Course home shell</b> (the frame around the Contents/Map views we built)</div>
+  <div class="app">
+    <div class="topnav">
+      <span class="logo">k&#9612;ng</span>
+      <div class="right"><div class="tgl"><span class="sel">Dark</span><span>Light</span></div><span class="ph avatar" title="menu"></span></div>
+    </div>
+    <div class="chero">
+      <div class="meta">
+        <div class="eyebrow" style="font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;">Course</div>
+        <h2>C# Basics</h2>
+        <div class="headline"><span>Chapter 1 in progress</span><span>&middot;</span><span>22%</span><span>&middot;</span><span>resume 1.3 &rarr;</span></div>
+      </div>
+      <div class="viewtoggle"><span class="sel">Contents</span><span>Map</span></div>
+    </div>
+    <div class="shell-body">[ the Contents view OR the Province Map renders here &mdash; both already built ]</div>
+  </div>
+
+  <!-- 4. PROFILE -->
+  <div class="caption"><b>4. Profile / account</b> (reached from the avatar menu, top-right &mdash; not a nav link)</div>
+  <div class="app" style="position:relative;">
+    <div class="topnav">
+      <span class="logo">k&#9612;ng</span>
+      <div class="right"><div class="tgl"><span class="sel">Dark</span><span>Light</span></div><span class="ph avatar" style="outline:2px solid var(--accent);outline-offset:2px;"></span></div>
+    </div>
+    <!-- avatar dropdown, ALL navigation lives here -->
+    <div style="position:absolute;right:14px;top:50px;z-index:5;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:6px;width:200px;box-shadow:0 8px 24px rgba(0,0,0,.14);font-size:13px;">
+      <div style="padding:9px 11px;border-bottom:1px solid var(--line-2);margin-bottom:4px;"><div style="font-weight:600;">Noortje</div><div style="font-family:var(--mono);font-size:11px;color:var(--muted);">noortje@example.com</div></div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;padding:6px 11px 2px;">Navigate</div>
+      <div style="padding:8px 11px;color:var(--muted);">My courses</div>
+      <div style="padding:8px 11px;color:var(--muted);">C# Basics <span style="font-family:var(--mono);font-size:10px;color:var(--faint)">&middot; active</span></div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;padding:8px 11px 2px;border-top:1px solid var(--line-2);margin-top:4px;">You</div>
+      <div style="padding:8px 11px;border-radius:6px;background:var(--box);font-weight:600;">Account &amp; profile</div>
+      <div style="padding:8px 11px;color:var(--muted);">Login methods</div>
+      <div style="padding:8px 11px;color:var(--muted);">Preferences</div>
+      <div style="padding:8px 11px;color:var(--faint);">Badges &amp; shield (soon)</div>
+      <div style="padding:8px 11px;color:var(--muted);border-top:1px solid var(--line-2);margin-top:4px;">Log out</div>
+    </div>
+    <div class="pwrap">
+      <div class="pside">
+        <div class="bigav">N</div>
+        <h3>Noortje</h3>
+        <div class="handle">@noortje</div>
+        <div class="nav">
+          <a class="active">Account</a>
+          <a>Login methods</a>
+          <a>Preferences</a>
+          <a style="color:var(--faint)">Badges &amp; shield (soon)</a>
+        </div>
+      </div>
+      <div class="pmain">
+        <h2>Account</h2>
+        <div class="field"><label>Display name</label><div class="inp">Noortje</div></div>
+        <div class="field"><label>Email</label><div class="inp">noortje@example.com</div></div>
+        <h2 style="margin-top:26px">Login methods</h2>
+        <div class="loginrow"><span class="ic"></span><span class="l">Email &amp; password</span><span class="st">set</span></div>
+        <div class="loginrow"><span class="ic"></span><span class="l">Google</span><span class="st">linked</span></div>
+        <div class="loginrow"><span class="ic"></span><span class="l">GitHub</span><button class="btn sm">link</button></div>
+        <h2 style="margin-top:26px">Community</h2>
+        <div class="reserved">[ reserved: your khommunity badges &amp; shield appear here once community ships ]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption" style="color:#55585f"><b>updated</b> &rarr; nav bar is now just LOGO (left) + theme toggle & avatar (right). No inline links. All navigation (My courses, active course, account, etc.) lives in the avatar menu shown on the profile page above. Same quiet bar on every page.</div>
+</body>
+</html>

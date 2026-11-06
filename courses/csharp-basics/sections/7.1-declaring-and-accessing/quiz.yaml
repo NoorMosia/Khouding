@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 7.1 (declare an array with new T[n] or the { } literal; zero-based indexing; read/write a
+# slot by index; a.Length; default values; valid range 0..Length-1; out-of-range is a runtime crash).
+# Assumes Ch.1-6. Iteration is 7.2, operations are 7.3.
+
+section: csharp-basics/7.1-declaring-and-accessing
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What is the index of the first element of an array?"
+    options:
+      - { id: a, text: "0" }
+      - { id: b, text: "1" }
+      - { id: c, text: "-1" }
+      - { id: d, text: "it depends on the length" }
+    answer: a
+    rationale: "Arrays are zero-based: the first element is at index 0."
+
+  - id: q2
+    type: mcq
+    prompt: "For an array `a` of length 5, what is the index of the last element?"
+    options:
+      - { id: a, text: "a.Length - 1, which is 4" }
+      - { id: b, text: "a.Length, which is 5" }
+      - { id: c, text: "5" }
+      - { id: d, text: "there is no way to know" }
+    answer: a
+    rationale: "Valid indexes are 0 .. Length-1, so the last is a.Length - 1 (4 for length 5)."
+
+  - id: q3
+    type: mcq
+    prompt: "After `int[] a = new int[3];`, what is the value of `a[0]`?"
+    options:
+      - { id: a, text: "0, the default for int" }
+      - { id: b, text: "null" }
+      - { id: c, text: "undefined garbage" }
+      - { id: d, text: "a compile error to read it" }
+    answer: a
+    rationale: "new int[n] fills every slot with the type default, which is 0 for int."
+
+  - id: q4
+    type: truefalse
+    prompt: "The literal `int[] b = { 10, 20, 30 };` creates an array of length 3."
+    answer: true
+    rationale: "The { } form counts the values for you, so b.Length is 3."
+
+  - id: q5
+    type: mcq
+    prompt: "What does `a.Length` give you?"
+    options:
+      - { id: a, text: "the number of slots in the array" }
+      - { id: b, text: "the largest value stored" }
+      - { id: c, text: "the last index" }
+      - { id: d, text: "the sum of the elements" }
+    answer: a
+    rationale: "Length is the slot count, fixed when the array is built. The last index is Length - 1."
+
+  - id: q6
+    type: truefalse
+    prompt: "Reading `a[a.Length]` on an array is caught by the compiler before the program runs."
+    answer: false
+    rationale: "Out-of-range access compiles fine and crashes at runtime with IndexOutOfRangeException; the index is only known when the program runs."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the expression that builds an int array with n slots:  int[] a = ____;"
+    accept: ["new int[n]"]
+    rationale: "new int[n] allocates n slots, each defaulting to 0."

@@ -1,0 +1,15 @@
+id: p01-adult-or-minor
+title: Adult or minor
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Two-way if/else: age >= 18 -> adult, else minor. Cases hit both branches, incl the boundary.
+cases:
+  - { stdin: "20", note: "adult" }
+  - { stdin: "18", note: "adult (18 counts)" }
+  - { stdin: "17", note: "minor" }
+  - { stdin: "0",  note: "minor" }

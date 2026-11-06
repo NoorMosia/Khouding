@@ -1,0 +1,15 @@
+id: p04-not-positive
+title: Not positive
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# !(n > 0). Cases cover positive (False), zero (True, the edge), and negative (True).
+cases:
+  - { stdin: "5",   note: "positive -> not positive is False" }
+  - { stdin: "0",   note: "edge: zero is not positive -> True" }
+  - { stdin: "-4",  note: "negative -> True" }
+  - { stdin: "1",   note: "smallest positive -> False" }

@@ -1,0 +1,79 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope guard: tests ONLY what 1.1's reading teaches. No comments (moved to 1.2),
+# no `static void` (explicitly deferred), no indentation (moves to 1.5).
+
+section: csharp-basics/1.1-parts-of-a-program
+pass: 4            # need >= 4 of 6 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "When you run a C# program, where does it start?"
+    options:
+      - { id: a, text: "at the very first line of the file (using System;)" }
+      - { id: b, text: "inside Main" }
+      - { id: c, text: "inside the class, before Main" }
+      - { id: d, text: "at the last line and works upward" }
+    answer: b
+    rationale: "Execution begins inside Main. C# looks for Main and starts there, no matter where in the file it sits."
+
+  - id: q2
+    type: mcq
+    prompt: |
+      What appears on the screen when this runs?
+        Console.WriteLine("Hi there");
+    options:
+      - { id: a, text: 'Hi there' }
+      - { id: b, text: '"Hi there"' }
+      - { id: c, text: 'Console.WriteLine' }
+      - { id: d, text: "nothing" }
+    answer: a
+    rationale: "WriteLine prints whatever is inside the quotes. The quotes themselves do not appear."
+
+  - id: q3
+    type: fillblank
+    prompt: "Every statement ends with a single character that marks its end. Type that character:  ____"
+    accept: [";", "semicolon", "a semicolon"]
+    rationale: "A statement ends with a semicolon ( ; ). A missing one is the most common beginner error."
+
+  - id: q4
+    type: truefalse
+    prompt: "A line of code placed outside Main still runs when the program starts."
+    answer: false
+    rationale: "Only code inside Main runs as part of the program. A statement outside Main does not execute (it will not even compile as a loose statement)."
+
+  - id: q5
+    type: mcq
+    prompt: |
+      What does this print?
+        static void Main()
+        {
+            Console.WriteLine("First");
+            Console.WriteLine("Second");
+        }
+    options:
+      - { id: a, text: "First then Second" }
+      - { id: b, text: "Second then First" }
+      - { id: c, text: "only First" }
+      - { id: d, text: "both on the same line: FirstSecond" }
+    answer: a
+    rationale: "Statements inside Main run top to bottom, in order. WriteLine also moves to a new line after each, so they print on separate lines."
+
+  - id: q6
+    type: mcq
+    prompt: "You want to add a line that prints a message when the program runs. Where do you put it?"
+    options:
+      - { id: a, text: "inside Main's braces, with the other statements" }
+      - { id: b, text: "between the class and Main" }
+      - { id: c, text: "above using System;" }
+      - { id: d, text: "anywhere in the file; location does not matter" }
+    answer: a
+    rationale: "Your statements go inside Main's braces. That is where code runs, and the order you place them is the order they run."

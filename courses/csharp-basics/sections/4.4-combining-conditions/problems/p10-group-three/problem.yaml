@@ -1,0 +1,16 @@
+id: p10-group-three
+title: Group three
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# a > 0 && (b > 0 || c > 0). Print the bool. Cases probe the grouping: the a-gate and the (b||c) group.
+cases:
+  - { stdin: "5\n-1\n4",  note: "a positive, c positive -> True" }
+  - { stdin: "5\n2\n-3",  note: "a positive, b positive -> True" }
+  - { stdin: "5\n-1\n-2", note: "a positive but neither b nor c -> False" }
+  - { stdin: "-5\n3\n4",  note: "a not positive, group cannot save it -> False" }
+  - { stdin: "0\n1\n1",   note: "a is zero (not positive) -> False" }

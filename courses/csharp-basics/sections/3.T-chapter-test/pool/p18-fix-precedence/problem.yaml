@@ -1,0 +1,15 @@
+id: p18-fix-precedence
+title: Fix the precedence
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# E, fix: each person pays (base + extra), total is (base + extra) * people. Starter omits parens (silent wrong).
+cases:
+  - { stdin: "10\n2\n4", note: "(12)*4 = 48; buggy 18" }
+  - { stdin: "5\n5\n2",  note: "(10)*2 = 20" }
+  - { stdin: "0\n3\n5",  note: "(3)*5 = 15" }
+  - { stdin: "20\n0\n3", note: "extra zero, (20)*3 = 60" }

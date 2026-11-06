@@ -1,0 +1,17 @@
+id: p07-eligible-branch
+title: Eligible branch
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Compound condition inside if/else: age >= 18 && age < 65 -> "eligible" else "no".
+# Cases straddle both bounds so each branch and each side of the && is exercised.
+cases:
+  - { stdin: "40", note: "inside band -> eligible" }
+  - { stdin: "18", note: "low edge, inclusive -> eligible" }
+  - { stdin: "64", note: "high edge, inside -> eligible" }
+  - { stdin: "17", note: "below -> no" }
+  - { stdin: "65", note: "at upper bound, excluded -> no" }

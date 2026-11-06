@@ -1,0 +1,15 @@
+id: p01-dimensions
+title: Grid dimensions
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# new int[rows,cols]; print GetLength(0) then GetLength(1). Vary both dims incl. 1xk and kx1.
+cases:
+  - { stdin: "2\n3", note: "2 rows, 3 cols" }
+  - { stdin: "1\n5", note: "1 row (1xk)" }
+  - { stdin: "4\n1", note: "1 col (kx1)" }
+  - { stdin: "3\n3", note: "square" }

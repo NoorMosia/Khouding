@@ -1,0 +1,77 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 7.5 (int[,]; grid[r,c] indexing; GetLength(0)=rows, GetLength(1)=cols; 2D literal; nested for
+# over rows then columns; rectangular only). Assumes Ch.1-6 (esp. 5.4 nested loops) and 7.1-7.4.
+
+section: csharp-basics/7.5-multidimensional
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "How do you declare a 2D int array with 2 rows and 3 columns?"
+    options:
+      - { id: a, text: "int[,] grid = new int[2, 3];" }
+      - { id: b, text: "int[] grid = new int[2][3];" }
+      - { id: c, text: "int[2, 3] grid = new int[];" }
+      - { id: d, text: "int[,] grid = new int[6];" }
+    answer: a
+    rationale: "int[,] with two sizes, rows then columns: new int[2, 3]."
+
+  - id: q2
+    type: mcq
+    prompt: "For `int[,] grid = new int[2, 3];`, what is `grid.GetLength(0)`?"
+    options:
+      - { id: a, text: "2, the number of rows" }
+      - { id: b, text: "3, the number of columns" }
+      - { id: c, text: "6, the total cells" }
+      - { id: d, text: "1" }
+    answer: a
+    rationale: "GetLength(0) is the first size you gave, the rows (2). GetLength(1) is the columns (3)."
+
+  - id: q3
+    type: mcq
+    prompt: "How do you read the cell at row 1, column 2 of a 2D array `grid`?"
+    options:
+      - { id: a, text: "grid[1, 2]" }
+      - { id: b, text: "grid[1][2]" }
+      - { id: c, text: "grid[2, 1]" }
+      - { id: d, text: "grid(1, 2)" }
+    answer: a
+    rationale: "A 2D array is indexed grid[row, col] with one pair of brackets and a comma."
+
+  - id: q4
+    type: truefalse
+    prompt: "Indexing a 2D array with a single index, like `grid[1]`, is a compile error."
+    answer: true
+    rationale: "A 2D array needs two indices; one gives CS0022 'Wrong number of indices inside []; expected 2'."
+
+  - id: q5
+    type: mcq
+    prompt: "To visit every cell of a grid, you typically use:"
+    options:
+      - { id: a, text: "a nested loop: outer over rows, inner over columns" }
+      - { id: b, text: "a single foreach over GetLength(0)" }
+      - { id: c, text: "one loop from 0 to GetLength(0) + GetLength(1)" }
+      - { id: d, text: "recursion only" }
+    answer: a
+    rationale: "Nest two loops: the outer picks a row, the inner walks that row's columns."
+
+  - id: q6
+    type: truefalse
+    prompt: "On a non-square grid, swapping GetLength(0) and GetLength(1) can read the wrong cells or go out of bounds."
+    answer: true
+    rationale: "Rows and columns differ in size, so mixing them up breaks the bounds. The compiler cannot catch this logic error."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the call that gives the number of columns of a 2D array grid:  grid.____(1)"
+    accept: ["GetLength"]
+    rationale: "GetLength(1) is the column count; GetLength(0) is the row count."

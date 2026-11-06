@@ -1,0 +1,15 @@
+id: p01-price-to-two-decimals
+title: Price to two decimals
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# :F2 basics. Values chosen so the formatted output is obvious under invariant culture.
+cases:
+  - { stdin: "19.95", note: already two decimals }
+  - { stdin: "7.5",   note: pads to 7.50 }
+  - { stdin: "10",    note: whole value shows as 10.00 }
+  - { stdin: "0",     note: zero shows as 0.00 }

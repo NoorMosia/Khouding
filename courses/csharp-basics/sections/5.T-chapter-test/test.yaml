@@ -1,0 +1,49 @@
+# Chapter 5 region boss, machine-readable source of truth.
+# A TEST is pooled: a single attempt draws `draw` problems from `pool`, and
+# passing `light_at` of them lights the chapter region on the map.
+# The oracle CLI generates each pool problem's expecteds from its solution.cs,
+# exactly as for a section problem.
+
+id: csharp-basics/5.T
+kind: chapter-test
+title: Chapter 5 Test
+
+draw: 10            # problems served in a single attempt
+light_at: 6         # pass this many of the draw to light Chapter 5 (~60%)
+window_hours: 24    # generous attempt window; miss it or fall short and it just
+                    # does not light, a retry draws a fresh set. No lockouts, ever.
+shuffle: true
+
+# The bank (20). A single attempt draws 10, weighted to a mix of difficulties.
+# These problems take stdin, so each also carries several cases that VARY THE
+# ITERATION COUNT (zero / one / several), with a zero-iteration case wherever the
+# loop can run zero times. Anti-hardcoding from both sides: the pool is bigger than
+# the draw, and each problem's cases defeat an unrolled or fixed-output answer.
+# Every solution terminates; no committed input loops forever.
+pool:
+  # A, while (5.1)
+  - p01-sum-while
+  - p02-countdown-while
+  - p03-sentinel-count
+  # B, do-while (5.2)
+  - p04-at-least-once
+  - p05-menu-until-quit
+  # C, for (5.3)
+  - p06-sum-n
+  - p07-average
+  - p08-max
+  - p09-factorial
+  - p10-evens
+  # D, nested (5.4)
+  - p11-block
+  - p12-triangle
+  - p13-times-table
+  - p14-checkerboard
+  # E, loop control (5.5)
+  - p15-first-match
+  - p16-sum-positives
+  - p17-while-true-sum
+  # F, fix the broken program (debug across 5.1-5.5)
+  - p18-fix-off-by-one
+  - p19-fix-break-vs-continue
+  - p20-fix-infinite

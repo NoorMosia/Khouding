@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 6.4 (a local/parameter is private to its method; the same name can be reused across
+# methods; Main's variables are not visible in a helper; passing a value copies it, so changing
+# a parameter does not change the caller; locals start fresh each call). Assumes 6.1-6.3.
+
+section: csharp-basics/6.4-scope
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "Where can a variable declared inside a method be used?"
+    options:
+      - { id: a, text: "only inside that method, while it runs" }
+      - { id: b, text: "anywhere in the program" }
+      - { id: c, text: "inside any method in the same class" }
+      - { id: d, text: "only inside Main" }
+    answer: a
+    rationale: "A local variable is private to the method where it is declared and exists only while that method runs."
+
+  - id: q2
+    type: truefalse
+    prompt: "Two different methods can each have a local variable named `count` without conflicting."
+    answer: true
+    rationale: "Each local belongs to its own method. The same name in different methods refers to separate variables."
+
+  - id: q3
+    type: mcq
+    prompt: "A helper method needs a value that Main has. How does it get it?"
+    options:
+      - { id: a, text: "Main passes the value in as an argument" }
+      - { id: b, text: "the helper reads Main's variable directly" }
+      - { id: c, text: "it cannot be done" }
+      - { id: d, text: "the variable becomes global automatically" }
+    answer: a
+    rationale: "A helper cannot see Main's variables. To use a value from Main, pass it in as an argument."
+
+  - id: q4
+    type: mcq
+    prompt: "A method does `p = p + 100;` on its int parameter p. After the call, what is the caller's original variable?"
+    options:
+      - { id: a, text: "unchanged, because the argument was copied into p" }
+      - { id: b, text: "increased by 100" }
+      - { id: c, text: "set to 0" }
+      - { id: d, text: "deleted" }
+    answer: a
+    rationale: "Arguments are passed by value. The method changed its own copy p; the caller's variable is untouched."
+
+  - id: q5
+    type: truefalse
+    prompt: "A local variable keeps its value from one call of the method to the next."
+    answer: false
+    rationale: "Locals are created fresh each call and gone when the method returns. Nothing carries over between calls."
+
+  - id: q6
+    type: mcq
+    prompt: "What happens if a helper uses the name of a variable that only exists in Main?"
+    options:
+      - { id: a, text: "a compile error: the name does not exist in the helper's context" }
+      - { id: b, text: "it reads Main's value" }
+      - { id: c, text: "it reads 0" }
+      - { id: d, text: "it creates the variable automatically" }
+    answer: a
+    rationale: "The name is out of scope in the helper, so it does not compile. Pass the value in as a parameter instead."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the word for a variable declared inside a method, private to that method (singular):  a ____ variable"
+    accept: ["local"]
+    rationale: "A local variable is declared inside a method and is private to it."

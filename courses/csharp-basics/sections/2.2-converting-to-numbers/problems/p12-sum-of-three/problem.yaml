@@ -1,0 +1,15 @@
+id: p12-sum-of-three
+title: Sum of three
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Three prompts, three int parses, print a + b + c.
+cases:
+  - { stdin: "1\n2\n3",   note: small ascending }
+  - { stdin: "0\n0\n0",   note: all zero }
+  - { stdin: "-5\n5\n10", note: includes a negative }
+  - { stdin: "40\n30\n30", note: larger }

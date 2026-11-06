@@ -1,0 +1,15 @@
+id: p06-repeat-text
+title: Repeat text
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# B: method prints a string argument n times (string + int params, loop in body). Vary count incl. zero.
+cases:
+  - { stdin: "hi\n3", note: "hi three times" }
+  - { stdin: "yo\n1", note: "yo once" }
+  - { stdin: "x\n0",  note: "zero times: nothing after the prompt" }
+  - { stdin: "ok\n4", note: "ok four times" }

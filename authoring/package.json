@@ -1,0 +1,17 @@
+{
+  "name": "khouding-authoring",
+  "version": "1.0.0",
+  "description": "Authoring CLI, the ORACLE. Generates expected outputs by running solution.<lang> against each problem.yaml case. A human never types an expected output.",
+  "type": "module",
+  "bin": {
+    "khauthor": "./kh.mjs"
+  },
+  "scripts": {
+    "gen": "node kh.mjs gen",
+    "check": "node kh.mjs check"
+  },
+  "dependencies": {
+    "yaml": "^2.5.0"
+  },
+  "license": "ISC"
+}

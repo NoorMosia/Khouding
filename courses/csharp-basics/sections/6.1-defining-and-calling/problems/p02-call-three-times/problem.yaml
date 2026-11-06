@@ -1,0 +1,12 @@
+id: p02-call-three-times
+title: Call it three times
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Reuse: define a method that prints a line, call it three times from Main. No input.
+cases:
+  - { stdin: "", note: "the line printed three times" }

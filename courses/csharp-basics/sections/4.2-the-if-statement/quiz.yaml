@@ -1,0 +1,77 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 4.2 (the one-way if: run a block when the bool condition is true,
+# inside vs outside the braces, the stray-semicolon trap). Assumes 4.1. No else.
+
+section: csharp-basics/4.2-the-if-statement
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "When does the block inside `if (condition) { ... }` run?"
+    options:
+      - { id: a, text: "only when the condition is true" }
+      - { id: b, text: "always" }
+      - { id: c, text: "only when the condition is false" }
+      - { id: d, text: "never" }
+    answer: a
+    rationale: "A one-way if runs its block only when the condition is true; otherwise the block is skipped."
+
+  - id: q2
+    type: mcq
+    prompt: "What goes inside the parentheses of an `if`?"
+    options:
+      - { id: a, text: "a bool (for example a comparison)" }
+      - { id: b, text: "any int" }
+      - { id: c, text: "a string" }
+      - { id: d, text: "a statement ending in ;" }
+    answer: a
+    rationale: "The condition must be a bool, which is what comparisons like age >= 18 produce."
+
+  - id: q3
+    type: truefalse
+    prompt: "Code placed AFTER the if block (outside its braces) only runs when the condition was true."
+    answer: false
+    rationale: "Only the code inside the braces is conditional. Code before or after the if runs regardless."
+
+  - id: q4
+    type: mcq
+    prompt: "With input 7, what does this print?  Console.WriteLine(\"A\"); if (7 > 100) { Console.WriteLine(\"B\"); }"
+    options:
+      - { id: a, text: "A" }
+      - { id: b, text: "A then B" }
+      - { id: c, text: "B" }
+      - { id: d, text: "nothing" }
+    answer: a
+    rationale: "A is outside the if so it always prints. 7 > 100 is false, so B is skipped."
+
+  - id: q5
+    type: truefalse
+    prompt: "Writing `if (n > 100);` with a semicolon right after the condition is the same as `if (n > 100)` with no semicolon."
+    answer: false
+    rationale: "The semicolon becomes the empty body of the if, so the block that follows always runs. The compiler warns (CS0642). Remove the stray semicolon."
+
+  - id: q6
+    type: mcq
+    prompt: "You want 'big' to print ONLY when n is over 100. Which is correct?"
+    options:
+      - { id: a, text: "if (n > 100) { Console.WriteLine(\"big\"); }" }
+      - { id: b, text: "if (n > 100); { Console.WriteLine(\"big\"); }" }
+      - { id: c, text: "if (n > 100) Console.WriteLine(\"big\") { }" }
+      - { id: d, text: "Console.WriteLine(\"big\"); if (n > 100);" }
+    answer: a
+    rationale: "Option a guards the block correctly. Option b has the stray-semicolon bug, so big always prints."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the keyword that runs a block only when a condition is true:  ___ (score >= 50) { Console.WriteLine(\"pass\"); }"
+    accept: ["if"]
+    rationale: "if (condition) { ... } runs the block only when the condition is true."

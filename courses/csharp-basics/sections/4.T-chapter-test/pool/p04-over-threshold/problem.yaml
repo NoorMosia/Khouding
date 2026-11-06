@@ -1,0 +1,15 @@
+id: p04-over-threshold
+title: Over threshold
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# B: one-way if guard. Print "alert" only when temperature > 30, nothing otherwise.
+cases:
+  - { stdin: "35", note: "over -> alert" }
+  - { stdin: "30", note: "edge: not > 30 -> no output" }
+  - { stdin: "10", note: "under -> no output" }
+  - { stdin: "31", note: "just over -> alert" }

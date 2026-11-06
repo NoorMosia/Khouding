@@ -1,0 +1,16 @@
+id: p09-fix-stray-semicolon
+title: Fix the stray semicolon
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter has `if (n > 100);` so "big" always prints (CS0642 warning). Fix: remove the stray semicolon.
+# Cases straddle: after the fix, "big" prints only when n > 100.
+cases:
+  - { stdin: "250", note: "runs -> big" }
+  - { stdin: "7",   note: "skips (buggy starter would still print big)" }
+  - { stdin: "100", note: "skips (100 not > 100)" }
+  - { stdin: "101", note: "runs" }

@@ -1,0 +1,16 @@
+id: p12-receipt-capstone
+title: Receipt capstone
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: Main reads item, quantity, unit price; a method with three parameters prints a receipt line
+# "<item> x<qty> = <total>" where total = qty * price. Varied fields across cases.
+cases:
+  - { stdin: "apple\n3\n2",  note: "apple x3 = 6" }
+  - { stdin: "pen\n1\n5",    note: "pen x1 = 5" }
+  - { stdin: "box\n0\n9",    note: "box x0 = 0" }
+  - { stdin: "nail\n10\n1",  note: "nail x10 = 10" }

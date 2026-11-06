@@ -1,0 +1,15 @@
+id: p09-char-reprint
+title: Reprint an initial
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# A second char rep: read one character (a person's initial) and print it.
+cases:
+  - { stdin: "J", note: uppercase initial }
+  - { stdin: "m", note: lowercase }
+  - { stdin: "O", note: another uppercase }
+  - { stdin: "-", note: a symbol }

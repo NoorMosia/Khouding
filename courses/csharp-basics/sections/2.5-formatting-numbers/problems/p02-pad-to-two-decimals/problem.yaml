@@ -1,0 +1,15 @@
+id: p02-pad-to-two-decimals
+title: Pad to two decimals
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# :F2 padding: values that need trailing zeros added.
+cases:
+  - { stdin: "7.5", note: pads to 7.50 }
+  - { stdin: "3",   note: pads to 3.00 }
+  - { stdin: "0.5", note: pads to 0.50 }
+  - { stdin: "12",  note: pads to 12.00 }

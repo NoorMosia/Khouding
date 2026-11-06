@@ -1,0 +1,15 @@
+id: p08-pass-mark
+title: Pass mark
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read score; print score >= 50. Boundary exactly 50 -> True.
+cases:
+  - { stdin: "72", note: "True" }
+  - { stdin: "50", note: "True (exactly the pass mark)" }
+  - { stdin: "49", note: "False (just under)" }
+  - { stdin: "0",  note: "False" }

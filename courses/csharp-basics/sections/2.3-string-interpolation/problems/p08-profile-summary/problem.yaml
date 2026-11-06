@@ -1,0 +1,15 @@
+id: p08-profile-summary
+title: Profile summary
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Several fields read, printed as a multi-line interpolated summary (one hole per line).
+cases:
+  - { stdin: "Ada\nLisbon\n36",     note: typical }
+  - { stdin: "Grace\nNairobi\n85",  note: different values }
+  - { stdin: "Jun\nLima\n0",        note: age zero }
+  - { stdin: "Al\nViet Nam\n7",     note: value with a space }

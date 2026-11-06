@@ -1,0 +1,18 @@
+id: p08-guard-then-divide
+title: Guard, then divide
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Guard: only divide when the divisor is not zero (avoid the throw). Read a, b.
+#   b != 0: print a / b (integer division from Ch.3).  b == 0: print "cannot divide by zero".
+# Cases: normal divide, a zero divisor, a negative divisor, exact division.
+cases:
+  - { stdin: "10\n2", note: "10 / 2 = 5" }
+  - { stdin: "7\n3",  note: "integer division truncates -> 2" }
+  - { stdin: "5\n0",  note: "divisor zero -> cannot divide by zero (guard protects)" }
+  - { stdin: "9\n-2", note: "negative divisor, truncates toward zero -> -4" }
+  - { stdin: "0\n5",  note: "zero dividend, nonzero divisor -> 0" }

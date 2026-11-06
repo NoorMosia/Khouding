@@ -1,0 +1,16 @@
+id: p06-fix-casing
+title: Fix the casing convention
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Working but wrong casing: a local in PascalCase, a const in camelCase. Fix the
+# casing to convention; output unchanged (reads weeks, prints days). Varied inputs.
+cases:
+  - { stdin: "2",  note: normal; 14 }
+  - { stdin: "1",  note: one week }
+  - { stdin: "0",  note: edge - zero }
+  - { stdin: "10", note: larger }

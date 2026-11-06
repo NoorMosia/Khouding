@@ -1,0 +1,11 @@
+id: p06-mix-write-writeline
+title: Mix Write and WriteLine
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+cases:
+  - { stdin: "", note: no-input; a layout that needs Write to stay on the line then WriteLine to end it }

@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 6.2 (a parameter is a variable in the method's (); an argument fills it at the call;
+# multiple parameters matched by position; wrong count/type of arguments is a compile error).
+# Assumes 6.1 and Ch.1-5. Return values are 6.3.
+
+section: csharp-basics/6.2-parameters
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What is a parameter?"
+    options:
+      - { id: a, text: "a variable in the method's parentheses that receives a value when the method is called" }
+      - { id: b, text: "the value you type at the call site" }
+      - { id: c, text: "the method's return type" }
+      - { id: d, text: "another name for the method" }
+    answer: a
+    rationale: "A parameter is declared in the method's parentheses and receives an argument each time the method is called."
+
+  - id: q2
+    type: mcq
+    prompt: "In the call PrintSquare(5), what is 5 called?"
+    options:
+      - { id: a, text: "an argument" }
+      - { id: b, text: "a parameter" }
+      - { id: c, text: "a return value" }
+      - { id: d, text: "a variable declaration" }
+    answer: a
+    rationale: "5 is the argument: the value supplied at the call, which fills the parameter."
+
+  - id: q3
+    type: mcq
+    prompt: "Repeat(string text, int times) is called as Repeat(\"hi\", 3). What goes into times?"
+    options:
+      - { id: a, text: "3, because arguments fill parameters by position (left to right)" }
+      - { id: b, text: "\"hi\"" }
+      - { id: c, text: "nothing, times stays 0" }
+      - { id: d, text: "both 3 and \"hi\"" }
+    answer: a
+    rationale: "Arguments match parameters by position: the first argument fills the first parameter, so text gets \"hi\" and times gets 3."
+
+  - id: q4
+    type: truefalse
+    prompt: "A method can have more than one parameter."
+    answer: true
+    rationale: "A method can declare several parameters, separated by commas, filled by position."
+
+  - id: q5
+    type: mcq
+    prompt: "A method PrintSum(int a, int b) is called with one argument: PrintSum(5). What happens?"
+    options:
+      - { id: a, text: "a compile error: the call must supply an argument for every parameter" }
+      - { id: b, text: "it runs with b equal to 0" }
+      - { id: c, text: "it runs and ignores b" }
+      - { id: d, text: "it prints 5" }
+    answer: a
+    rationale: "The number of arguments must match the parameters. Calling with too few is a compile error."
+
+  - id: q6
+    type: truefalse
+    prompt: "The argument is copied into the parameter when the call begins, and the method works with that value."
+    answer: true
+    rationale: "Arguments are passed by value: the parameter receives a copy of the argument at the start of the call."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the word for the VALUE supplied at a call that fills a parameter (singular):  the ____ fills the parameter"
+    accept: ["argument"]
+    rationale: "An argument is the value supplied at the call site; it fills the method's parameter."

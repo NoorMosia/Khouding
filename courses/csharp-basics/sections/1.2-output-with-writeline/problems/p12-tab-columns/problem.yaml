@@ -1,0 +1,13 @@
+id: p12-tab-columns
+title: Tab columns
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# The separator must be a real tab (\t), not spaces. Byte-exact grading means
+# spaces would fail. Expected is generated from the solution, so it carries a real tab.
+cases:
+  - { stdin: "", note: no-input; two columns separated by a tab (\t), not spaces }

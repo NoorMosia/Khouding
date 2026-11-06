@@ -1,0 +1,15 @@
+id: p01-read-a-name
+title: Read a name
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Prompt on its own line, then read a line and print it. Expected output = the
+# prompt line + the printed value (input is NOT echoed under piped stdin).
+cases:
+  - { stdin: "Ada",      note: normal name }
+  - { stdin: "Sam",      note: short name }
+  - { stdin: "Boutros",  note: another name }

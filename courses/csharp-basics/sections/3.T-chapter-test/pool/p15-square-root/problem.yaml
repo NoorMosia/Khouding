@@ -1,0 +1,15 @@
+id: p15-square-root
+title: Square root
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# D, Math: read n; print Math.Sqrt(n). Perfect squares so the result is a clean whole number.
+cases:
+  - { stdin: "16",  note: "4" }
+  - { stdin: "81",  note: "9" }
+  - { stdin: "144", note: "12" }
+  - { stdin: "1",   note: "1" }

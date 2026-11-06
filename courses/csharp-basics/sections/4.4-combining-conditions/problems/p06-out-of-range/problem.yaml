@@ -1,0 +1,16 @@
+id: p06-out-of-range
+title: Out of range
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# x < 10 || x > 20, the complement of p05. Cases hit both edges (inside -> False) and each side out.
+cases:
+  - { stdin: "15", note: "inside -> False" }
+  - { stdin: "10", note: "low edge, inside -> False" }
+  - { stdin: "20", note: "high edge, inside -> False" }
+  - { stdin: "9",  note: "below -> True" }
+  - { stdin: "21", note: "above -> True" }

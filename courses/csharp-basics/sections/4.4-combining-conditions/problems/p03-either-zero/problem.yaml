@@ -1,0 +1,16 @@
+id: p03-either-zero
+title: Either zero
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# a == 0 || b == 0. Cases include both-nonzero (the only False) plus each single-zero and both-zero.
+cases:
+  - { stdin: "0\n5",  note: "first is zero -> True" }
+  - { stdin: "5\n0",  note: "second is zero -> True" }
+  - { stdin: "0\n0",  note: "both zero -> True" }
+  - { stdin: "5\n7",  note: "neither zero -> False" }
+  - { stdin: "-2\n3", note: "neither zero (negatives count) -> False" }

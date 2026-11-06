@@ -1,0 +1,15 @@
+id: p04-plus-ten
+title: Plus ten
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Parse to int, print n + 10.
+cases:
+  - { stdin: "5",   note: small }
+  - { stdin: "0",   note: zero }
+  - { stdin: "-10", note: cancels to zero }
+  - { stdin: "90",  note: large }

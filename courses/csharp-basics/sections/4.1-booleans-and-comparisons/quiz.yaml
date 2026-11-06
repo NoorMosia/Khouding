@@ -1,0 +1,82 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 4.1 (bool, the six comparison operators, a comparison produces a bool,
+# storing one, == vs =). First section of Chapter 4. No if yet.
+
+section: csharp-basics/4.1-booleans-and-comparisons
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `Console.WriteLine(5 > 3)` print?"
+    options:
+      - { id: a, text: "True" }
+      - { id: b, text: "true" }
+      - { id: c, text: "1" }
+      - { id: d, text: "5 > 3" }
+    answer: a
+    rationale: "A comparison is a bool, and C# prints a bool as True or False with a capital letter."
+
+  - id: q2
+    type: mcq
+    prompt: "Which operator means 'not equal'?"
+    options:
+      - { id: a, text: "!=" }
+      - { id: b, text: "=!" }
+      - { id: c, text: "<>" }
+      - { id: d, text: "==" }
+    answer: a
+    rationale: "!= is not-equal. == is equal. (<> is not a C# operator.)"
+
+  - id: q3
+    type: mcq
+    prompt: "What type does a comparison like `a >= b` produce?"
+    options:
+      - { id: a, text: "bool" }
+      - { id: b, text: "int" }
+      - { id: c, text: "string" }
+      - { id: d, text: "it depends on a and b" }
+    answer: a
+    rationale: "Every comparison evaluates to a bool (True or False)."
+
+  - id: q4
+    type: mcq
+    prompt: "What does `18 >= 18` give?"
+    options:
+      - { id: a, text: "True" }
+      - { id: b, text: "False" }
+      - { id: c, text: "0" }
+      - { id: d, text: "it does not compile" }
+    answer: a
+    rationale: ">= includes the boundary, so equal values give True. (18 > 18 would be False.)"
+
+  - id: q5
+    type: truefalse
+    prompt: "`==` and `=` do the same thing."
+    answer: false
+    rationale: "== compares (asks if two values are equal). = assigns (stores a value). They are different operators."
+
+  - id: q6
+    type: mcq
+    prompt: "You want to check if `x` equals 10. Which is correct?"
+    options:
+      - { id: a, text: "x == 10" }
+      - { id: b, text: "x = 10" }
+      - { id: c, text: "x => 10" }
+      - { id: d, text: "x := 10" }
+    answer: a
+    rationale: "== compares. x = 10 would assign 10 to x, not compare."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the operator that checks whether a is greater than or equal to b:  a ___ b"
+    accept: [">="]
+    rationale: "a >= b is True when a is greater than or equal to b, including when they are equal."

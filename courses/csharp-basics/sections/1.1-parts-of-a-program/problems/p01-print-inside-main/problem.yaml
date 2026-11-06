@@ -1,0 +1,13 @@
+id: p01-print-inside-main
+title: Print inside Main
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# No input (1.1 is pre-input). A single empty-stdin case; the anti-hardcoding
+# defense for this section is varied target TEXT across problems, not varied input.
+cases:
+  - { stdin: "", note: no-input; prints a fixed line from inside Main }

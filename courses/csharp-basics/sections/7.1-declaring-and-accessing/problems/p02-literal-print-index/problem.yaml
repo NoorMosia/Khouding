@@ -1,0 +1,12 @@
+id: p02-literal-print-index
+title: Build from a literal
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Literal-form array { 10, 20, 30 }, print a[1] (20). No input: output is inherently fixed.
+cases:
+  - { stdin: "", note: "no input: fixed values and index" }

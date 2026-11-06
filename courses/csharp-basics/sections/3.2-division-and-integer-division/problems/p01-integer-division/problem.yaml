@@ -1,0 +1,12 @@
+id: p01-integer-division
+title: Integer division
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# No input. Print 7 / 2 as integer division (both int): truncates to 3, not 3.5.
+cases:
+  - { stdin: "", note: fixed, int division truncates to 3 }

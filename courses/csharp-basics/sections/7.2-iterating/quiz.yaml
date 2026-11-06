@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 7.2 (index-based for over a.Length; foreach read-only walk; foreach cannot assign; filter/map
+# as loop shapes; i < a.Length not <=; length-0 runs zero times). Assumes Ch.1-6 and 7.1. Operations
+# (sum/max/etc.) are 7.3.
+
+section: csharp-basics/7.2-iterating
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "Which loop header visits every valid index of array `a` exactly once?"
+    options:
+      - { id: a, text: "for (int i = 0; i < a.Length; i++)" }
+      - { id: b, text: "for (int i = 0; i <= a.Length; i++)" }
+      - { id: c, text: "for (int i = 1; i < a.Length; i++)" }
+      - { id: d, text: "for (int i = 0; i < a.Length - 1; i++)" }
+    answer: a
+    rationale: "Start at 0, stop before Length. Using <= reads a[a.Length] and crashes; starting at 1 or stopping early skips an element."
+
+  - id: q2
+    type: truefalse
+    prompt: "A `foreach` loop lets you change the array's elements by assigning to the loop variable."
+    answer: false
+    rationale: "foreach gives a copy of each value and is read-only; assigning the loop variable is a compile error. Use an indexed for to write a[i]."
+
+  - id: q3
+    type: mcq
+    prompt: "You need each element's position (1, 2, 3, ...) as you print it. Which walk fits?"
+    options:
+      - { id: a, text: "the indexed for, printing i + 1" }
+      - { id: b, text: "foreach, since it tracks position automatically" }
+      - { id: c, text: "neither can know the position" }
+      - { id: d, text: "foreach, printing x + 1" }
+    answer: a
+    rationale: "foreach hands you values, not positions. When the index matters, use the indexed for and derive the position from i."
+
+  - id: q4
+    type: mcq
+    prompt: "What does this print for `a = { -1, 2, -3, 4 }`?  `foreach (int x in a) if (x > 0) Console.WriteLine(x);`"
+    options:
+      - { id: a, text: "2 then 4" }
+      - { id: b, text: "-1, 2, -3, 4" }
+      - { id: c, text: "-1 then -3" }
+      - { id: d, text: "nothing" }
+    answer: a
+    rationale: "The if guards the print, so only the positive elements (2 and 4) print. This is the filter loop shape."
+
+  - id: q5
+    type: truefalse
+    prompt: "If an array has length 0, `for (int i = 0; i < a.Length; i++)` runs its body zero times."
+    answer: true
+    rationale: "0 < 0 is false on the first check, so the body never runs and nothing prints."
+
+  - id: q6
+    type: mcq
+    prompt: "To double every element IN the array (not just print doubled copies), which do you use?"
+    options:
+      - { id: a, text: "an indexed for, with a[i] = a[i] * 2" }
+      - { id: b, text: "foreach (int x in a) x = x * 2;" }
+      - { id: c, text: "foreach (int x in a) a = a * 2;" }
+      - { id: d, text: "you cannot change array elements" }
+    answer: a
+    rationale: "Writing elements needs the slot itself: a[i] = a[i] * 2. foreach is read-only, so option b will not compile."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the comparison so the loop stops at the last valid index:  for (int i = 0; i ____ a.Length; i++)"
+    accept: ["<"]
+    rationale: "i < a.Length stops after the last valid index (Length - 1). Using <= goes one too far and crashes."

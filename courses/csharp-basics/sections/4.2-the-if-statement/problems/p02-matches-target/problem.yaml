@@ -1,0 +1,15 @@
+id: p02-matches-target
+title: Matches the target
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# One-way if with ==: print "match" only if code == 1234. Cases: match and several non-matches.
+cases:
+  - { stdin: "1234", note: "runs -> match" }
+  - { stdin: "1000", note: "skips" }
+  - { stdin: "1235", note: "skips (close but not equal)" }
+  - { stdin: "0",    note: "skips" }

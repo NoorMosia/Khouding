@@ -1,0 +1,15 @@
+id: p11-dollars-and-cents
+title: Dollars and cents
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: cents / 100 (whole units) then cents % 100 (leftover). Quotient + remainder in a scenario.
+cases:
+  - { stdin: "250", note: "2 then 50" }
+  - { stdin: "300", note: "3 then 0 (exact)" }
+  - { stdin: "75",  note: "0 then 75 (under one unit)" }
+  - { stdin: "1099", note: "10 then 99" }

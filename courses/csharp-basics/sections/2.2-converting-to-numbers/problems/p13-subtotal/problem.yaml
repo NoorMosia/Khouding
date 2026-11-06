@@ -1,0 +1,15 @@
+id: p13-subtotal
+title: Subtotal
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Quantity (int) * unit price (double). Values chosen so the subtotal prints cleanly.
+cases:
+  - { stdin: "2\n3.5",  note: clean result }
+  - { stdin: "0\n9.99", note: quantity zero }
+  - { stdin: "4\n2.25", note: lands on a clean decimal }
+  - { stdin: "6\n10.5", note: larger }

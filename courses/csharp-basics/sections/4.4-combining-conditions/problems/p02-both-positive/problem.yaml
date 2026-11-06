@@ -1,0 +1,16 @@
+id: p02-both-positive
+title: Both positive
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# a > 0 && b > 0. Cases cover all four truth combinations so a hardcoded True/False fails.
+cases:
+  - { stdin: "3\n4",   note: "both positive -> True" }
+  - { stdin: "3\n-4",  note: "second not positive -> False" }
+  - { stdin: "-3\n4",  note: "first not positive -> False" }
+  - { stdin: "-3\n-4", note: "both not positive -> False" }
+  - { stdin: "0\n5",   note: "edge: zero is not positive -> False" }

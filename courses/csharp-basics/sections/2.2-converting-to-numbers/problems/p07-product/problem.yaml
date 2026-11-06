@@ -1,0 +1,15 @@
+id: p07-product
+title: Product
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Two prompts, two int parses, print a * b.
+cases:
+  - { stdin: "6\n7",   note: positive }
+  - { stdin: "9\n0",   note: times zero }
+  - { stdin: "-4\n3",  note: negative result }
+  - { stdin: "12\n12", note: larger }

@@ -1,0 +1,17 @@
+id: p11-fix-loose-range
+title: Fix the loose range
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Debug: starter uses || in a range check (x >= 10 || x <= 20) which is always true. Fix to &&.
+# Cases include values outside the band so the always-true bug is exposed.
+cases:
+  - { stdin: "15", note: "inside -> True" }
+  - { stdin: "10", note: "low edge -> True" }
+  - { stdin: "20", note: "high edge -> True" }
+  - { stdin: "5",  note: "below: buggy || would print True, correct && prints False" }
+  - { stdin: "25", note: "above: buggy || would print True, correct && prints False" }

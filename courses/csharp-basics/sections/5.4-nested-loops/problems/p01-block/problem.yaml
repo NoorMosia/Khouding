@@ -1,0 +1,15 @@
+id: p01-block
+title: Star block
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Basic nest: read n (rows) and m (cols), print an n-by-m block of '*'. No separators. Vary both bounds.
+cases:
+  - { stdin: "2\n3", note: "2 rows of 3 stars" }
+  - { stdin: "1\n4", note: "1 row of 4 (1-by-k edge)" }
+  - { stdin: "4\n1", note: "4 rows of 1 (k-by-1 edge)" }
+  - { stdin: "3\n3", note: "square" }

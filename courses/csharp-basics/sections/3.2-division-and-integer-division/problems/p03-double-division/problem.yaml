@@ -1,0 +1,12 @@
+id: p03-double-division
+title: Double division
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# No input. Print 7.0 / 2: one double operand keeps the decimal, so 3.5 (contrast p01's 7 / 2 = 3).
+cases:
+  - { stdin: "", note: fixed, double division keeps 3.5 }

@@ -1,0 +1,15 @@
+id: p04-square-arg
+title: Square the argument
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# B: a void method prints its int argument squared; Main reads the value.
+cases:
+  - { stdin: "5",  note: "25" }
+  - { stdin: "0",  note: "0" }
+  - { stdin: "-4", note: "16" }
+  - { stdin: "9",  note: "81" }

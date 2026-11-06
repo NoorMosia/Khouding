@@ -1,0 +1,15 @@
+id: p05-force-a-decimal
+title: Force a decimal result
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read a, b as int but print a decimal quotient: (double)a / b. Values chosen so the quotient prints cleanly.
+cases:
+  - { stdin: "7\n2",   note: "3.5" }
+  - { stdin: "9\n4",   note: "2.25" }
+  - { stdin: "1\n4",   note: "0.25" }
+  - { stdin: "10\n8",  note: "1.25" }

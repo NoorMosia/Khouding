@@ -1,0 +1,15 @@
+id: p03-boundary-check
+title: Boundary check
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# A: read age, print (age >= 18). Cases sit exactly on each side of the inclusive boundary.
+cases:
+  - { stdin: "18", note: "edge: 18 >= 18 -> True" }
+  - { stdin: "17", note: "just under -> False" }
+  - { stdin: "40", note: "well over -> True" }
+  - { stdin: "0",  note: "zero -> False" }

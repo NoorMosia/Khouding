@@ -1,0 +1,82 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 3.3 (% remainder, even/odd signal, last-digit, wrap, negatives sign
+# follows the dividend, % 0 named). Assumes Ch.1-2, 3.1-3.2. No conditionals.
+
+section: csharp-basics/3.3-remainder-operator
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `7 % 3` give?"
+    options:
+      - { id: a, text: "1" }
+      - { id: b, text: "2" }
+      - { id: c, text: "3" }
+      - { id: d, text: "0" }
+    answer: a
+    rationale: "3 goes into 7 twice with 1 left over, so the remainder is 1."
+
+  - id: q2
+    type: mcq
+    prompt: "What does `n % 2` tell you?"
+    options:
+      - { id: a, text: "0 if n is even, 1 if n is odd" }
+      - { id: b, text: "half of n" }
+      - { id: c, text: "whether n is positive" }
+      - { id: d, text: "the last digit of n" }
+    answer: a
+    rationale: "Dividing by 2 leaves 0 for an even number and 1 for an odd one, the even-or-odd signal."
+
+  - id: q3
+    type: mcq
+    prompt: "What does `342 % 10` give?"
+    options:
+      - { id: a, text: "2" }
+      - { id: b, text: "34" }
+      - { id: c, text: "342" }
+      - { id: d, text: "0" }
+    answer: a
+    rationale: "% 10 leaves the last digit, which is 2."
+
+  - id: q4
+    type: mcq
+    prompt: "What does `-7 % 3` give?"
+    options:
+      - { id: a, text: "-1" }
+      - { id: b, text: "1" }
+      - { id: c, text: "2" }
+      - { id: d, text: "-2" }
+    answer: a
+    rationale: "The sign of the result follows the dividend (left operand), so -7 % 3 is -1."
+
+  - id: q5
+    type: truefalse
+    prompt: "`5 % 100` gives `0` because 5 is smaller than 100."
+    answer: false
+    rationale: "When the number is smaller than the divisor there is nothing to take away, so the whole number is the remainder: 5 % 100 is 5."
+
+  - id: q6
+    type: mcq
+    prompt: "You have `total` items and group them in sizes of `groupSize`. Which gives the number LEFT OVER?"
+    options:
+      - { id: a, text: "total % groupSize" }
+      - { id: b, text: "total / groupSize" }
+      - { id: c, text: "total - groupSize" }
+      - { id: d, text: "groupSize % total" }
+    answer: a
+    rationale: "/ gives the number of full groups; % gives the leftover after those groups."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the operator that gives the last digit of n:  n __ 10"
+    accept: ["%"]
+    rationale: "n % 10 is the remainder after dividing by 10, which is the last digit."

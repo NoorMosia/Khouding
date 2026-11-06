@@ -1,0 +1,17 @@
+id: p09-hollow-square
+title: Hollow square
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Nest + inner condition: read n, print an n-by-n square where border cells are '*' and interior cells are a
+# space. No separators (each cell is one character). Edge detection: row/col is 1 or n.
+cases:
+  - { stdin: "4", note: "4x4 hollow square" }
+  - { stdin: "1", note: "1x1: a single * (all border)" }
+  - { stdin: "2", note: "2x2: all four cells are border -> **/**" }
+  - { stdin: "5", note: "5x5 with a hollow interior" }
+  - { stdin: "3", note: "3x3: *** / * * / ***" }

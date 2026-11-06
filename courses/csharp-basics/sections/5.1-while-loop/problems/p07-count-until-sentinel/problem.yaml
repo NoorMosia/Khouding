@@ -1,0 +1,16 @@
+id: p07-count-until-sentinel
+title: Count until sentinel
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Sentinel + count: read ints until -1, print how many values came before it (-1 not counted).
+# Sentinel is -1 so 0 is valid data. First value -1 -> 0.
+cases:
+  - { stdin: "5\n8\n2\n-1", note: "three values before -1 -> 3" }
+  - { stdin: "-1",          note: "sentinel first -> 0" }
+  - { stdin: "0\n0\n-1",    note: "zeros are valid data -> 2" }
+  - { stdin: "9\n-1",       note: "one value -> 1" }

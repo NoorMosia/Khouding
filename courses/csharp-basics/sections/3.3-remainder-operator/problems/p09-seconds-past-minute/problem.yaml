@@ -1,0 +1,15 @@
+id: p09-seconds-past-minute
+title: Seconds past the minute
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read total seconds; print leftover past the whole minute (seconds % 60). Realistic wrap.
+cases:
+  - { stdin: "125", note: "5 (2 min 5 s)" }
+  - { stdin: "60",  note: "0 (exactly a minute)" }
+  - { stdin: "45",  note: "45 (under a minute)" }
+  - { stdin: "3661", note: "1" }

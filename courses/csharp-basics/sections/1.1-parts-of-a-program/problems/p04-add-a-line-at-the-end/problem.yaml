@@ -1,0 +1,11 @@
+id: p04-add-a-line-at-the-end
+title: Add a line at the end
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+cases:
+  - { stdin: "", note: no-input; fourth line appended at the end }

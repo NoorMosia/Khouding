@@ -1,0 +1,15 @@
+id: p09-last-digit
+title: Last digit
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# C, remainder: read n; print n % 10 (last digit).
+cases:
+  - { stdin: "342",  note: "2" }
+  - { stdin: "7",    note: "7 (single digit)" }
+  - { stdin: "90",   note: "0" }
+  - { stdin: "1005", note: "5" }

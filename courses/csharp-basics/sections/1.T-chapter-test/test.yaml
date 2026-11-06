@@ -1,0 +1,45 @@
+# Chapter 1 region boss, machine-readable source of truth.
+# A TEST is pooled: a single attempt draws `draw` problems from `pool`, and
+# passing `light_at` of them lights the chapter region on the map.
+# The oracle CLI generates each pool problem's expecteds from its solution.cs,
+# exactly as for a section problem.
+
+id: csharp-basics/1.T
+kind: chapter-test
+title: Chapter 1 Test
+
+draw: 10            # problems served in a single attempt
+light_at: 6         # pass this many of the draw to light Chapter 1 (~60%)
+window_hours: 24    # generous attempt window; miss it or fall short and it just
+                    # does not light, a retry draws a fresh set. No lockouts, ever.
+shuffle: true
+
+# The bank (20). A single attempt draws 10, weighted to a mix of difficulties.
+# Pool is bigger than the draw so memorizing one attempt's answers does not
+# survive the next draw (the anti-hardcoding defense for a no-input boss).
+pool:
+  # A, declare the fields (types + naming + multi-line output)
+  - p01-book-record
+  - p02-product-card
+  - p03-student-record
+  - p04-city-entry
+  # B, named constants (const + arithmetic, magic-numbers to named)
+  - p05-rectangle-area
+  - p06-crate-order
+  - p07-weeks-to-days
+  - p08-ticket-sales
+  # C, model and format (choose types + compute + exact formatted block)
+  - p09-receipt-line
+  - p10-stats-card
+  - p11-name-tag
+  - p12-mini-invoice
+  - p13-scoreboard
+  # D, fix the broken integrative program (debug across 1.1-1.5)
+  - p14-fix-skeleton
+  - p15-fix-type
+  - p16-fix-quote
+  - p17-fix-name
+  # E, reproduce the exact report (pure formatting precision)
+  - p18-bordered-box
+  - p19-two-column-table
+  - p20-banner

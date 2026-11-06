@@ -1,0 +1,15 @@
+id: p04-contact-line
+title: Contact line
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# A, echo & intake: two holes on one line with literal text between them.
+cases:
+  - { stdin: "Ada\nada@example.org",   note: typical }
+  - { stdin: "Grace\ngrace@example.org", note: different values }
+  - { stdin: "Al\nal@example.org",      note: short name }
+  - { stdin: "Mary Jones\nmj@example.org", note: name with a space }

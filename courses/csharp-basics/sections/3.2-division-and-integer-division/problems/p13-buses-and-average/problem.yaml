@@ -1,0 +1,16 @@
+id: p13-buses-and-average
+title: Buses and average
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: line 1 integer division (passengers / buses), line 2 decimal average ((double)passengers / buses).
+# Same inputs, two kinds of division. Values chosen so the decimal prints cleanly.
+cases:
+  - { stdin: "10\n4",  note: "2 then 2.5" }
+  - { stdin: "9\n4",   note: "2 then 2.25" }
+  - { stdin: "20\n8",  note: "2 then 2.5" }
+  - { stdin: "16\n4",  note: "4 then 4 (exact)" }

@@ -1,0 +1,15 @@
+id: p06-difference
+title: Difference
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Two prompts, two int parses, print a - b.
+cases:
+  - { stdin: "10\n3",  note: positive result }
+  - { stdin: "3\n10",  note: negative result }
+  - { stdin: "7\n7",   note: zero }
+  - { stdin: "200\n50", note: larger }

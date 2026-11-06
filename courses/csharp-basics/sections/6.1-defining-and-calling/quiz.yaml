@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 6.1 (define a static void method next to Main; call it by name with (); calling runs the
+# body and returns; a method can be called many times and can call another method; static void
+# explained). Assumes Ch.1-5. Parameters are 6.2, returns are 6.3.
+
+section: csharp-basics/6.1-defining-and-calling
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does calling a method do?"
+    options:
+      - { id: a, text: "runs the method's body, then returns to where it was called from" }
+      - { id: b, text: "defines the method for later" }
+      - { id: c, text: "deletes the method" }
+      - { id: d, text: "nothing until the program ends" }
+    answer: a
+    rationale: "A call runs the body and then control returns to the caller, which continues from the next line."
+
+  - id: q2
+    type: truefalse
+    prompt: "Defining a method also runs it."
+    answer: false
+    rationale: "Defining a method only describes it. It runs only when you call it by name."
+
+  - id: q3
+    type: mcq
+    prompt: "In `static void Greet()`, what does `void` mean?"
+    options:
+      - { id: a, text: "the method returns nothing" }
+      - { id: b, text: "the method takes no parameters" }
+      - { id: c, text: "the method is empty" }
+      - { id: d, text: "the method cannot be called" }
+    answer: a
+    rationale: "void is the return type: the method returns no value. (Empty parentheses, not void, mean no parameters.)"
+
+  - id: q4
+    type: mcq
+    prompt: "Why is every method in this course marked `static`?"
+    options:
+      - { id: a, text: "so it can be called without creating an object, which is how this course is structured" }
+      - { id: b, text: "so it runs faster" }
+      - { id: c, text: "so it returns a value" }
+      - { id: d, text: "static is optional and means nothing here" }
+    answer: a
+    rationale: "static lets you call the method directly (like Main) without an object. This course does not build its own objects, so every method is static."
+
+  - id: q5
+    type: mcq
+    prompt: "How do you call a method named PrintStar that takes no parameters?"
+    options:
+      - { id: a, text: "PrintStar();" }
+      - { id: b, text: "PrintStar;" }
+      - { id: c, text: "call PrintStar" }
+      - { id: d, text: "void PrintStar();" }
+    answer: a
+    rationale: "A call is the name followed by parentheses: PrintStar(); The parentheses are required even when there are no arguments."
+
+  - id: q6
+    type: truefalse
+    prompt: "A method's body can call another method."
+    answer: true
+    rationale: "A method body can call other methods, just as Main does. Each call runs that method and returns."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the keyword that, as a return type, means a method returns no value:  static ____ Greet() { ... }"
+    accept: ["void"]
+    rationale: "void as the return type means the method returns nothing."

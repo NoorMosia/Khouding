@@ -1,0 +1,16 @@
+id: p05-in-range
+title: In range
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# x >= 10 && x <= 20 (inclusive). Cases hit both edges, inside, and each side out.
+cases:
+  - { stdin: "15", note: "inside -> True" }
+  - { stdin: "10", note: "low edge, inclusive -> True" }
+  - { stdin: "20", note: "high edge, inclusive -> True" }
+  - { stdin: "9",  note: "just below -> False" }
+  - { stdin: "21", note: "just above -> False" }

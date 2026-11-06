@@ -1,0 +1,16 @@
+id: p20-fix-infinite
+title: Fix the infinite loop
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# F, fix-to-terminate: starter's while never increments its counter, so it would loop forever.
+# Add the counter update so it prints 1..n and stops. The oracle runs only the (correct) solution.
+cases:
+  - { stdin: "4", note: "1 2 3 4" }
+  - { stdin: "1", note: "just 1" }
+  - { stdin: "0", note: "nothing (zero iterations)" }
+  - { stdin: "5", note: "1..5" }

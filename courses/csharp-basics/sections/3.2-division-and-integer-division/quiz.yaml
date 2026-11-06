@@ -1,0 +1,89 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 3.2 (int/int truncates, double division keeps the decimal, forcing a
+# double with (double), negatives toward zero, divide-by-zero named). Assumes
+# Ch.1-2 and 3.1.
+
+section: csharp-basics/3.2-division-and-integer-division
+pass: 5            # need >= 5 of 8 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `7 / 2` print when both are whole numbers?"
+    options:
+      - { id: a, text: "3" }
+      - { id: b, text: "3.5" }
+      - { id: c, text: "4" }
+      - { id: d, text: "3.0" }
+    answer: a
+    rationale: "Both operands are int, so this is integer division: the .5 is discarded, giving 3."
+
+  - id: q2
+    type: mcq
+    prompt: "What does `7.0 / 2` print?"
+    options:
+      - { id: a, text: "3.5" }
+      - { id: b, text: "3" }
+      - { id: c, text: "4" }
+      - { id: d, text: "it does not compile" }
+    answer: a
+    rationale: "One operand is a double (7.0), so the division keeps the decimal: 3.5."
+
+  - id: q3
+    type: truefalse
+    prompt: "Integer division rounds to the nearest whole number."
+    answer: false
+    rationale: "It does not round; it truncates (cuts off the fractional part). 7 / 2 is 3, and 5 / 3 is 1, not 2."
+
+  - id: q4
+    type: mcq
+    prompt: "`a` and `b` are both `int`. How do you print their quotient as a decimal?"
+    options:
+      - { id: a, text: "(double)a / b" }
+      - { id: b, text: "a / b, then it is decimal automatically" }
+      - { id: c, text: "double result = a / b;" }
+      - { id: d, text: "a / (b)" }
+    answer: a
+    rationale: "Convert an operand to double BEFORE the division: (double)a / b. Option c converts too late, a / b truncates first."
+
+  - id: q5
+    type: truefalse
+    prompt: "`double result = a / b;` with both `a` and `b` as `int` gives a decimal result."
+    answer: false
+    rationale: "a / b is computed in whole numbers first (truncating), THEN stored in the double. The fraction is already gone. Convert before dividing: (double)a / b."
+
+  - id: q6
+    type: mcq
+    prompt: "What does `-7 / 2` print (integer division)?"
+    options:
+      - { id: a, text: "-3" }
+      - { id: b, text: "-4" }
+      - { id: c, text: "-3.5" }
+      - { id: d, text: "3" }
+    answer: a
+    rationale: "Integer division truncates toward zero, so -7 / 2 drops the .5 and gives -3, not -4."
+
+  - id: q7
+    type: mcq
+    prompt: "What happens when you compute `5 / 0` with whole numbers?"
+    options:
+      - { id: a, text: "it throws a DivideByZeroException at run time" }
+      - { id: b, text: "it prints 0" }
+      - { id: c, text: "it prints infinity" }
+      - { id: d, text: "it does not compile" }
+    answer: a
+    rationale: "Dividing a whole number by zero throws a DivideByZeroException while the program runs."
+
+  - id: q8
+    type: fillblank
+    prompt: "Fill the blank so int a, b print a decimal quotient:  Console.WriteLine(______a / b);"
+    accept: ["(double)", "(double) "]
+    rationale: "(double)a / b converts an operand first, so the division keeps the decimal."

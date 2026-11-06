@@ -1,0 +1,15 @@
+id: p11-rectangle-area
+title: Rectangle area
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Read width and height (ints), print width * height.
+cases:
+  - { stdin: "4\n5",   note: typical }
+  - { stdin: "1\n1",   note: unit square }
+  - { stdin: "10\n0",  note: zero height }
+  - { stdin: "25\n12", note: larger }

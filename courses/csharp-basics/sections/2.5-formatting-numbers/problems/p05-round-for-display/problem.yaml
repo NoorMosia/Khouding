@@ -1,0 +1,15 @@
+id: p05-round-for-display
+title: Round for display
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Values with more than two decimals, shown to two: :F2 rounds for display. Avoid exact .xx5 ties.
+cases:
+  - { stdin: "2.345", note: rounds to 2.35 }
+  - { stdin: "1.239", note: rounds to 1.24 }
+  - { stdin: "9.871", note: rounds down to 9.87 }
+  - { stdin: "0.004", note: rounds to 0.00 }

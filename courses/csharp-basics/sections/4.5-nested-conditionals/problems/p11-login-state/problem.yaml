@@ -1,0 +1,17 @@
+id: p11-login-state
+title: Login state
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Judgment: the verified question only matters once logged in, so nest.
+#   not logged in -> "login". logged in: verified -> "go", else "verify".
+# Cases reach all three leaves plus a not-logged-in with verified=1 (still "login").
+cases:
+  - { stdin: "1\n1", note: "logged in and verified -> go" }
+  - { stdin: "1\n0", note: "logged in, not verified -> verify" }
+  - { stdin: "0\n0", note: "not logged in -> login" }
+  - { stdin: "0\n1", note: "not logged in, verified flag ignored -> login" }

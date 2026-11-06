@@ -1,0 +1,16 @@
+id: p10-fix-block-scope
+title: Fix the block scope
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Debug: a local declared inside an if block is used after the block (CS0103). Move the declaration to the
+# method scope so it is visible where it is printed. Should print n * 2 for any n. Main reads n.
+cases:
+  - { stdin: "5",  note: "10" }
+  - { stdin: "0",  note: "0" }
+  - { stdin: "-3", note: "-6" }
+  - { stdin: "8",  note: "16" }

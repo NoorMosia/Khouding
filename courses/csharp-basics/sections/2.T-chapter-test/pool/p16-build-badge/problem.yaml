@@ -1,0 +1,15 @@
+id: p16-build-badge
+title: Build a badge
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# D, build a string: join several pieces (incl a number -> text) into one stored string, then print it.
+cases:
+  - { stdin: "Ada\nBlue\n12",      note: typical }
+  - { stdin: "Grace\nRed\n1",      note: seat one }
+  - { stdin: "Al\nGreen\n0",       note: seat zero }
+  - { stdin: "Mary Jones\nGold Team\n108", note: values with spaces }

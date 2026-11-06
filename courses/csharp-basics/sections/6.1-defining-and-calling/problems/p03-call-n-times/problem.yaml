@@ -1,0 +1,15 @@
+id: p03-call-n-times
+title: Call it n times
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Loop + call: Main reads a count n and calls the method n times. Vary n incl. zero (no calls).
+cases:
+  - { stdin: "3", note: "three lines" }
+  - { stdin: "1", note: "one line" }
+  - { stdin: "0", note: "zero calls: only the prompt" }
+  - { stdin: "5", note: "five lines" }

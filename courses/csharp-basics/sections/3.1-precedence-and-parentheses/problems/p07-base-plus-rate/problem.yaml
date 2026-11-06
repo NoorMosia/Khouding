@@ -1,0 +1,15 @@
+id: p07-base-plus-rate
+title: Base plus rate times units
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Realistic precedence: base + rate * units (rate*units first). Varied inputs.
+cases:
+  - { stdin: "5\n2\n3",   note: "5 + 6 = 11" }
+  - { stdin: "10\n0\n9",  note: "rate zero, 10 + 0 = 10" }
+  - { stdin: "0\n4\n7",   note: "no base, 0 + 28 = 28" }
+  - { stdin: "20\n3\n10", note: "20 + 30 = 50" }

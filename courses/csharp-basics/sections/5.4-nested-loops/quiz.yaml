@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 5.4 (a loop inside a loop; the inner runs fully each outer pass; a-by-b nest = a*b inner
+# iterations; the inner counter resets each outer pass; Write vs WriteLine for row structure).
+# Assumes 5.1-5.3 and Ch.1-4. break/continue are 5.5.
+
+section: csharp-basics/5.4-nested-loops
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "An outer loop runs 3 times and its inner loop runs 4 times per outer pass. How many times does the inner body run in total?"
+    options:
+      - { id: a, text: "12 (3 times 4)" }
+      - { id: b, text: "7 (3 plus 4)" }
+      - { id: c, text: "3" }
+      - { id: d, text: "4" }
+    answer: a
+    rationale: "The inner loop runs fully on every outer pass, so the inner body runs a * b = 3 * 4 = 12 times."
+
+  - id: q2
+    type: truefalse
+    prompt: "The inner loop finishes all its passes before the outer loop moves to its next pass."
+    answer: true
+    rationale: "On each outer pass the inner loop runs start to finish, then the outer loop advances."
+
+  - id: q3
+    type: mcq
+    prompt: "In a grid-printing nest, where does Console.WriteLine() (ending a line) usually go?"
+    options:
+      - { id: a, text: "after the inner loop, once per outer pass, to end each row" }
+      - { id: b, text: "inside the inner loop, after every character" }
+      - { id: c, text: "only once, after both loops finish" }
+      - { id: d, text: "before the inner loop" }
+    answer: a
+    rationale: "Use Write inside the inner loop to stay on the row, and one WriteLine after the inner loop to end the row."
+
+  - id: q4
+    type: mcq
+    prompt: "What happens if you put WriteLine (instead of Write) inside the inner loop of a grid?"
+    options:
+      - { id: a, text: "every character lands on its own line instead of forming rows" }
+      - { id: b, text: "the grid prints normally" }
+      - { id: c, text: "it will not compile" }
+      - { id: d, text: "all rows merge onto one line" }
+    answer: a
+    rationale: "WriteLine ends the line after each character, so each one is on its own line and the grid shape is lost."
+
+  - id: q5
+    type: truefalse
+    prompt: "The inner loop's counter starts over from its init value on every outer pass."
+    answer: true
+    rationale: "Each time the inner for loop begins, its init runs again, resetting the counter. That reset is why each row looks consistent."
+
+  - id: q6
+    type: mcq
+    prompt: "This nest prints how many stars in total?  for (int r = 1; r <= 3; r++) { for (int c = 1; c <= r; c++) { Console.Write('*'); } Console.WriteLine(); }"
+    options:
+      - { id: a, text: "6 (1 + 2 + 3), a triangle" }
+      - { id: b, text: "9 (3 times 3)" }
+      - { id: c, text: "3" }
+      - { id: d, text: "it does not compile" }
+    answer: a
+    rationale: "The inner bound c <= r means row 1 has 1 star, row 2 has 2, row 3 has 3, totalling 6."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the print call used INSIDE the inner loop to stay on the same row (no newline):  Console.____(\"*\");"
+    accept: ["Write"]
+    rationale: "Console.Write prints without a newline, keeping the row going; WriteLine ends the row."

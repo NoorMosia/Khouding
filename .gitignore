@@ -1,0 +1,13 @@
+# Node
+node_modules/
+
+# .NET build output
+bin/
+obj/
+
+# Local work/scratch dirs
+.khwork/
+
+# OS / editor
+.DS_Store
+Thumbs.db

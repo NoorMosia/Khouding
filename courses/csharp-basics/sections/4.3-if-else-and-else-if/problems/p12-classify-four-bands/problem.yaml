@@ -1,0 +1,17 @@
+id: p12-classify-four-bands
+title: Classify into four bands
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Four-band chain: empty (< 20), low (< 60), ok (< 90), full (otherwise).
+# Cases reach every band and sit on each boundary (20 -> low, 60 -> ok, 90 -> full).
+cases:
+  - { stdin: "5",  note: "empty" }
+  - { stdin: "20", note: "low (boundary)" }
+  - { stdin: "60", note: "ok (boundary)" }
+  - { stdin: "90", note: "full (boundary, final else)" }
+  - { stdin: "45", note: "low (interior)" }

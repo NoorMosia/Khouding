@@ -1,0 +1,15 @@
+id: p08-zero-numerator
+title: Zero numerator
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Edge: 0 / n is always 0. Second line n / n = 1 keeps the output input-dependent (and n is never zero here).
+cases:
+  - { stdin: "5",   note: "0 then 1" }
+  - { stdin: "1",   note: "0 then 1" }
+  - { stdin: "100", note: "0 then 1" }
+  - { stdin: "7",   note: "0 then 1" }

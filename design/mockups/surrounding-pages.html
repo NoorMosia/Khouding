@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>khouding, surrounding pages (fidelity 2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --font-ui:'Inter',system-ui,sans-serif;--font-serif:'Source Serif 4',Georgia,serif;--font-mono:'JetBrains Mono',monospace;
+    --radius:10px;--radius-sm:7px;--ease:cubic-bezier(.25,.8,.35,1);--t-fast:140ms;--t-med:240ms;--t-slow:300ms;
+  }
+  [data-theme="dark"]{
+    --bg:#16171d;--surface:#1e2029;--surface-2:#282b36;--panel:#191b22;
+    --border:#2c2f3b;--border-soft:#23252f;
+    --text:#e6e6ea;--text-muted:#9a9cab;--text-faint:#595c6b;
+    --accent:#8a8bf0;--accent-fg:#0f0f26;--accent-soft:#242647;
+    --success:#5bc08a;--success-bg:#16301f;--success-bd:#2b5438;
+    --shadow:0 10px 40px rgba(0,0,0,.4);--menu-shadow:0 14px 40px rgba(0,0,0,.5);
+  }
+  [data-theme="light"]{
+    --bg:#f9f9fb;--surface:#f0f0f4;--surface-2:#e6e6ee;--panel:#ffffff;
+    --border:#e2e2ea;--border-soft:#ececf2;
+    --text:#1d1e26;--text-muted:#696b7a;--text-faint:#a8aab8;
+    --accent:#4f4fc4;--accent-fg:#ffffff;--accent-soft:#e2e2f4;
+    --success:#2f9e63;--success-bg:#e0f0e6;--success-bd:#b6dcc5;
+    --shadow:0 10px 40px rgba(60,60,90,.15);--menu-shadow:0 14px 40px rgba(60,60,90,.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-ui);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;padding:24px;transition:background var(--t-slow) var(--ease),color var(--t-slow) var(--ease);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+
+  /* page switcher chips (lab control) */
+  .switch{max-width:1000px;margin:0 auto 14px;display:flex;gap:8px;}
+  .switch button{font-family:var(--font-mono);font-size:11.5px;border:1px solid var(--border);background:var(--panel);color:var(--text-muted);padding:7px 13px;border-radius:8px;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .switch button.sel{background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:600;}
+
+  .frame{max-width:1000px;margin:0 auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transition:background var(--t-slow) var(--ease),border-color var(--t-slow) var(--ease);position:relative;}
+
+  /* NAV, logo left, toggle + avatar right. nothing else. */
+  .nav{height:54px;display:flex;align-items:center;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .logo{font-family:var(--font-mono);font-weight:600;font-size:17px;display:inline-flex;align-items:center;}
+  .logo .cur{display:inline-block;width:2px;height:16px;background:var(--accent);margin:0 1px;position:relative;top:2px;}
+  .logo .cur::before,.logo .cur::after{content:'';position:absolute;left:-3px;width:8px;height:2px;background:var(--accent);}
+  .logo .cur::before{top:0;}.logo .cur::after{bottom:0;}
+  .nav .right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+  .toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px;}
+  .toggle button{font-family:var(--font-ui);font-size:11.5px;border:none;background:transparent;color:var(--text-muted);padding:4px 11px;border-radius:16px;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .toggle button.sel{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+  .avatar{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:700;cursor:pointer;transition:box-shadow var(--t-fast) var(--ease);}
+  .avatar:hover,.avatar.open{box-shadow:0 0 0 2px var(--accent);}
+  .loginbtn{font-family:var(--font-ui);font-size:12.5px;font-weight:600;padding:7px 15px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;}
+
+  /* avatar menu */
+  .menu{position:absolute;right:18px;top:58px;z-index:20;width:210px;background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:6px;box-shadow:var(--menu-shadow);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);}
+  .menu.show{opacity:1;transform:none;pointer-events:auto;}
+  .menu .who{padding:9px 11px;border-bottom:1px solid var(--border-soft);margin-bottom:4px;}
+  .menu .who .n{font-weight:600;font-size:13.5px;}
+  .menu .who .e{font-family:var(--font-mono);font-size:10.5px;color:var(--text-muted);margin-top:1px;}
+  .menu .grp{font-family:var(--font-mono);font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;padding:7px 11px 3px;}
+  .menu a{display:block;padding:8px 11px;border-radius:7px;font-size:13px;color:var(--text-muted);cursor:pointer;transition:all var(--t-fast) var(--ease);text-decoration:none;}
+  .menu a:hover{background:var(--surface);color:var(--text);}
+  .menu a.active{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+  .menu a .tiny{font-family:var(--font-mono);font-size:9.5px;color:var(--text-faint);}
+  .menu a.soon{color:var(--text-faint);}
+  .menu .div{border-top:1px solid var(--border-soft);margin:4px 0;}
+
+  .page{display:none;animation:fade var(--t-med) var(--ease);}
+  .page.on{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+  .btn{font-family:var(--font-ui);font-size:13.5px;font-weight:600;padding:9px 20px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:transform var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease),filter var(--t-fast) var(--ease);}
+  .btn:hover{border-color:var(--accent);}.btn:active{transform:translateY(1px);}
+  .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);}
+  .btn.primary:hover{filter:brightness(1.07);}
+  .btn.sm{padding:7px 14px;font-size:12.5px;}
+  .eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+
+  /* LANDING */
+  .hero{padding:64px 54px 50px;}
+  .hero .slogan{font-family:var(--font-serif);font-size:46px;font-weight:600;line-height:1.06;letter-spacing:-.02em;max-width:13ch;}
+  .hero .sub{margin-top:20px;font-size:16.5px;line-height:1.62;color:var(--text-muted);max-width:47ch;}
+  .hero .cta{margin-top:28px;display:flex;gap:12px;}
+  .thesis{display:flex;gap:16px;padding:10px 54px 52px;}
+  .tcard{flex:1;border:1px solid var(--border-soft);border-radius:11px;padding:18px;background:var(--bg);}
+  .tcard h4{font-family:var(--font-serif);font-size:15.5px;font-weight:600;margin-bottom:7px;}
+  .tcard p{font-size:13px;color:var(--text-muted);line-height:1.55;}
+
+  /* CATALOG */
+  .pad{padding:30px 32px 34px;}
+  .pad h2{font-family:var(--font-serif);font-size:25px;font-weight:600;letter-spacing:-.01em;margin:6px 0 4px;}
+  .lead{color:var(--text-muted);font-size:14px;margin-bottom:24px;}
+  .ccard{border:1px solid var(--border-soft);border-radius:12px;padding:22px;margin-bottom:14px;background:var(--bg);transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);}
+  .ccard:hover{border-color:var(--accent);}
+  .ccard .ctop{display:flex;align-items:center;gap:11px;}
+  .ccard h3{font-size:17px;font-weight:600;}
+  .lang{font-family:var(--font-mono);font-size:11px;padding:3px 9px;border-radius:6px;background:var(--accent-soft);color:var(--accent);}
+  .ccard.locked .lang{background:var(--surface-2);color:var(--text-faint);}
+  .ccard p{color:var(--text-muted);font-size:13.5px;line-height:1.55;margin:9px 0 15px;max-width:54ch;}
+  .ccard.locked{opacity:.6;}
+  .mrow{display:flex;align-items:center;gap:14px;}
+  .meter{height:7px;width:220px;background:var(--surface-2);border-radius:4px;overflow:hidden;}
+  .meter>span{display:block;height:100%;background:var(--accent);border-radius:4px;}
+  .mrow .pct{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+
+  /* COURSE HOME */
+  .chero{padding:28px 32px;display:flex;align-items:center;gap:20px;border-bottom:1px solid var(--border);}
+  .chero .meta{flex:1;}
+  .chero h2{font-family:var(--font-serif);font-size:27px;font-weight:600;letter-spacing:-.015em;margin:6px 0 9px;}
+  .chero .headline{display:flex;align-items:center;gap:11px;font-size:13.5px;color:var(--text-muted);}
+  .chero .headline .link{color:var(--accent);cursor:pointer;}
+  .viewtoggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:3px;}
+  .viewtoggle button{font-family:var(--font-ui);font-size:12.5px;border:none;background:transparent;color:var(--text-muted);padding:7px 15px;border-radius:7px;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .viewtoggle button.sel{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+  .shellbody{margin:22px 32px 32px;min-height:180px;border:1px dashed var(--border);border-radius:11px;display:grid;place-items:center;color:var(--text-faint);font-family:var(--font-mono);font-size:12px;text-align:center;line-height:1.7;}
+
+  /* PROFILE */
+  .pwrap{padding:30px 32px 36px;max-width:560px;}
+  .pwrap h2{font-family:var(--font-serif);font-size:21px;font-weight:600;margin:0 0 16px;}
+  .pwrap h2.mt{margin-top:28px;}
+  .field{margin-bottom:15px;}
+  .field label{font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px;}
+  .field .inp{border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-size:14px;background:var(--bg);color:var(--text);max-width:360px;}
+  .loginrow{display:flex;align-items:center;gap:12px;border:1px solid var(--border-soft);border-radius:9px;padding:12px 15px;margin-bottom:10px;}
+  .loginrow .ic{width:28px;height:28px;border-radius:7px;background:var(--surface-2);display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
+  .loginrow .l{flex:1;font-size:14px;}
+  .loginrow .st{font-family:var(--font-mono);font-size:11px;color:var(--success);}
+  .reserved{border:1px dashed var(--border);border-radius:10px;padding:18px;background:var(--bg);color:var(--text-faint);font-family:var(--font-mono);font-size:11.5px;text-align:center;}
+
+  .hint{max-width:1000px;margin:16px auto 0;font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint);text-align:center;}
+  .hint b{color:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="switch">
+    <button class="sel" data-p="landing">Landing</button>
+    <button data-p="catalog">Catalog</button>
+    <button data-p="home">Course home</button>
+    <button data-p="profile">Profile</button>
+  </div>
+
+  <div class="frame">
+    <!-- NAV (same on every page) -->
+    <div class="nav">
+      <span class="logo">khoud<span class="cur"></span>ng</span>
+      <div class="right">
+        <div class="toggle"><button id="td" class="sel">Dark</button><button id="tl">Light</button></div>
+        <span class="loginbtn" id="loginbtn">Log in</span>
+        <span class="avatar" id="avatar" style="display:none">N</span>
+      </div>
+    </div>
+
+    <!-- avatar menu -->
+    <div class="menu" id="menu">
+      <div class="who"><div class="n">Noortje</div><div class="e">noortje@example.com</div></div>
+      <div class="grp">Navigate</div>
+      <a data-go="catalog">My courses</a>
+      <a data-go="home">C# Basics <span class="tiny">· active</span></a>
+      <div class="div"></div>
+      <div class="grp">You</div>
+      <a data-go="profile" class="active">Account &amp; profile</a>
+      <a>Login methods</a>
+      <a>Preferences</a>
+      <a class="soon">Badges &amp; shield (soon)</a>
+      <div class="div"></div>
+      <a>Log out</a>
+    </div>
+
+    <!-- LANDING -->
+    <div class="page on" id="p-landing">
+      <div class="hero">
+        <div class="slogan">Learn to code like it's 2016.</div>
+        <p class="sub">University-standard courses with a built-in editor that grades your work the way a professor would. No AI writing it for you. You actually learn the craft.</p>
+        <div class="cta"><button class="btn primary" data-go="catalog">Start C# Basics</button><button class="btn" data-go="catalog">Browse courses</button></div>
+      </div>
+      <div class="thesis">
+        <div class="tcard"><h4>A real standard</h4><p>Textbook-depth content, not video skimming. Finish a course and you actually know it.</p></div>
+        <div class="tcard"><h4>It grades your code</h4><p>Hidden tests run your work like a judge. The map only fills if you can really do it.</p></div>
+        <div class="tcard"><h4>Your pace</h4><p>Self-paced, nothing locked. Jump around, come back, pick up where you left off.</p></div>
+      </div>
+    </div>
+
+    <!-- CATALOG -->
+    <div class="page" id="p-catalog">
+      <div class="pad">
+        <div class="eyebrow">My courses</div>
+        <h2>Keep going</h2>
+        <div class="lead">Self-paced. Nothing locked. Pick up where you left off.</div>
+        <div class="ccard">
+          <div class="ctop"><h3>C# Basics</h3><span class="lang">C#</span></div>
+          <p>Variables, control flow, methods. Built from the logic of the language, drilled with lots of practice.</p>
+          <div class="mrow"><span class="meter"><span style="width:22%"></span></span><span class="pct">22% · Chapter 1</span><button class="btn sm primary" data-go="home">Continue</button></div>
+        </div>
+        <div class="ccard locked">
+          <div class="ctop"><h3>Java Basics</h3><span class="lang">soon</span></div>
+          <p>The same spine, in Java. Finishing C# tells you exactly how this will feel.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- COURSE HOME -->
+    <div class="page" id="p-home">
+      <div class="chero">
+        <div class="meta">
+          <div class="eyebrow">Course</div>
+          <h2>C# Basics</h2>
+          <div class="headline"><span>Chapter 1 in progress</span><span>·</span><span>22%</span><span>·</span><span class="link">resume 1.3 →</span></div>
+        </div>
+        <div class="viewtoggle"><button class="sel">Contents</button><button>Map</button></div>
+      </div>
+      <div class="shellbody">the Contents view OR the Province Map renders here<br>(both already built, this page is the shell that holds them)</div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="page" id="p-profile">
+      <div class="pwrap">
+        <h2>Account &amp; profile</h2>
+        <div class="field"><label>Display name</label><div class="inp">Noortje</div></div>
+        <div class="field"><label>Email</label><div class="inp">noortje@example.com</div></div>
+        <h2 class="mt">Login methods</h2>
+        <div class="loginrow"><span class="ic">@</span><span class="l">Email &amp; password</span><span class="st">set</span></div>
+        <div class="loginrow"><span class="ic">G</span><span class="l">Google</span><span class="st">linked</span></div>
+        <div class="loginrow"><span class="ic">GH</span><span class="l">GitHub</span><button class="btn sm">link</button></div>
+        <h2 class="mt">Community</h2>
+        <div class="reserved">reserved: your khommunity badges &amp; shield appear here once community ships</div>
+      </div>
+    </div>
+  </div>
+  <div class="hint">interactive: <b>switch pages</b> above · on app pages click the <b>avatar</b> for the menu · <b>Dark / Light</b> · Landing shows "Log in", app pages show the avatar</div>
+
+<script>
+  const $=s=>document.querySelector(s);
+  $('#td').onclick=()=>{document.documentElement.dataset.theme='dark';$('#td').classList.add('sel');$('#tl').classList.remove('sel');};
+  $('#tl').onclick=()=>{document.documentElement.dataset.theme='light';$('#tl').classList.add('sel');$('#td').classList.remove('sel');};
+
+  const menu=$('#menu'),avatar=$('#avatar'),loginbtn=$('#loginbtn');
+  function showPage(p){
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));
+    $('#p-'+p).classList.add('on');
+    document.querySelectorAll('.switch button').forEach(b=>b.classList.toggle('sel',b.dataset.p===p));
+    // landing = logged out (show Log in); app pages = show avatar
+    const loggedOut = p==='landing';
+    loginbtn.style.display = loggedOut?'inline-block':'none';
+    avatar.style.display = loggedOut?'none':'grid';
+    menu.classList.remove('show'); avatar.classList.remove('open');
+    // mark active in menu
+    menu.querySelectorAll('a[data-go]').forEach(a=>a.classList.toggle('active',a.dataset.go===p));
+  }
+  document.querySelectorAll('.switch button').forEach(b=>b.onclick=()=>showPage(b.dataset.p));
+  document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',e=>{e.stopPropagation();showPage(el.dataset.go);}));
+
+  avatar.onclick=e=>{e.stopPropagation();menu.classList.toggle('show');avatar.classList.toggle('open');};
+  loginbtn.onclick=()=>showPage('catalog');
+  document.addEventListener('click',()=>{menu.classList.remove('show');avatar.classList.remove('open');});
+  menu.addEventListener('click',e=>e.stopPropagation());
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+id: p03-greeting-line
+title: Greeting line
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# A, echo & intake: one interpolated hole with literal text (and a trailing !) around it.
+cases:
+  - { stdin: "Ada",    note: typical }
+  - { stdin: "Grace",  note: different name }
+  - { stdin: "Al",     note: short name }
+  - { stdin: "Jun-ho", note: name with a hyphen }

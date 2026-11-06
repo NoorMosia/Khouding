@@ -1,0 +1,15 @@
+id: p09-adjust-the-score
+title: Adjust the score
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: start score, then += bonus, -= penalty, *= multiplier, in that order. Print the final score.
+cases:
+  - { stdin: "10\n5\n3\n2",  note: "((10+5)-3)*2 = 24" }
+  - { stdin: "0\n0\n0\n1",   note: "0" }
+  - { stdin: "20\n10\n5\n0",  note: "times zero at the end = 0" }
+  - { stdin: "7\n3\n10\n4",  note: "((7+3)-10)*4 = 0" }

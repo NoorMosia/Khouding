@@ -1,0 +1,15 @@
+id: p09-full-groups
+title: Full groups
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Realistic: how many FULL groups fit. Integer division is the correct tool (leftover items do not make a group).
+cases:
+  - { stdin: "17\n5",  note: "3 full groups (2 left over, discarded)" }
+  - { stdin: "20\n5",  note: "4 exact" }
+  - { stdin: "4\n5",   note: "0 full groups" }
+  - { stdin: "100\n8", note: "12 full groups" }

@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>khouding, section view 1.1 (reading feel)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --font-ui:'Inter',system-ui,sans-serif; --font-serif:'Source Serif 4',Georgia,serif; --font-mono:'JetBrains Mono',monospace;
+    --radius:10px; --radius-sm:7px; --ease:cubic-bezier(.25,.8,.35,1); --t-fast:140ms; --t-med:240ms; --t-slow:300ms;
+  }
+  [data-theme="dark"]{
+    --bg:#16171d; --surface:#1e2029; --surface-2:#282b36; --panel:#191b22;
+    --border:#2c2f3b; --border-soft:#23252f;
+    --text:#e6e6ea; --text-muted:#9a9cab; --text-faint:#595c6b;
+    --accent:#8a8bf0; --accent-fg:#0f0f26; --accent-soft:#242647;
+    --success:#5bc08a; --success-bg:#16301f; --success-bd:#2b5438;
+    --danger:#e08177; --danger-bg:#331d1b; --danger-bd:#5a2f2a;
+    --try-bg:#332a16; --try-bd:#5a4a24; --try-fg:#d9b45f;
+    --code-bg:#121319; --syn-com:#6b6f82;
+    --shadow:0 10px 40px rgba(0,0,0,.4);
+  }
+  [data-theme="light"]{
+    --bg:#f9f9fb; --surface:#f0f0f4; --surface-2:#e6e6ee; --panel:#ffffff;
+    --border:#e2e2ea; --border-soft:#ececf2;
+    --text:#1d1e26; --text-muted:#696b7a; --text-faint:#a8aab8;
+    --accent:#4f4fc4; --accent-fg:#ffffff; --accent-soft:#e2e2f4;
+    --success:#2f9e63; --success-bg:#e0f0e6; --success-bd:#b6dcc5;
+    --danger:#c0564a; --danger-bg:#f7e2df; --danger-bd:#e6bbb4;
+    --try-bg:#f2e8cf; --try-bd:#ddcca0; --try-fg:#9a7d2e;
+    --code-bg:#f3f3f7; --syn-com:#9ca0ad;
+    --shadow:0 10px 40px rgba(60,60,90,.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-ui);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;padding:24px;transition:background var(--t-slow) var(--ease),color var(--t-slow) var(--ease);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+
+  .frame{max-width:980px;margin:0 auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);transition:background var(--t-slow) var(--ease),border-color var(--t-slow) var(--ease);}
+
+  .nav{height:50px;display:flex;align-items:center;gap:16px;padding:0 18px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .logo{font-family:var(--font-mono);font-weight:600;font-size:16px;display:inline-flex;align-items:center;}
+  .logo .cur{display:inline-block;width:2px;height:15px;background:var(--accent);margin:0 1px;position:relative;top:2px;}
+  .logo .cur::before,.logo .cur::after{content:'';position:absolute;left:-3px;width:8px;height:2px;background:var(--accent);}
+  .logo .cur::before{top:0;}.logo .cur::after{bottom:0;}
+  .crumb{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+  .crumb .sep{opacity:.5;}
+  .nav .right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+  .toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px;}
+  .toggle button{font-family:var(--font-ui);font-size:11.5px;border:none;background:transparent;color:var(--text-muted);padding:4px 11px;border-radius:16px;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .toggle button.sel{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+  .avatar{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:700;}
+
+  .shead{padding:26px 34px 0;}
+  .eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;font-weight:600;}
+  .shead h2{font-family:var(--font-serif);font-size:27px;font-weight:600;letter-spacing:-.015em;margin:7px 0 5px;}
+  .shead .sub{color:var(--text-muted);font-size:14px;margin-bottom:20px;}
+
+  .stages{display:flex;gap:6px;border-bottom:1px solid var(--border);}
+  .stage{display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:9px 9px 0 0;color:var(--text-muted);cursor:pointer;font-size:14px;background:transparent;border:none;transition:color var(--t-fast) var(--ease),background var(--t-fast) var(--ease);position:relative;top:1px;}
+  .stage:hover{color:var(--text);}
+  .stage .n{width:21px;height:21px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;background:var(--bg);transition:all var(--t-fast) var(--ease);}
+  .stage.active{color:var(--text);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent);}
+  .stage.active .n{border-color:var(--accent);color:var(--accent);}
+  .stage .meta{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);}
+
+  .body{padding:28px 34px 40px;}
+
+  /* READING */
+  .reading{max-width:660px;}
+  .reading p{font-size:15.5px;line-height:1.72;margin-bottom:15px;}
+  .reading p.lead{font-size:16.5px;}
+  /* major section heading: a clear landmark, with air above and an eyebrow index */
+  .reading h3{font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;margin:44px 0 14px;padding-top:26px;border-top:1px solid var(--border-soft);}
+  .reading h3:first-child{margin-top:0;padding-top:0;border-top:none;}
+  .reading h3 .step{display:block;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+  .mi{font-family:var(--font-mono);font-size:13px;background:var(--surface-2);color:var(--accent);padding:1px 6px;border-radius:4px;}
+  .out{font-family:var(--font-mono);font-size:13px;background:var(--surface-2);color:var(--text);padding:1px 6px;border-radius:4px;}
+  .callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:13px 16px;border-radius:0 8px 8px 0;margin:18px 0;font-size:14.5px;line-height:1.62;}
+  .callout b{color:var(--text);}
+
+  /* code + output blocks */
+  .codeblock{background:var(--code-bg);border:1px solid var(--border-soft);border-radius:8px;font-family:var(--font-mono);font-size:13.5px;line-height:1.8;margin:16px 0;overflow-x:auto;}
+  /* editor-style: line-number gutter on the left, code on the right */
+  .code{display:grid;grid-template-columns:auto 1fr;}
+  .gutter{text-align:right;color:var(--text-faint);user-select:none;padding:14px 12px 14px 14px;border-right:1px solid var(--border-soft);white-space:pre;background:rgba(127,127,127,.04);}
+  .src{padding:14px 16px;white-space:pre;overflow-x:auto;}
+  .codeblock .c{color:var(--syn-com);font-style:italic;}
+  .codeblock .kw{color:var(--accent);}
+  .codeblock .str{color:var(--success);}
+  .outblock{background:var(--surface);border:1px dashed var(--border);border-radius:8px;padding:11px 15px;font-family:var(--font-mono);font-size:13px;line-height:1.7;margin:14px 0;color:var(--text);white-space:pre;}
+  .outcap{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);letter-spacing:.05em;text-transform:uppercase;margin:16px 0 -8px;}
+  .errline{background:var(--danger-bg);border:1px solid var(--danger-bd);border-radius:8px;padding:10px 14px;font-family:var(--font-mono);font-size:12.5px;line-height:1.6;margin:14px 0;color:var(--text);white-space:pre-wrap;}
+  .errline .loc{color:var(--danger);}
+  /* error-literacy: the general skill as one grouped block */
+  .skillbox{background:var(--surface);border:1px solid var(--border-soft);border-radius:10px;padding:4px 18px 16px;margin:16px 0;}
+  .skillbox .skhead{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin:14px 0 2px;}
+  .skillbox .errline{margin:10px 0;}
+  /* each specific error = a card pairing the red line with its explanation */
+  .errcard{border:1px solid var(--border);border-radius:10px;padding:14px 16px 6px;margin:14px 0;}
+  .errcard .when{font-size:14.5px;color:var(--text-muted);margin-bottom:0;}
+  .errcard .errline{margin:11px 0;}
+  .errcard .mean{font-size:15px;line-height:1.65;}
+  .reading ul.tips{margin:12px 0 6px;padding-left:18px;}
+  .reading ul.tips li{font-size:15px;line-height:1.65;margin-bottom:8px;}
+  .errtable{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .errtable th,.errtable td{text-align:left;padding:10px 14px;vertical-align:top;line-height:1.5;}
+  .errtable thead th{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);letter-spacing:.07em;text-transform:uppercase;font-weight:600;background:var(--surface);border-bottom:1px solid var(--border);}
+  .errtable tbody td{border-bottom:1px solid var(--border-soft);}
+  .errtable tbody tr:last-child td{border-bottom:none;}
+  .errtable th:not(:last-child),.errtable td:not(:last-child){border-right:1px solid var(--border-soft);}
+  .errtable col.c1{width:34%;} .errtable col.c2{width:38%;} .errtable col.c3{width:28%;}
+  .errtable td code,.errtable td .mi{font-family:var(--font-mono);font-size:12.5px;}
+  .errtable td code{color:var(--danger);}
+
+  /* the "part by part" list */
+  .parts{list-style:none;margin:14px 0 4px;}
+  .parts li{display:flex;gap:13px;padding:11px 0;border-top:1px solid var(--border-soft);line-height:1.6;font-size:14.5px;}
+  .parts li:last-child{border-bottom:1px solid var(--border-soft);}
+  .pline{flex-shrink:0;min-width:92px;color:var(--accent);font-family:var(--font-mono);font-size:11.5px;font-weight:600;padding-top:1px;}
+  .parts .label{font-family:var(--font-mono);font-size:13px;color:var(--text);font-weight:500;}
+  .parts .defer{color:var(--text-faint);font-style:italic;}
+
+  .foot{display:flex;align-items:center;gap:14px;margin-top:30px;padding-top:20px;border-top:1px solid var(--border-soft);}
+  .nudge{font-size:13px;color:var(--text-muted);}
+  .link{color:var(--accent);cursor:pointer;text-decoration:none;}
+  .btn{font-family:var(--font-ui);font-size:13.5px;font-weight:600;padding:9px 20px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:transform var(--t-fast) var(--ease),border-color var(--t-fast) var(--ease),filter var(--t-fast) var(--ease);}
+  .btn:hover{border-color:var(--accent);}
+  .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);}
+  .btn.primary:hover{filter:brightness(1.07);}
+
+  /* panes + stage switching */
+  .pane{animation:fade var(--t-med) var(--ease);}
+  @keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+  .hidden{display:none;}
+
+  /* QUIZ */
+  .quiz{max-width:600px;}
+  .qprog{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:11.5px;color:var(--text-muted);margin-bottom:18px;}
+  .qbar{height:5px;flex:1;max-width:180px;background:var(--surface-2);border-radius:3px;overflow:hidden;}
+  .qbar>span{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width var(--t-slow) var(--ease);}
+  .qtype{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;}
+  .qprompt{font-size:17px;margin:9px 0 18px;line-height:1.5;font-weight:500;white-space:pre-wrap;}
+  .qprompt code{font-family:var(--font-mono);font-size:14.5px;background:var(--surface-2);padding:1px 6px;border-radius:4px;}
+  .opt{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--border);border-radius:9px;margin-bottom:9px;cursor:pointer;font-size:14.5px;transition:all var(--t-fast) var(--ease);background:var(--bg);}
+  .opt:hover{border-color:var(--accent);}
+  .opt .r{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--text-faint);flex-shrink:0;transition:all var(--t-fast) var(--ease);}
+  .opt.correct{border-color:var(--success-bd);background:var(--success-bg);}
+  .opt.correct .r{background:var(--success);border-color:var(--success);}
+  .opt.wrong{border-color:var(--danger-bd);background:var(--danger-bg);}
+  .opt.wrong .r{background:var(--danger);border-color:var(--danger);}
+  .opt.locked{pointer-events:none;}
+  .rationale{font-size:13.5px;color:var(--text-muted);background:var(--surface);border-radius:8px;padding:11px 14px;margin-top:10px;line-height:1.55;animation:fade var(--t-med) var(--ease);}
+  .rationale b{color:var(--text);}
+  .qfoot{display:flex;align-items:center;gap:12px;margin-top:18px;}
+
+  /* PROBLEMS */
+  .problems{max-width:720px;}
+  .plist-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .lit{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+  .lit b{color:var(--text);}
+  .prow{display:flex;align-items:center;gap:15px;padding:13px 16px;border:1px solid var(--border-soft);border-radius:9px;margin-bottom:9px;background:var(--bg);cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .prow:hover{border-color:var(--accent);transform:translateX(2px);}
+  .pstate{width:23px;height:23px;border-radius:7px;border:1px solid var(--border);display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);flex-shrink:0;}
+  .pname{font-size:14.5px;flex:1;}
+  .pname .slug{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);margin-left:10px;}
+  .pdiff{color:var(--text-faint);font-size:11px;letter-spacing:2px;}
+  .pgo{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+  .prow:hover .pgo{color:var(--accent);}
+
+  .hint{max-width:980px;margin:16px auto 0;font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint);text-align:center;}
+  .hint b{color:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="nav">
+      <span class="logo">khoud<span class="cur"></span>ng</span>
+      <span class="crumb">C# Basics <span class="sep">/</span> Ch.1 <span class="sep">/</span> 1.1 The parts of a C# program</span>
+      <div class="right">
+        <div class="toggle"><button id="td" class="sel">Dark</button><button id="tl">Light</button></div>
+        <div class="avatar">N</div>
+      </div>
+    </div>
+
+    <div class="shead">
+      <div class="eyebrow">Section 1.1</div>
+      <h2>The parts of a C# program</h2>
+      <div class="sub">Where does your code go, and what's all the stuff around it?</div>
+      <div class="stages">
+        <button class="stage active" data-s="reading"><span class="n">1</span> Reading</button>
+        <button class="stage" data-s="quiz"><span class="n">2</span> Quiz <span class="meta">0/6</span></button>
+        <button class="stage" data-s="problems"><span class="n">3</span> Problems <span class="meta">0/6</span></button>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="pane" id="p-reading"><div class="reading">
+
+        <h3><span class="step">Part 1</span>Your first program</h3>
+        <p class="lead">Here is a complete C# program:</p>
+
+        <div class="codeblock"><div class="code"><div class="gutter">1
+2
+3
+4
+5
+6
+7
+8
+9</div><div class="src"><span class="kw">using</span> System;
+
+<span class="kw">class</span> Program
+{
+    <span class="kw">static void</span> Main()
+    {
+        Console.WriteLine(<span class="str">"Hello, World!"</span>);
+    }
+}</div></div></div>
+
+        <p>When you run it, one line appears on the screen:</p>
+        <div class="outcap">output</div>
+        <div class="outblock">Hello, World!</div>
+
+        <p>That is the whole job of this program: put a line of text on the screen. The line that does it is
+        <span class="mi">Console.WriteLine("Hello, World!")</span>.</p>
+        <p><span class="mi">Console</span> is the screen, the text output area where your program's results
+        show up. <span class="mi">WriteLine</span> writes a line to it. Whatever you put in the quotes is what
+        appears.</p>
+        <p>Everything <em>else</em> in the program is the frame that every C# program sits inside. You will
+        write that same frame around your code every time, so let us walk through it once. Not to memorise
+        it, just so none of it looks like magic.</p>
+
+        <h3><span class="step">Part 2</span>The frame, part by part</h3>
+
+        <div class="codeblock"><div class="code"><div class="gutter">1
+2
+3
+4
+5
+6
+7
+8
+9</div><div class="src"><span class="kw">using</span> System;
+
+<span class="kw">class</span> Program
+{
+    <span class="kw">static void</span> Main()
+    {
+        Console.WriteLine(<span class="str">"Hello, World!"</span>);
+    }
+}</div></div></div>
+
+        <ul class="parts">
+          <li><span class="pline">Line 1</span><span><span class="label">using System;</span> lets you
+            write <span class="mi">Console</span> instead of its longer full name,
+            <span class="mi">System.Console</span>. <span class="mi">Console</span> lives in a collection of
+            built-in tools called <span class="mi">System</span>, and this line says "I will be using those
+            tools here." You will see what these collections really are later in the course.</span></li>
+
+          <li><span class="pline">Line 3</span><span><span class="label">class Program.</span> Every bit of
+            C# code lives inside a <em>class</em>. For now, think of it as the named container your program
+            sits in. You will not do anything with the class itself in this chapter. It is just the outer
+            box.</span></li>
+
+          <li><span class="pline">Line 5</span><span><span class="label">static void Main()</span> is
+            <b>where the program starts.</b> When you run the program, C# looks for
+            <span class="mi">Main</span> and begins there. <span class="defer">The words static void are
+            required wording. Ignore them for now; they will make sense when we reach Methods
+            later.</span></span></li>
+
+          <li><span class="pline">Lines 4, 6, 8, 9</span><span><span class="label">{ }</span> braces mark
+            where a block begins and ends. The class has a pair (lines 4 and 9);
+            <span class="mi">Main</span> has its own pair <em>inside</em> the class's (lines 6 and 8). Every
+            opening <span class="mi">{</span> has a matching closing <span class="mi">}</span>.</span></li>
+
+          <li><span class="pline">Line 7</span><span><span class="label">the statement</span> is the actual
+            instruction. It ends with a <b>semicolon</b> <span class="mi">;</span>, which marks the end of a
+            statement, like a full stop at the end of a sentence. A missing
+            <span class="mi">;</span> is the single most common beginner error.</span></li>
+        </ul>
+
+        <h3><span class="step">Part 3</span>Where your code goes</h3>
+        <div class="callout">Your code goes <b>inside Main's braces</b> (between lines 6 and 8 above).
+        Statements there run <b>top to bottom</b>, in order.</div>
+        <p>A line of code placed outside <span class="mi">Main</span> does not run as part of your program.
+        When you want your program to <em>do</em> something, you write it as a statement inside
+        <span class="mi">Main</span>, and you add statements in the order you want them to happen.</p>
+
+        <div class="codeblock"><div class="code"><div class="gutter">1
+2
+3
+4
+5</div><div class="src"><span class="kw">static void</span> Main()
+{
+    Console.WriteLine(<span class="str">"First line"</span>);
+    Console.WriteLine(<span class="str">"Second line"</span>);
+}</div></div></div>
+        <div class="outcap">output</div>
+        <div class="outblock">First line
+Second line</div>
+
+        <h3><span class="step">Part 4</span>When it does not compile</h3>
+        <p>You will see compiler errors constantly, and they are not a sign you are doing badly. They are
+        the computer telling you precisely what it could not understand. Learning to read them is part of
+        the craft.</p>
+
+        <div class="skillbox">
+          <div class="skhead">How to read any error</div>
+          <ul class="tips">
+            <li><b>Read the first error, not the last.</b> One small mistake often triggers several errors.
+              Fix the first and the rest usually vanish.</li>
+            <li><b>It tells you the line.</b> An error looks like this:</li>
+          </ul>
+          <div class="errline"><span class="loc">Program.cs(9,46):</span> error CS1002: ; expected</div>
+          <ul class="tips">
+            <li>The <span class="mi">(9,46)</span> is line 9, column 46. Look there first; the real problem
+              is usually on that line or the one just above it.</li>
+            <li>The code <span class="mi">CSxxxx</span> is just an ID you can search if the message is
+              unclear.</li>
+          </ul>
+        </div>
+
+        <p>Two you may meet in this section:</p>
+
+        <div class="errcard">
+          <p class="when">If you forget the semicolon at the end of a statement:</p>
+          <div class="errline"><span class="loc">Program.cs(9,46):</span> error CS1002: ; expected</div>
+          <p class="mean">A statement is missing its closing semicolon. Go to the line it names and add a
+          <span class="mi">;</span> at the end.</p>
+        </div>
+
+        <div class="errcard">
+          <p class="when">If you put a statement in the class body, outside <span class="mi">Main</span>:</p>
+          <div class="errline"><span class="loc">Program.cs(8,22):</span> error CS1519: Invalid token '(' in a member declaration</div>
+          <p class="mean">This one looks cryptic, but it almost always means a statement is sitting
+          <b>outside</b> <span class="mi">Main</span>. A statement has to live inside a method's braces.
+          Move the line into <span class="mi">Main</span> and the error goes away.</p>
+        </div>
+
+        <h3><span class="step">Part 5</span>What you'll practise</h3>
+        <p>Putting a statement in the right place inside <span class="mi">Main</span>, getting the frame
+        right (the braces and the semicolon), and reproducing the skeleton so it runs and prints exactly
+        what is asked. The frame will feel automatic faster than you would expect. That is the whole
+        idea.</p>
+
+        <div class="foot">
+          <button class="btn primary" onclick="go('quiz')">Got it &rarr; Quiz</button>
+          <span class="nudge">or <a class="link" onclick="go('problems')">jump to the problems</a>, your call</span>
+        </div>
+      </div></div>
+
+      <!-- QUIZ (one at a time, from quiz.yaml) -->
+      <div class="pane hidden" id="p-quiz">
+        <div class="quiz">
+          <div class="qprog"><span id="qnum">Question 1 of 6</span><span class="qbar"><span id="qbarf" style="width:16%"></span></span><span>need 4 to pass</span></div>
+          <div class="qtype" id="qtype">multiple choice</div>
+          <div class="qprompt" id="qprompt"></div>
+          <div id="qopts"></div>
+          <div id="qrat"></div>
+          <div class="qfoot" id="qfoot"></div>
+        </div>
+      </div>
+
+      <!-- PROBLEMS -->
+      <div class="pane hidden" id="p-problems">
+        <div class="problems">
+          <div class="plist-head">
+            <span class="lit">Section lights at <b>4 of 6</b> solved</span>
+            <span class="lit">&#9679; not yet lit</span>
+          </div>
+          <div class="prow"><span class="pstate">1</span><span class="pname">Print inside Main<span class="slug">p01</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">2</span><span class="pname">Add a line after<span class="slug">p02</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">3</span><span class="pname">Insert a line between<span class="slug">p03</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">4</span><span class="pname">Add a line at the end<span class="slug">p04</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">5</span><span class="pname">Fix the frame<span class="slug">p05</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">6</span><span class="pname">Move the line inside Main<span class="slug">p06</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hint">1.1 authored section, end to end &middot; <b>switch stages</b> (Reading / Quiz / Problems) &middot; in Quiz, <b>pick an answer</b> for the rationale, then <b>Next</b> &middot; toggle <b>Dark / Light</b></div>
+
+<script>
+  const $=s=>document.querySelector(s);
+  $('#td').onclick=()=>{document.documentElement.dataset.theme='dark';$('#td').classList.add('sel');$('#tl').classList.remove('sel');};
+  $('#tl').onclick=()=>{document.documentElement.dataset.theme='light';$('#tl').classList.add('sel');$('#td').classList.remove('sel');};
+
+  // stage switching
+  function go(s){
+    document.querySelectorAll('.pane').forEach(p=>p.classList.add('hidden'));
+    const el=$('#p-'+s); el.classList.remove('hidden'); el.classList.remove('pane'); void el.offsetWidth; el.classList.add('pane');
+    document.querySelectorAll('.stage').forEach(b=>b.classList.toggle('active',b.dataset.s===s));
+  }
+  document.querySelectorAll('.stage').forEach(b=>b.onclick=()=>go(b.dataset.s));
+
+  // quiz data (the real 1.1 quiz.yaml, 6 questions)
+  const Q=[
+    {type:'multiple choice',prompt:'When you run a C# program, where does it start?',
+      opts:['at the very first line of the file (using System;)','inside Main','inside the class, before Main','at the last line and works upward'],ans:1,
+      rat:'Execution begins inside Main. C# looks for Main and starts there, no matter where in the file it sits.'},
+    {type:'multiple choice',prompt:'What appears on the screen when this runs?\n  Console.WriteLine("Hi there");',
+      opts:['Hi there','"Hi there"','Console.WriteLine','nothing'],ans:0,
+      rat:'WriteLine prints whatever is inside the quotes. The quotes themselves do not appear.'},
+    {type:'fill in the blank',prompt:'Every statement ends with a single character that marks its end. Type that character:',
+      opts:[';','.',':',')'],ans:0,
+      rat:'A statement ends with a semicolon ( ; ). A missing one is the most common beginner error.'},
+    {type:'true / false',prompt:'A line of code placed outside Main still runs when the program starts.',
+      opts:['True','False'],ans:1,
+      rat:'Only code inside Main runs. A statement outside Main does not execute (it will not even compile as a loose statement).'},
+    {type:'multiple choice',prompt:'What does this print?\n  static void Main()\n  {\n      Console.WriteLine("First");\n      Console.WriteLine("Second");\n  }',
+      opts:['First then Second','Second then First','only First','both on the same line: FirstSecond'],ans:0,
+      rat:'Statements inside Main run top to bottom, and WriteLine moves to a new line after each, so they print on separate lines.'},
+    {type:'multiple choice',prompt:'You want to add a line that prints a message when the program runs. Where do you put it?',
+      opts:["inside Main's braces, with the other statements",'between the class and Main','above using System;','anywhere in the file; location does not matter'],ans:0,
+      rat:"Your statements go inside Main's braces. That is where code runs, and the order you place them is the order they run."},
+  ];
+  let qi=0, answered=false;
+  function renderQ(){
+    const q=Q[qi]; answered=false;
+    $('#qnum').textContent='Question '+(qi+1)+' of 6';
+    $('#qbarf').style.width=((qi+1)/6*100)+'%';
+    $('#qtype').textContent=q.type;
+    $('#qprompt').textContent=q.prompt;
+    const box=$('#qopts'); box.innerHTML='';
+    q.opts.forEach((o,i)=>{const d=document.createElement('div');d.className='opt';d.innerHTML='<span class="r"></span> '+o;d.onclick=()=>pick(i);box.appendChild(d);});
+    $('#qrat').innerHTML=''; $('#qfoot').innerHTML='';
+  }
+  function pick(i){
+    if(answered)return; answered=true;
+    const q=Q[qi];
+    document.querySelectorAll('#qopts .opt').forEach((d,idx)=>{
+      d.classList.add('locked');
+      if(idx===q.ans)d.classList.add('correct');
+      else if(idx===i)d.classList.add('wrong');
+    });
+    const ok=i===q.ans;
+    $('#qrat').innerHTML='<div class="rationale"><b>'+(ok?'Correct.':'Not quite.')+'</b> '+q.rat+'</div>';
+    $('#qfoot').innerHTML = qi<Q.length-1
+      ? '<button class="btn primary" id="qnext">Next question</button>'
+      : '<button class="btn primary" onclick="go(\'problems\')">Finish &rarr; Problems</button>';
+    const nx=$('#qnext'); if(nx) nx.onclick=()=>{qi++;renderQ();};
+  }
+  renderQ();
+</script>
+</body>
+</html>

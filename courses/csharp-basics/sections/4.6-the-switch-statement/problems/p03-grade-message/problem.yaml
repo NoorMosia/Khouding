@@ -1,0 +1,18 @@
+id: p03-grade-message
+title: Grade message
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# switch on a read string grade -> message, default "invalid grade". Cases include an unmatched string.
+# Match is case-sensitive, so a lowercase letter falls to default.
+cases:
+  - { stdin: "A", note: "excellent" }
+  - { stdin: "B", note: "good" }
+  - { stdin: "C", note: "pass" }
+  - { stdin: "F", note: "fail" }
+  - { stdin: "Z", note: "unmatched letter -> invalid grade (default)" }
+  - { stdin: "a", note: "lowercase, case-sensitive miss -> invalid grade (default)" }

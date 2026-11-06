@@ -1,0 +1,15 @@
+id: p01-increment-decrement
+title: Increment and decrement
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read n; print n after ++ (n+1), then after -- (back to n). Two lines.
+cases:
+  - { stdin: "5",  note: "6 then 5" }
+  - { stdin: "0",  note: "1 then 0" }
+  - { stdin: "-1", note: "0 then -1" }
+  - { stdin: "99", note: "100 then 99" }

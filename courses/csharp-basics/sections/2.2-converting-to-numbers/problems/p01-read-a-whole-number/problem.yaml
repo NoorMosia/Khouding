@@ -1,0 +1,15 @@
+id: p01-read-a-whole-number
+title: Read a whole number
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Parse the line to an int, print it back. The echo proves the parse worked.
+cases:
+  - { stdin: "7",    note: small }
+  - { stdin: "0",    note: zero }
+  - { stdin: "-4",   note: negative }
+  - { stdin: "1000", note: large }

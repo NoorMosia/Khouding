@@ -1,0 +1,83 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 6.5 (overloading = same method name, different parameter lists by count or type; the
+# compiler resolves the call from the arguments; cannot differ by return type alone). Assumes
+# 6.1-6.4. End of Chapter 6.
+
+section: csharp-basics/6.5-overloading
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What is method overloading?"
+    options:
+      - { id: a, text: "several methods with the same name but different parameter lists" }
+      - { id: b, text: "one method that calls itself" }
+      - { id: c, text: "a method with no parameters" }
+      - { id: d, text: "renaming a method" }
+    answer: a
+    rationale: "Overloading gives several methods the same name, distinguished by their parameter lists (count or types)."
+
+  - id: q2
+    type: mcq
+    prompt: "How does the compiler decide which overload a call runs?"
+    options:
+      - { id: a, text: "by matching the arguments to a version's parameter list" }
+      - { id: b, text: "by the return type" }
+      - { id: c, text: "it always runs the first one defined" }
+      - { id: d, text: "at random" }
+    answer: a
+    rationale: "The compiler picks the overload whose parameters match the arguments at the call site."
+
+  - id: q3
+    type: mcq
+    prompt: "Add(int, int) and Add(int, int, int) both exist. Which runs for Add(2, 3, 4)?"
+    options:
+      - { id: a, text: "the three-parameter version" }
+      - { id: b, text: "the two-parameter version" }
+      - { id: c, text: "both" }
+      - { id: d, text: "neither, it is an error" }
+    answer: a
+    rationale: "Three arguments match the three-parameter overload."
+
+  - id: q4
+    type: mcq
+    prompt: "What makes two methods valid overloads?"
+    options:
+      - { id: a, text: "different parameter lists (different count or types)" }
+      - { id: b, text: "different return types with the same parameters" }
+      - { id: c, text: "different names" }
+      - { id: d, text: "different bodies" }
+    answer: a
+    rationale: "Overloads must differ in their parameter lists. The compiler uses the parameters to tell them apart."
+
+  - id: q5
+    type: truefalse
+    prompt: "Two methods with the same name and the same parameters but different return types are valid overloads."
+    answer: false
+    rationale: "Overloads cannot differ by return type alone. The parameter lists must differ, or the call is ambiguous."
+
+  - id: q6
+    type: mcq
+    prompt: "You call an overloaded method with a number of arguments that no version accepts. What happens?"
+    options:
+      - { id: a, text: "a compile error: no overload takes that many arguments" }
+      - { id: b, text: "the closest version runs" }
+      - { id: c, text: "it runs with missing values set to 0" }
+      - { id: d, text: "the first version runs" }
+    answer: a
+    rationale: "If no overload matches the arguments, the call does not compile."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the word for giving several methods the same name with different parameter lists:  method ____"
+    accept: ["overloading"]
+    rationale: "Overloading is defining several methods with one name and different parameter lists."

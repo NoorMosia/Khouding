@@ -1,0 +1,46 @@
+# Chapter 2 region boss, machine-readable source of truth.
+# A TEST is pooled: a single attempt draws `draw` problems from `pool`, and
+# passing `light_at` of them lights the chapter region on the map.
+# The oracle CLI generates each pool problem's expecteds from its solution.cs,
+# exactly as for a section problem.
+
+id: csharp-basics/2.T
+kind: chapter-test
+title: Chapter 2 Test
+
+draw: 10            # problems served in a single attempt
+light_at: 6         # pass this many of the draw to light Chapter 2 (~60%)
+window_hours: 24    # generous attempt window; miss it or fall short and it just
+                    # does not light, a retry draws a fresh set. No lockouts, ever.
+shuffle: true
+
+# The bank (20). A single attempt draws 10, weighted to a mix of difficulties.
+# Unlike 1.T, these problems take stdin, so each pool problem also carries
+# several varied input cases. That is anti-hardcoding from BOTH sides: the pool
+# is bigger than the draw, and each problem's cases defeat a hardcoded literal.
+pool:
+  # A, echo & intake (2.1 prompt + read, 2.3 interpolation)
+  - p01-echo-profile
+  - p02-intake-card
+  - p03-greeting-line
+  - p04-contact-line
+  # B, read + compute (2.2 parse + arithmetic, 2.3 interpolated result)
+  - p05-sum-sentence
+  - p06-next-years-age
+  - p07-rectangle-area
+  - p08-count-total
+  - p09-difference-line
+  # C, money / formatting (2.2 parse + compute, 2.5 :F2 money)
+  - p10-price-line
+  - p11-order-total
+  - p12-two-line-receipt
+  - p13-discounted-total
+  # D, build a string (2.4 join pieces with + into a composed value)
+  - p14-build-full-name
+  - p15-build-code
+  - p16-build-badge
+  # E, fix the broken program (debug across 2.2-2.5)
+  - p17-fix-forgot-to-parse
+  - p18-fix-missing-dollar
+  - p19-fix-wrong-type
+  - p20-fix-raw-money

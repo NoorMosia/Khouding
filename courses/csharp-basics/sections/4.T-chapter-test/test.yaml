@@ -1,0 +1,47 @@
+# Chapter 4 region boss, machine-readable source of truth.
+# A TEST is pooled: a single attempt draws `draw` problems from `pool`, and
+# passing `light_at` of them lights the chapter region on the map.
+# The oracle CLI generates each pool problem's expecteds from its solution.cs,
+# exactly as for a section problem.
+
+id: csharp-basics/4.T
+kind: chapter-test
+title: Chapter 4 Test
+
+draw: 10            # problems served in a single attempt
+light_at: 6         # pass this many of the draw to light Chapter 4 (~60%)
+window_hours: 24    # generous attempt window; miss it or fall short and it just
+                    # does not light, a retry draws a fresh set. No lockouts, ever.
+shuffle: true
+
+# The bank (20). A single attempt draws 10, weighted to a mix of difficulties.
+# These problems take stdin, so each also carries several varied input cases that
+# STRADDLE every branch boundary (an input into each block, each case, both truth
+# outcomes, every leaf of a tree). Anti-hardcoding from both sides: the pool is
+# bigger than the draw, and each problem's cases defeat a single-branch answer.
+pool:
+  # A, booleans & comparisons (4.1)
+  - p01-compare-two
+  - p02-store-bool-flag
+  - p03-boundary-check
+  # B, if / else / else if (4.2, 4.3)
+  - p04-over-threshold
+  - p05-adult-or-minor
+  - p06-sign
+  - p07-grade-bands
+  - p08-temperature-bands
+  # C, combining & nesting (4.4, 4.5)
+  - p09-in-range
+  - p10-either-free
+  - p11-two-factor-gate
+  - p12-tier-tree
+  - p13-shipping-cost
+  # D, switch (4.6)
+  - p14-menu
+  - p15-day-name
+  - p16-code-lookup
+  # E, fix the broken program (debug across 4.1-4.6)
+  - p17-fix-assign-vs-equal
+  - p18-fix-elseif-order
+  - p19-fix-or-vs-and
+  - p20-fix-missing-break

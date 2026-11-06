@@ -1,0 +1,15 @@
+id: p01-print-argument
+title: Print the argument
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# One parameter: Main reads a number and passes it to a method that prints it. Varied args.
+cases:
+  - { stdin: "5",   note: "prints 5" }
+  - { stdin: "0",   note: "prints 0" }
+  - { stdin: "-3",  note: "prints -3" }
+  - { stdin: "42",  note: "prints 42" }

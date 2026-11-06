@@ -1,0 +1,15 @@
+id: p03-count-down
+title: Count down
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Count down with i--: read n, print n..1 one per line. Zero/negative -> nothing.
+cases:
+  - { stdin: "4",  note: "4 3 2 1" }
+  - { stdin: "1",  note: "just 1" }
+  - { stdin: "0",  note: "nothing" }
+  - { stdin: "-2", note: "negative: nothing" }

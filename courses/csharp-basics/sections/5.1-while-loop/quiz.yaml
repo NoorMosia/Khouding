@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 5.1 (while repeats a block while a bool condition is true, checked before each pass;
+# the body must make progress or the loop never ends; a while can run zero times; the count
+# and sentinel patterns; accumulate into one variable). Assumes Ch.1-4. do-while is 5.2.
+
+section: csharp-basics/5.1-while-loop
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "When does a while loop check its condition?"
+    options:
+      - { id: a, text: "before each pass; if it is false the body is skipped" }
+      - { id: b, text: "after each pass; so the body always runs at least once" }
+      - { id: c, text: "only once, at the start of the program" }
+      - { id: d, text: "halfway through the body" }
+    answer: a
+    rationale: "A while tests the condition before every pass. If it is false at the start, the body runs zero times."
+
+  - id: q2
+    type: mcq
+    prompt: "How many times does this body run?  int i = 5; while (i < 3) { Console.WriteLine(i); i++; }"
+    options:
+      - { id: a, text: "zero, 5 < 3 is false at the start" }
+      - { id: b, text: "once" }
+      - { id: c, text: "three times" }
+      - { id: d, text: "forever" }
+    answer: a
+    rationale: "5 < 3 is false immediately, so the body never runs. A while can run zero times."
+
+  - id: q3
+    type: truefalse
+    prompt: "If the loop body never changes anything the condition depends on, the loop can run forever."
+    answer: true
+    rationale: "Without progress toward making the condition false, the condition stays true and the loop never ends (an infinite loop)."
+
+  - id: q4
+    type: mcq
+    prompt: "In  int i = 1; while (i <= 4) { sum += i; i++; }  what makes the loop eventually stop?"
+    options:
+      - { id: a, text: "i++ raises i until i <= 4 becomes false" }
+      - { id: b, text: "sum += i eventually overflows" }
+      - { id: c, text: "while loops always stop after 4 passes" }
+      - { id: d, text: "nothing, it is an infinite loop" }
+    answer: a
+    rationale: "i++ is the progress. Once i reaches 5, i <= 4 is false and the loop ends."
+
+  - id: q5
+    type: truefalse
+    prompt: "A sentinel loop stops when a special stop value is read, and that stop value is not counted as data."
+    answer: true
+    rationale: "The sentinel marks the end of input. The loop stops when it is read, and it is not part of the processed values."
+
+  - id: q6
+    type: mcq
+    prompt: "What is an accumulator in a loop?"
+    options:
+      - { id: a, text: "a variable declared outside the loop that builds up a result (a sum, count, or max) across passes" }
+      - { id: b, text: "the loop's condition" }
+      - { id: c, text: "a variable that resets to zero every pass" }
+      - { id: d, text: "another name for the loop counter" }
+    answer: a
+    rationale: "An accumulator lives outside the loop and is updated each pass, so it holds the running result when the loop ends."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the keyword that repeats a block as long as a condition is true:  ____ (i <= n) { ... }"
+    accept: ["while"]
+    rationale: "while repeats its body as long as the condition is true."

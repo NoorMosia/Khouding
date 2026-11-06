@@ -1,0 +1,17 @@
+id: p07-coin-name
+title: Coin name
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Realistic one-value dispatch: cents 1/5/10/25 -> coin name, default "not a coin". Cases hit each + default.
+cases:
+  - { stdin: "1",  note: "penny" }
+  - { stdin: "5",  note: "nickel" }
+  - { stdin: "10", note: "dime" }
+  - { stdin: "25", note: "quarter" }
+  - { stdin: "7",  note: "not a coin value -> not a coin (default)" }
+  - { stdin: "50", note: "not in the set -> not a coin (default)" }

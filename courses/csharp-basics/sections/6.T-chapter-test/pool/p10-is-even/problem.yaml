@@ -1,0 +1,15 @@
+id: p10-is-even
+title: Return a bool
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# C: IsEven(n) returns a bool; Main reads n and prints it (True/False).
+cases:
+  - { stdin: "4",  note: "True" }
+  - { stdin: "7",  note: "False" }
+  - { stdin: "0",  note: "True" }
+  - { stdin: "-3", note: "False" }

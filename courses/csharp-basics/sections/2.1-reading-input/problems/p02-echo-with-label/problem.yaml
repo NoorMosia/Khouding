@@ -1,0 +1,14 @@
+id: p02-echo-with-label
+title: Echo with a label
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Prompt, read, print a fixed label line, then the value on the next line.
+cases:
+  - { stdin: "hello",  note: a word }
+  - { stdin: "yes",    note: short word }
+  - { stdin: "orange", note: another word }

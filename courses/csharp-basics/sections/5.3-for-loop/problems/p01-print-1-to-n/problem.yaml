@@ -1,0 +1,15 @@
+id: p01-print-1-to-n
+title: Print 1 to n
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Basic for, count up: read n, print 1..n one per line. Zero case prints nothing.
+cases:
+  - { stdin: "4", note: "1 2 3 4" }
+  - { stdin: "1", note: "one pass" }
+  - { stdin: "0", note: "zero iterations: nothing" }
+  - { stdin: "6", note: "1..6" }

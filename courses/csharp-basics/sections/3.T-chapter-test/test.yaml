@@ -1,0 +1,46 @@
+# Chapter 3 region boss, machine-readable source of truth.
+# A TEST is pooled: a single attempt draws `draw` problems from `pool`, and
+# passing `light_at` of them lights the chapter region on the map.
+# The oracle CLI generates each pool problem's expecteds from its solution.cs,
+# exactly as for a section problem.
+
+id: csharp-basics/3.T
+kind: chapter-test
+title: Chapter 3 Test
+
+draw: 10            # problems served in a single attempt
+light_at: 6         # pass this many of the draw to light Chapter 3 (~60%)
+window_hours: 24    # generous attempt window; miss it or fall short and it just
+                    # does not light, a retry draws a fresh set. No lockouts, ever.
+shuffle: true
+
+# The bank (20). A single attempt draws 10, weighted to a mix of difficulties.
+# These problems take stdin, so each also carries several varied input cases
+# (incl. negatives / edges). Anti-hardcoding from both sides: the pool is bigger
+# than the draw, and each problem's cases defeat a hardcoded literal.
+pool:
+  # A, precedence & parentheses (3.1)
+  - p01-mixed-formula
+  - p02-parenthesized-formula
+  - p03-left-to-right
+  - p04-weighted-sum
+  # B, division (3.2)
+  - p05-integer-quotient
+  - p06-decimal-quotient
+  - p07-negative-quotient
+  - p08-average-of-two
+  # C, remainder (3.3)
+  - p09-last-digit
+  - p10-leftover-units
+  - p11-wrap-into-range
+  - p12-groups-and-leftover
+  # D, updating & Math (3.4 + 3.5)
+  - p13-running-total
+  - p14-apply-updates
+  - p15-square-root
+  - p16-hypotenuse
+  - p17-round-down
+  # E, fix the broken program (debug across 3.1-3.3)
+  - p18-fix-precedence
+  - p19-fix-forgot-double
+  - p20-fix-slash-vs-percent

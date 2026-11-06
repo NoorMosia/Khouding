@@ -1,0 +1,14 @@
+id: p01-declare-an-int
+title: Declare an int
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+cases:
+  - { stdin: "3",   note: normal small }
+  - { stdin: "0",   note: edge - zero }
+  - { stdin: "150", note: larger }
+  - { stdin: "-7",  note: edge - negative }

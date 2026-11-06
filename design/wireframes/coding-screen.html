@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>wireframe, coding screen (fidelity 1)</title>
+<style>
+  /* FIDELITY 1 WIREFRAME, intentionally greyscale + boxy.
+     Goal: lock layout, zones, proportions, and the states. No brand color yet
+     except a single neutral "accent" placeholder so actions are findable. */
+  :root{
+    --ink:#2b2d31; --line:#c9ccd2; --line-2:#dde0e5; --box:#eef0f3; --box-2:#e4e7ec;
+    --paper:#f7f8fa; --muted:#7a7e86; --faint:#a7abb3; --accent:#555; 
+    --mono:ui-monospace,'Cascadia Code',monospace; --ui:system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--ui);background:#d8dadf;color:var(--ink);padding:30px 26px 120px;}
+  .head{max-width:1180px;margin:0 auto 18px;}
+  .head h1{font-size:20px;}
+  .head p{color:#55585f;font-size:14px;line-height:1.6;max-width:760px;margin-top:6px;}
+  .head .leg{margin-top:10px;font-size:12px;color:#55585f;font-family:var(--mono);}
+  .caption{max-width:1180px;margin:26px auto 8px;font-family:var(--mono);font-size:12px;color:#44474d;letter-spacing:.03em;}
+  .caption b{color:#000;}
+
+  /* ---- app frame ---- */
+  .app{max-width:1180px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .topnav{height:44px;display:flex;align-items:center;gap:16px;padding:0 14px;border-bottom:1px solid var(--line);background:var(--box);}
+  .logo{font-family:var(--mono);font-weight:700;font-size:14px;}
+  .crumb{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .topnav .right{margin-left:auto;display:flex;gap:10px;align-items:center;}
+  .ph{background:var(--box-2);border:1px dashed var(--line);border-radius:5px;}
+  .avatar{width:26px;height:26px;border-radius:50%;}
+
+  /* ---- 3-zone workbench ---- */
+  .wb{display:grid;grid-template-columns:320px 1fr;height:560px;}
+  .col{display:flex;flex-direction:column;min-height:0;}
+
+  /* problem panel (left) */
+  .problem{border-right:1px solid var(--line);background:var(--paper);overflow:auto;}
+  .problem .ph-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line-2);}
+
+  /* problem rail, move between the 15 without leaving the workbench */
+  .rail{padding:11px 14px;border-bottom:1px solid var(--line-2);background:var(--box);}
+  .rail-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+  .rail-top .lbl{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em;text-transform:uppercase;}
+  .rail-top .step{display:flex;gap:6px;}
+  .step .arr{width:24px;height:22px;border:1px solid var(--line);border-radius:5px;background:var(--box-2);display:grid;place-items:center;font-size:11px;color:var(--ink);}
+  .chips{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;}
+  .chip{height:22px;border-radius:5px;display:grid;place-items:center;font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);background:var(--paper);color:var(--muted);position:relative;}
+  .chip.solved{background:#cdd7cd;border-color:#9fb39f;color:#3f543f;}        /* solved */
+  .chip.attempted{background:#e6ddc9;border-color:#cdbf9c;color:#6b5e3e;}     /* tried, not solved */
+  .chip.current{box-shadow:0 0 0 2px #6d6f76;color:var(--ink);font-weight:700;} /* you are here */
+  .rail-legend{display:flex;gap:12px;margin-top:9px;font-family:var(--mono);font-size:10px;color:var(--faint);}
+  .rail-legend span{display:flex;align-items:center;gap:5px;}
+  .sw{width:9px;height:9px;border-radius:3px;border:1px solid var(--line);}
+  .sw.s{background:#cdd7cd;} .sw.a{background:#e6ddc9;} .sw.u{background:var(--paper);}
+  .tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;}
+  .collapse{font-family:var(--mono);font-size:14px;color:var(--faint);}
+  .problem .pbody{padding:14px;}
+  .problem h2{font-size:15px;margin-bottom:8px;}
+  .problem p{font-size:12.5px;line-height:1.6;color:#3f424a;margin-bottom:10px;}
+  .io{background:var(--box);border:1px solid var(--line-2);border-radius:6px;padding:9px 11px;font-family:var(--mono);font-size:11.5px;color:#3f424a;line-height:1.6;margin-bottom:12px;}
+  .io .k{color:var(--muted);}
+  .pmeta{display:flex;flex-direction:column;gap:9px;margin-top:6px;border-top:1px solid var(--line-2);padding-top:12px;}
+  .solved{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+  .bar{height:6px;flex:1;background:var(--box-2);border-radius:3px;overflow:hidden;}
+  .bar>span{display:block;height:100%;width:53%;background:#8a8d94;border-radius:3px;}
+  .help-slot{font-family:var(--mono);font-size:11px;color:var(--faint);border:1px dashed var(--line);border-radius:6px;padding:8px 10px;text-align:center;}
+
+  /* editor (right) */
+  .editor-col{min-width:0;}
+  .tabs{display:flex;background:var(--box);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;}
+  .tab{padding:9px 14px;color:var(--muted);border-right:1px solid var(--line-2);display:flex;gap:8px;align-items:center;}
+  .tab.active{background:var(--paper);color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent);}
+  .tab .ro{font-family:var(--ui);font-size:9px;background:var(--box-2);color:var(--muted);padding:1px 5px;border-radius:3px;}
+  .gutter-note{margin-left:auto;padding:0 12px;display:flex;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--faint);}
+
+  .code{flex:1;background:var(--paper);padding:10px 0;font-family:var(--mono);font-size:12.5px;line-height:1.7;overflow:auto;min-height:0;}
+  .cl{display:flex;}
+  .ln{width:38px;text-align:right;padding-right:14px;color:var(--faint);user-select:none;flex-shrink:0;}
+  .ct{white-space:pre;color:#3f424a;}
+  .ct .dim{color:var(--faint);}
+  .caret{display:inline-block;width:2px;height:14px;background:#888;vertical-align:-2px;animation:bl 1s steps(1) infinite;}
+  @keyframes bl{50%{opacity:0;}}
+
+  .toolbar{display:flex;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--line);background:var(--box);}
+  .btn{font-family:var(--ui);font-size:12.5px;font-weight:600;padding:7px 16px;border-radius:6px;border:1px solid var(--line);background:var(--box-2);color:var(--ink);}
+  .btn.primary{background:#6d6f76;color:#fff;border-color:#6d6f76;}
+  .tstat{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);}
+
+  /* output pane (docked bottom of editor col) */
+  .output{border-top:1px solid var(--line);background:var(--box);height:150px;display:flex;flex-direction:column;}
+  .out-head{display:flex;align-items:center;gap:10px;padding:7px 12px;border-bottom:1px solid var(--line-2);}
+  .out-title{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+  .out-actions{margin-left:auto;display:flex;gap:8px;font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .out-body{flex:1;padding:10px 12px;font-family:var(--mono);font-size:12px;line-height:1.6;overflow:auto;color:#3f424a;}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:#9a9da4;}
+  .verdict{display:flex;align-items:center;gap:8px;font-family:var(--ui);font-weight:700;font-size:12.5px;margin-bottom:8px;}
+  .case{background:var(--paper);border:1px solid var(--line-2);border-radius:6px;padding:8px 10px;margin-top:6px;}
+  .case .row{display:flex;gap:10px;}.case .lbl{color:var(--muted);width:68px;}
+  .spinner{width:12px;height:12px;border:2px solid #b7bac0;border-top-color:#6d6f76;border-radius:50%;animation:sp .8s linear infinite;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+
+  /* grid of state variants */
+  .states{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:900px){.states{grid-template-columns:1fr;}}
+  .mini{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .mini .mh{font-family:var(--mono);font-size:11px;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--line-2);background:var(--box);}
+  .mini .output{height:160px;border-top:none;}
+
+  /* expanded popup output */
+  .popup-wrap{max-width:1180px;margin:0 auto;position:relative;}
+  .popup{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .popup .output{height:300px;}
+</style>
+</head>
+<body>
+  <div class="head">
+    <h1>Coding screen, fidelity 1 wireframe</h1>
+    <p>The heart. One screen reached three ways (section problem, chapter test, course exam); only the framing copy changes. VS Code feel, our indigo and polish come later. This pass is about zones, proportions, and the states. Greyscale on purpose so we judge structure, not color.</p>
+    <div class="leg">zones: [left] problem · [center] editor + tabs + toolbar · [bottom] output pane (expands to "popup")</div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="caption"><b>1. Full layout</b>, default state, problem p05 open, editor focused, output idle</div>
+  <div class="app">
+    <div class="topnav">
+      <span class="logo">k&#9612;ng</span>
+      <span class="crumb">C# Basics / 1.3 Number variables / p05 sum-two-ints</span>
+      <div class="right"><span class="ph" style="width:70px;height:22px;display:inline-block"></span><span class="ph avatar"></span></div>
+    </div>
+    <div class="wb">
+      <!-- LEFT: problem -->
+      <div class="col problem">
+        <div class="ph-head"><span class="tag">Problem</span><span class="collapse">&#9664;</span></div>
+        <!-- RAIL: all 15 at a glance; step or jump. Encourages order, allows jumping. -->
+        <div class="rail">
+          <div class="rail-top">
+            <span class="lbl">5 of 15</span>
+            <span class="step"><span class="arr">&#9664;</span><span class="arr">&#9654;</span></span>
+          </div>
+          <div class="chips">
+            <span class="chip solved">1</span><span class="chip solved">2</span><span class="chip solved">3</span><span class="chip solved">4</span>
+            <span class="chip current">5</span><span class="chip attempted">6</span><span class="chip">7</span><span class="chip">8</span>
+            <span class="chip">9</span><span class="chip">10</span><span class="chip">11</span><span class="chip">12</span>
+            <span class="chip">13</span><span class="chip">14</span><span class="chip">15</span><span class="chip" style="visibility:hidden"></span>
+          </div>
+          <div class="rail-legend">
+            <span><span class="sw s"></span>solved</span><span><span class="sw a"></span>tried</span><span><span class="sw u"></span>not yet</span>
+          </div>
+        </div>
+        <div class="pbody">
+          <h2>Sum two ints</h2>
+          <p>Two baskets of apples are being combined. Read two whole numbers (the count in each basket), store each in its own variable, and print the total number of apples.</p>
+          <div class="io">
+            <div><span class="k">in</span>  two lines, each a whole number</div>
+            <div><span class="k">out</span> a single line: their sum</div>
+          </div>
+          <p style="color:var(--muted);font-size:11.5px;">Difficulty &#9679;&#9679;</p>
+          <div class="pmeta">
+            <div class="solved"><span>Section 1.3</span><span class="bar"><span></span></span><span>8/15</span></div>
+            <div class="help-slot">[ reserved: ask for help ]</div>
+          </div>
+        </div>
+      </div>
+      <!-- RIGHT: editor -->
+      <div class="col editor-col">
+        <div class="tabs">
+          <div class="tab active">starter.cs</div>
+          <div class="tab">cheatsheet.cs <span class="ro">read only</span></div>
+          <div class="gutter-note">no autocomplete &middot; syntax highlight only</div>
+        </div>
+        <div class="code">
+          <div class="cl"><span class="ln">1</span><span class="ct">using System;</span></div>
+          <div class="cl"><span class="ln">2</span><span class="ct"></span></div>
+          <div class="cl"><span class="ln">3</span><span class="ct">class Program</span></div>
+          <div class="cl"><span class="ln">4</span><span class="ct">{</span></div>
+          <div class="cl"><span class="ln">5</span><span class="ct">    static void Main()</span></div>
+          <div class="cl"><span class="ln">6</span><span class="ct">    {</span></div>
+          <div class="cl"><span class="ln">7</span><span class="ct">        <span class="dim">// read two numbers, print the total</span></span></div>
+          <div class="cl"><span class="ln">8</span><span class="ct">        int a = int.Parse(Console.ReadLine());</span></div>
+          <div class="cl"><span class="ln">9</span><span class="ct">        int b = int.Parse(Console.ReadLine());<span class="caret"></span></span></div>
+          <div class="cl"><span class="ln">10</span><span class="ct">    }</span></div>
+          <div class="cl"><span class="ln">11</span><span class="ct">}</span></div>
+        </div>
+        <div class="toolbar">
+          <button class="btn">Run</button>
+          <button class="btn primary">Submit</button>
+          <span class="tstat">saved &middot; csharp</span>
+        </div>
+        <div class="output">
+          <div class="out-head"><span class="dot"></span><span class="out-title">Output</span>
+            <div class="out-actions"><span>clear</span><span>&#8599; expand</span></div>
+          </div>
+          <div class="out-body" style="color:var(--faint)">Run to see output. Submit to grade against the hidden tests.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATES -->
+  <div class="caption"><b>2. Output states</b>, where this screen's real design lives (running · passed · failed · compile error)</div>
+  <div class="states">
+    <!-- running -->
+    <div class="mini">
+      <div class="mh">running (async: submitted &rarr; polling verdict)</div>
+      <div class="output">
+        <div class="out-head"><span class="spinner"></span><span class="out-title">Running</span><div class="out-actions"><span>&#8599; expand</span></div></div>
+        <div class="out-body"><div>compiling...</div><div style="color:var(--faint)">running test 2 of 5</div></div>
+      </div>
+    </div>
+    <!-- passed -->
+    <div class="mini">
+      <div class="mh">passed (Submit, all hidden cases)</div>
+      <div class="output">
+        <div class="out-head"><span class="dot" style="background:#5a7d5a"></span><span class="out-title">Result</span><div class="out-actions"><span>&#8599; expand</span></div></div>
+        <div class="out-body">
+          <div class="verdict">&#10003;&nbsp; Passed 5 of 5 tests</div>
+          <div style="color:var(--muted)">Section 1.3 is now 9 of 15 solved.</div>
+        </div>
+      </div>
+    </div>
+    <!-- failed -->
+    <div class="mini">
+      <div class="mh">failed (shows the failing case: in / expected / actual)</div>
+      <div class="output">
+        <div class="out-head"><span class="dot" style="background:#a56b63"></span><span class="out-title">Result</span><div class="out-actions"><span>&#8599; expand</span></div></div>
+        <div class="out-body">
+          <div class="verdict">&#10007;&nbsp; Failed on case 4 of 5</div>
+          <div class="case">
+            <div class="row"><span class="lbl">input</span><span>-5, 2</span></div>
+            <div class="row"><span class="lbl">expected</span><span>-3</span></div>
+            <div class="row"><span class="lbl">your output</span><span>7</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- compile error -->
+    <div class="mini">
+      <div class="mh">compile error (Run or Submit)</div>
+      <div class="output">
+        <div class="out-head"><span class="dot" style="background:#a56b63"></span><span class="out-title">Output</span><div class="out-actions"><span>&#8599; expand</span></div></div>
+        <div class="out-body">
+          <div class="verdict">&#10007;&nbsp; Build failed</div>
+          <div>starter.cs(9,41): error CS1002: ; expected</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP -->
+  <div class="caption"><b>3. Expanded output ("popup")</b>, same pane, more room. NOT a terminal; rendered text only, never interactive.</div>
+  <div class="popup-wrap">
+    <div class="popup">
+      <div class="output" style="height:300px">
+        <div class="out-head"><span class="dot"></span><span class="out-title">Output, expanded</span>
+          <div class="out-actions"><span>clear</span><span>&#8601; collapse</span></div>
+        </div>
+        <div class="out-body">
+          <div style="color:var(--muted)">$ program output (read-only, never executed)</div>
+          <div>2 minute(s), 10 second(s)</div>
+          <div style="color:var(--faint);margin-top:10px">&mdash; from p12 seconds-breakdown, input 130 &mdash;</div>
+          <div style="margin-top:14px;color:var(--muted)">stderr</div>
+          <div>(none)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST / EXAM VARIANT -->
+  <div class="caption"><b>4. Same screen, test/exam mode</b>, identical layout; the rail becomes questions, plus a timer and "flag for review". Proves one screen serves problems, chapter tests, and exams.</div>
+  <div class="app">
+    <div class="topnav">
+      <span class="logo">k&#9612;ng</span>
+      <span class="crumb">C# Basics / Chapter 1 Test</span>
+      <div class="right">
+        <span style="font-family:var(--mono);font-size:12px;color:#a56b63;border:1px solid var(--line);border-radius:5px;padding:3px 9px;">&#9201; 18:42 left</span>
+        <span class="ph avatar"></span>
+      </div>
+    </div>
+    <div class="wb" style="height:300px">
+      <div class="col problem">
+        <div class="ph-head"><span class="tag">Chapter 1 Test</span><span class="collapse">&#9664;</span></div>
+        <div class="rail">
+          <div class="rail-top">
+            <span class="lbl">Question 3 of 8</span>
+            <span class="step"><span class="arr">&#9664;</span><span class="arr">&#9654;</span></span>
+          </div>
+          <div class="chips" style="grid-template-columns:repeat(8,1fr)">
+            <span class="chip solved">1</span><span class="chip solved">2</span><span class="chip current">3</span>
+            <span class="chip attempted">4</span><span class="chip">5</span><span class="chip">6</span><span class="chip">7</span><span class="chip">8</span>
+          </div>
+          <div class="rail-legend">
+            <span><span class="sw s"></span>answered</span><span><span class="sw a"></span>flagged</span><span><span class="sw u"></span>unseen</span>
+          </div>
+        </div>
+        <div class="pbody">
+          <h2>Pooled, integrative</h2>
+          <p>Drawn fresh from the chapter pool. Pass 8 of 15 to light the chapter. No lockouts; retry gets a fresh draw.</p>
+          <div style="display:flex;gap:8px;">
+            <button class="btn" style="flex:1;font-size:12px;padding:8px">&#9873; Flag</button>
+            <button class="btn primary" style="flex:1;font-size:12px;padding:8px">Next &#9654;</button>
+          </div>
+        </div>
+      </div>
+      <div class="col editor-col">
+        <div class="tabs"><div class="tab active">answer.cs</div><div class="gutter-note">test mode &middot; same editor</div></div>
+        <div class="code">
+          <div class="cl"><span class="ln">1</span><span class="ct"><span class="dim">// your solution</span></span></div>
+          <div class="cl"><span class="ln">2</span><span class="ct"><span class="caret"></span></span></div>
+        </div>
+        <div class="toolbar"><button class="btn">Run</button><button class="btn primary">Submit answer</button><span class="tstat">answer saved</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption" style="color:#55585f"><b>navigation summary</b> &rarr; rail of all items (step with arrows, jump by clicking) + Prev/Next in the panel. Code is saved per problem, so moving around never loses work. Same pattern in test/exam, with a timer and flag-for-review.</div>
+</body>
+</html>

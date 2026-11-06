@@ -1,0 +1,15 @@
+id: p08-count-over
+title: Count cells over a threshold
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Nested count of cells > threshold. Vary dims/values/threshold; cover none/some/all.
+cases:
+  - { stdin: "2\n3\n1\n8\n3\n10\n2\n9\n5", note: "three cells above 5" }
+  - { stdin: "2\n2\n1\n2\n3\n4\n10", note: "none above 10" }
+  - { stdin: "2\n2\n5\n6\n7\n8\n0", note: "all above 0" }
+  - { stdin: "1\n4\n1\n2\n3\n4\n2", note: "1x4: two above 2" }

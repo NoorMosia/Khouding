@@ -1,0 +1,15 @@
+id: p10-count-times-price
+title: Count times price
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Mixed types: int count * double price. Values chosen so the product prints cleanly.
+cases:
+  - { stdin: "3\n2.5",  note: whole result from a decimal price }
+  - { stdin: "0\n9.99", note: count zero }
+  - { stdin: "4\n1.25", note: lands on a clean decimal }
+  - { stdin: "10\n2.5", note: larger }

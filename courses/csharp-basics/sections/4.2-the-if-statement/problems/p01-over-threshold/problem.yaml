@@ -1,0 +1,15 @@
+id: p01-over-threshold
+title: Over the threshold
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# One-way if: print "big" only if n > 100. Cases straddle: run (over), skip (under), skip (exactly 100, > is strict).
+cases:
+  - { stdin: "250", note: "runs -> big" }
+  - { stdin: "7",   note: "skips -> nothing after prompt" }
+  - { stdin: "100", note: "skips (100 is not > 100)" }
+  - { stdin: "101", note: "runs (just over)" }

@@ -1,0 +1,15 @@
+id: p09-read-a-price
+title: Read a price
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Read a price (double), print it back. Values chosen to print cleanly.
+cases:
+  - { stdin: "4.5",   note: one decimal place }
+  - { stdin: "0",     note: free }
+  - { stdin: "19.95", note: common price shape }
+  - { stdin: "120.5", note: larger }

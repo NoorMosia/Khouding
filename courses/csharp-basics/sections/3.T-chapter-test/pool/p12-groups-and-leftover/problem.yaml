@@ -1,0 +1,15 @@
+id: p12-groups-and-leftover
+title: Groups and leftover
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# C, remainder: read total, groupSize; print total / groupSize then total % groupSize (the two halves).
+cases:
+  - { stdin: "17\n5",  note: "3 then 2" }
+  - { stdin: "20\n5",  note: "4 then 0" }
+  - { stdin: "4\n5",   note: "0 then 4" }
+  - { stdin: "100\n7", note: "14 then 2" }

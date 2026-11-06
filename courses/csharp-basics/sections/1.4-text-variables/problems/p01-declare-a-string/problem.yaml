@@ -1,0 +1,14 @@
+id: p01-declare-a-string
+title: Declare a string
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+cases:
+  - { stdin: "Ada",         note: normal name }
+  - { stdin: "A",           note: single-letter word (still a string) }
+  - { stdin: "hello",       note: a lowercase word }
+  - { stdin: "Mississippi", note: longer word }

@@ -1,0 +1,65 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 1.4 (string vs char, "..." vs '...', const string, light bool). Assumes 1.1-1.3.
+
+section: csharp-basics/1.4-text-variables
+pass: 4            # need >= 4 of 6 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "Which type best fits storing a person's full name?"
+    options:
+      - { id: a, text: "char" }
+      - { id: b, text: "string" }
+      - { id: c, text: "bool" }
+      - { id: d, text: "int" }
+    answer: b
+    rationale: "A name is many characters, so string. A char holds only one character."
+
+  - id: q2
+    type: mcq
+    prompt: "Which type best fits storing a single letter grade like A?"
+    options:
+      - { id: a, text: "char" }
+      - { id: b, text: "string" }
+      - { id: c, text: "either works, it does not matter" }
+      - { id: d, text: "bool" }
+    answer: a
+    rationale: "One character is a char. (A string could hold it too, but char is the exact fit.)"
+
+  - id: q3
+    type: truefalse
+    prompt: "`'A'` and `\"A\"` are the same thing in C#."
+    answer: false
+    rationale: "'A' (single quotes) is a char. \"A\" (double quotes) is a string. Different types, even for one letter."
+
+  - id: q4
+    type: mcq
+    prompt: "What is wrong with:  char c = \"x\";"
+    options:
+      - { id: a, text: "nothing, it is fine" }
+      - { id: b, text: "double quotes make a string, but a char needs single quotes: 'x'" }
+      - { id: c, text: "a char cannot hold a letter" }
+      - { id: d, text: "you must write Char with a capital C" }
+    answer: b
+    rationale: "\"x\" is a string; a char cannot hold a string. Use single quotes: char c = 'x';"
+
+  - id: q5
+    type: truefalse
+    prompt: "A `bool` variable can hold any of several values."
+    answer: false
+    rationale: "A bool holds exactly one of two values: true or false."
+
+  - id: q6
+    type: fillblank
+    prompt: "To store the word hello, the type you declare is:  ____ word = \"hello\";"
+    accept: ["string"]
+    rationale: "A word is a sequence of characters, so string."

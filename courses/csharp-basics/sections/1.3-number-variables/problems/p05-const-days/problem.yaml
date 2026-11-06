@@ -1,0 +1,15 @@
+id: p05-const-days
+title: A const for days in a week
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read a number of weeks; print total days using a const DaysInWeek = 7.
+cases:
+  - { stdin: "3",  note: normal }
+  - { stdin: "1",  note: one week }
+  - { stdin: "0",  note: edge - zero weeks }
+  - { stdin: "52", note: larger (a year) }

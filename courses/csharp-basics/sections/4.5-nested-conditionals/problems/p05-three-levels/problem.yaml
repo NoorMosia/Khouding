@@ -1,0 +1,18 @@
+id: p05-three-levels
+title: Three levels
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# L1: n > 0 vs not. L2 (positive): even vs odd. L3 (positive even): divisible by 4 vs not.
+# Leaves: "not positive", "odd", "even by four", "even not by four". Cases reach each leaf.
+cases:
+  - { stdin: "-3", note: "L1 else -> not positive" }
+  - { stdin: "7",  note: "positive odd -> odd" }
+  - { stdin: "8",  note: "positive even, divisible by 4 -> even by four" }
+  - { stdin: "6",  note: "positive even, not divisible by 4 -> even not by four" }
+  - { stdin: "0",  note: "zero is not positive -> not positive" }
+  - { stdin: "4",  note: "smallest positive multiple of 4 -> even by four" }

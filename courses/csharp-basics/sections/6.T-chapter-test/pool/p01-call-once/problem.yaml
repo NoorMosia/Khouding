@@ -1,0 +1,12 @@
+id: p01-call-once
+title: Call a helper once
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# A: define a static void helper that prints a fixed line; Main calls it once. No input.
+cases:
+  - { stdin: "", note: "the line printed once" }

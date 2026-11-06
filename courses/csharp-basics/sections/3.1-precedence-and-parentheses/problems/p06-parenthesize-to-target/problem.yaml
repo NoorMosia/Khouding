@@ -1,0 +1,12 @@
+id: p06-parenthesize-to-target
+title: Parenthesize to a target
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Add parentheses to 2 + 4 * 3 so it evaluates to 18 (= (2 + 4) * 3), not the default 14.
+cases:
+  - { stdin: "", note: fixed, must reach 18 via parentheses }

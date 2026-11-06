@@ -1,0 +1,77 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 2.2 (int.Parse / double.Parse, compute with + - *, parse throws on bad
+# input, compile-vs-runtime). Assumes Ch.1 and 2.1.
+
+section: csharp-basics/2.2-converting-to-numbers
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "`Console.ReadLine()` hands you a line of input. What type is it?"
+    options:
+      - { id: a, text: "string, always" }
+      - { id: b, text: "int, if the line looks like a whole number" }
+      - { id: c, text: "double, if the line has a decimal point" }
+      - { id: d, text: "whatever number the line holds" }
+    answer: a
+    rationale: "ReadLine always returns a string. If you want a number, you convert it yourself."
+
+  - id: q2
+    type: truefalse
+    prompt: "You can multiply the result of `Console.ReadLine()` by 2 directly, without converting it first."
+    answer: false
+    rationale: "ReadLine gives text, and you cannot do math on text. `Console.ReadLine() * 2` does not compile (CS0019). Parse it to a number first."
+
+  - id: q3
+    type: mcq
+    prompt: "Which call turns the line \"25\" into the whole number 25?"
+    options:
+      - { id: a, text: "int.Parse(Console.ReadLine())" }
+      - { id: b, text: "double.Parse(Console.ReadLine())" }
+      - { id: c, text: "Console.ReadLine().ToInt()" }
+      - { id: d, text: "(int)Console.ReadLine()" }
+    answer: a
+    rationale: "int.Parse turns the text into a whole number. double.Parse would also read it but as a decimal value."
+
+  - id: q4
+    type: mcq
+    prompt: "You need to read a price like \"4.99\". Which one do you use?"
+    options:
+      - { id: a, text: "double.Parse" }
+      - { id: b, text: "int.Parse" }
+      - { id: c, text: "either one works" }
+      - { id: d, text: "neither, prices cannot be parsed" }
+    answer: a
+    rationale: "A price has a decimal part, so parse it to a double. int.Parse only accepts whole numbers and would reject \"4.99\"."
+
+  - id: q5
+    type: mcq
+    prompt: "What happens when `int.Parse` is given the text \"hello\"?"
+    options:
+      - { id: a, text: "it throws a FormatException while the program runs" }
+      - { id: b, text: "it returns 0" }
+      - { id: c, text: "the program refuses to compile" }
+      - { id: d, text: "it returns an empty string" }
+    answer: a
+    rationale: "Text that is not a number cannot be parsed, so Parse throws a FormatException at run time. The problems here only feed valid input, so your solutions never hit this."
+
+  - id: q6
+    type: truefalse
+    prompt: "A compile error and a runtime error are the same thing."
+    answer: false
+    rationale: "A compile error (like math on text) stops the build, so the program never runs. A runtime error (like parsing bad input) happens while the program is already running."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the blank to read a whole number into n:  int n = ____.Parse(Console.ReadLine());"
+    accept: ["int"]
+    rationale: "int.Parse converts the line of text into a whole number."

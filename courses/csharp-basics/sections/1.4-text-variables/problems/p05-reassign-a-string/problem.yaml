@@ -1,0 +1,14 @@
+id: p05-reassign-a-string
+title: Reassign a string
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Two lines in: first value, then the value it is reassigned to. Only the second prints.
+cases:
+  - { stdin: "draft\npublished", note: normal; draft overwritten by published }
+  - { stdin: "yes\nno",          note: short words }
+  - { stdin: "first\nfirst",     note: reassigned to the same value }

@@ -1,0 +1,16 @@
+id: p08-raw-vs-formatted
+title: Raw vs formatted
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Print the same value twice: raw, then with :F2. Shows why formatting matters.
+# Values chosen so the raw print is clean and deterministic under invariant culture.
+cases:
+  - { stdin: "7.5", note: raw 7.5 vs formatted 7.50 }
+  - { stdin: "10",  note: raw 10 vs formatted 10.00 }
+  - { stdin: "2.25", note: raw 2.25 vs formatted 2.25 }
+  - { stdin: "0.5", note: raw 0.5 vs formatted 0.50 }

@@ -1,0 +1,15 @@
+id: p01-greet-by-name
+title: Greet by name
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# One interpolation hole: print "Hello, {name}".
+cases:
+  - { stdin: "Ada",     note: typical name }
+  - { stdin: "Grace",   note: different name }
+  - { stdin: "Al",      note: short name }
+  - { stdin: "Jun-ho",  note: name with a hyphen }

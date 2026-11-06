@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 4.3 (if/else picks exactly one of two paths; else if chains for more than two;
+# first true wins and the rest are skipped; the final else is the catch-all; order matters).
+# Assumes 4.1 and 4.2. Conditions stay single comparisons; compound is 4.4.
+
+section: csharp-basics/4.3-if-else-and-else-if
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "With `if (cond) { A } else { B }`, how many of the two blocks run?"
+    options:
+      - { id: a, text: "exactly one, A when cond is true, otherwise B" }
+      - { id: b, text: "both, in order" }
+      - { id: c, text: "neither unless cond is true" }
+      - { id: d, text: "A always, B only when cond is false" }
+    answer: a
+    rationale: "if/else is a two-way choice: exactly one block runs. A when the condition is true, B when it is false."
+
+  - id: q2
+    type: truefalse
+    prompt: "In an `if / else if / else` chain, the first condition that is true runs its block and the rest are skipped."
+    answer: true
+    rationale: "The chain stops at the first true condition. Later conditions are not even tested once a branch is taken."
+
+  - id: q3
+    type: mcq
+    prompt: "A spend of 150 runs this chain. What prints?  if (spend >= 100) { Console.WriteLine(\"gold\"); } else if (spend >= 50) { Console.WriteLine(\"silver\"); } else { Console.WriteLine(\"none\"); }"
+    options:
+      - { id: a, text: "gold" }
+      - { id: b, text: "silver" }
+      - { id: c, text: "gold then silver" }
+      - { id: d, text: "none" }
+    answer: a
+    rationale: "150 satisfies both thresholds, but the first true condition wins, so gold prints and the silver test is skipped."
+
+  - id: q4
+    type: mcq
+    prompt: "A score of 95 runs this chain. What prints?  if (score >= 50) { Console.WriteLine(\"mid\"); } else if (score >= 90) { Console.WriteLine(\"high\"); } else { Console.WriteLine(\"low\"); }"
+    options:
+      - { id: a, text: "mid, the loosest test is first so it catches 95 before >= 90 is reached" }
+      - { id: b, text: "high, because 95 >= 90" }
+      - { id: c, text: "mid then high" }
+      - { id: d, text: "low" }
+    answer: a
+    rationale: "Order matters. 95 is already >= 50, so the first branch wins and prints mid. The >= 90 test is never reached. Test the tightest condition first."
+
+  - id: q5
+    type: truefalse
+    prompt: "The final `else` of a chain runs only when every condition above it was false."
+    answer: true
+    rationale: "The final else is the catch-all. It runs when no earlier condition matched."
+
+  - id: q6
+    type: mcq
+    prompt: "You need three outcomes: cold (< 10), warm (10 to 24), hot (25+). Which shape is correct?"
+    options:
+      - { id: a, text: "if (t < 10) cold; else if (t < 25) warm; else hot;" }
+      - { id: b, text: "if (t < 10) cold; else warm;  (hot is dropped)" }
+      - { id: c, text: "if (t < 10) cold; if (t < 25) warm; if (t >= 25) hot;" }
+      - { id: d, text: "if (t < 25) warm; else if (t < 10) cold; else hot;" }
+    answer: a
+    rationale: "Option a guards each band and keeps a final else for hot. A bare else (b) would catch hot values as warm; a wrong order (d) would mislabel."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the two keywords that add a second guarded band to a chain:  if (x > 0) { ... } ___ ___ (x < 0) { ... } else { ... }"
+    accept: ["else if"]
+    rationale: "else if adds another guarded band. A bare else cannot carry its own condition."

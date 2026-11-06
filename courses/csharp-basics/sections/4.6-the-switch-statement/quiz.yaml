@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 4.6 (match one value against constant cases with switch/case/break/default;
+# switch on int and string; switch vs an equality-only else-if chain; a missing break is a
+# COMPILE error, CS0163). Assumes 4.1-4.5. End of Chapter 4.
+
+section: csharp-basics/4.6-the-switch-statement
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "In a switch, which case runs for a value that matches no case label?"
+    options:
+      - { id: a, text: "default" }
+      - { id: b, text: "the first case" }
+      - { id: c, text: "the last case" }
+      - { id: d, text: "none, the program crashes" }
+    answer: a
+    rationale: "default is the catch-all: it runs when no case label matched the value."
+
+  - id: q2
+    type: mcq
+    prompt: "What is `break;` for inside a switch?"
+    options:
+      - { id: a, text: "it ends the case so the next case does not run" }
+      - { id: b, text: "it restarts the switch from the top" }
+      - { id: c, text: "it skips the default" }
+      - { id: d, text: "it is optional decoration" }
+    answer: a
+    rationale: "break ends the current case and leaves the switch, so execution does not continue into the next case."
+
+  - id: q3
+    type: truefalse
+    prompt: "In C#, leaving out the `break` on a non-empty case is a compile error."
+    answer: true
+    rationale: "C# does not allow silent fall-through between non-empty cases. The compiler reports CS0163, so you must end each case with a break."
+
+  - id: q4
+    type: mcq
+    prompt: "A switch on an int value runs with input 5 against cases 1, 2, 3 and a default. What prints?"
+    options:
+      - { id: a, text: "the default case output" }
+      - { id: b, text: "the case 1 output" }
+      - { id: c, text: "nothing" }
+      - { id: d, text: "a compile error" }
+    answer: a
+    rationale: "5 matches none of 1, 2, 3, so control falls to default."
+
+  - id: q5
+    type: truefalse
+    prompt: "A switch can match against string constants, for example `case \"N\":`."
+    answer: true
+    rationale: "switch works on strings as well as integers. The case labels are string constants and the match is case-sensitive."
+
+  - id: q6
+    type: mcq
+    prompt: "When is a switch a better fit than an else if chain?"
+    options:
+      - { id: a, text: "when testing one value against several exact constant options" }
+      - { id: b, text: "when the conditions are ranges like score >= 90" }
+      - { id: c, text: "whenever there is more than one condition" }
+      - { id: d, text: "never, switch and else if are identical in all cases" }
+    answer: a
+    rationale: "A case matches an exact constant, so switch fits one-value-against-constants. Ranges and comparisons stay with else if."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the keyword for the catch-all case that runs when nothing else matched:  ____ :"
+    accept: ["default"]
+    rationale: "default is the catch-all case."

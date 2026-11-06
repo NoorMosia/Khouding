@@ -1,0 +1,14 @@
+id: p12-model-the-scenario
+title: Model the scenario
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Integrative: const string heading, a string username, a char tier. Print each on its own line.
+cases:
+  - { stdin: "ada99\nA",        note: normal; tier A }
+  - { stdin: "sam the cat\nB",  note: username with spaces }
+  - { stdin: "x\nC",            note: single-char username, tier C }

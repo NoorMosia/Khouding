@@ -1,0 +1,15 @@
+id: p08-difference-two-ints
+title: Difference of two ints
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+cases:
+  - { stdin: "10\n4",   note: normal }
+  - { stdin: "4\n10",   note: result is negative (order matters) }
+  - { stdin: "7\n7",    note: edge - zero result }
+  - { stdin: "0\n5",    note: edge - from zero }
+  - { stdin: "250\n50", note: larger }

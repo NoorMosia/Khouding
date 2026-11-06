@@ -1,0 +1,17 @@
+id: p08-two-factor-gate
+title: Two-factor gate
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# age >= 18 && member == 1 (member read as a 0/1 int). if/else -> "in" / "out".
+# Cases cover all four combinations of the two factors plus the age edge.
+cases:
+  - { stdin: "30\n1", note: "adult and member -> in" }
+  - { stdin: "30\n0", note: "adult but not member -> out" }
+  - { stdin: "16\n1", note: "member but underage -> out" }
+  - { stdin: "16\n0", note: "neither -> out" }
+  - { stdin: "18\n1", note: "age edge, inclusive, and member -> in" }

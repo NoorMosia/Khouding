@@ -1,0 +1,13 @@
+id: p01-fixed-logic
+title: Fixed logic
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Bare operators, no input. Print the results of a fixed &&, ||, and ! on three lines.
+# One case (no stdin); anti-hardcoding is weak here by design (first rep), the family escalates after.
+cases:
+  - { stdin: "", note: "fixed output, no input" }

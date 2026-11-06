@@ -1,0 +1,17 @@
+id: p11-fix-bare-else
+title: Fix the bare else
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Starter uses a bare `else` for the middle band, so it catches hot values too (prints "warm" for 30).
+# No compiler error. Fix: make the middle band `else if (t < 25)` and add a final `else` for hot.
+# Case 30 separates the shapes (buggy -> warm, fixed -> hot). Boundary 25 and a cold case reach each band.
+cases:
+  - { stdin: "30", note: "hot (buggy bare-else would print warm)" }
+  - { stdin: "25", note: "hot (boundary)" }
+  - { stdin: "15", note: "warm" }
+  - { stdin: "4",  note: "cold" }

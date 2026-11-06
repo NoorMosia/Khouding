@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>khouding, auth (fidelity 2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --font-ui:'Inter',system-ui,sans-serif;--font-serif:'Source Serif 4',Georgia,serif;--font-mono:'JetBrains Mono',monospace;
+    --radius:10px;--radius-sm:8px;--ease:cubic-bezier(.25,.8,.35,1);--t-fast:140ms;--t-med:260ms;--t-slow:300ms;
+  }
+  [data-theme="dark"]{
+    --bg:#16171d;--surface:#1e2029;--surface-2:#282b36;--panel:#191b22;
+    --border:#2c2f3b;--border-soft:#23252f;
+    --text:#e6e6ea;--text-muted:#9a9cab;--text-faint:#595c6b;
+    --accent:#8a8bf0;--accent-fg:#0f0f26;--accent-soft:#242647;
+    --shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  [data-theme="light"]{
+    --bg:#f9f9fb;--surface:#f0f0f4;--surface-2:#e6e6ee;--panel:#ffffff;
+    --border:#e2e2ea;--border-soft:#ececf2;
+    --text:#1d1e26;--text-muted:#696b7a;--text-faint:#a8aab8;
+    --accent:#4f4fc4;--accent-fg:#ffffff;--accent-soft:#e2e2f4;
+    --shadow:0 20px 60px rgba(60,60,90,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-ui);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;padding:24px;min-height:100vh;transition:background var(--t-slow) var(--ease),color var(--t-slow) var(--ease);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+
+  .nav{max-width:980px;margin:0 auto 20px;height:50px;display:flex;align-items:center;padding:0 4px;}
+  .logo{font-family:var(--font-mono);font-weight:600;font-size:17px;display:inline-flex;align-items:center;}
+  .logo .cur{display:inline-block;width:2px;height:16px;background:var(--accent);margin:0 1px;position:relative;top:2px;}
+  .logo .cur::before,.logo .cur::after{content:'';position:absolute;left:-3px;width:8px;height:2px;background:var(--accent);}
+  .logo .cur::before{top:0;}.logo .cur::after{bottom:0;}
+  .nav .right{margin-left:auto;}
+  .toggle{display:flex;background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:3px;}
+  .toggle button{font-family:var(--font-ui);font-size:11.5px;border:none;background:transparent;color:var(--text-muted);padding:4px 11px;border-radius:16px;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .toggle button.sel{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+
+  /* split: FORM LEFT, decorative RIGHT */
+  .split{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);min-height:560px;}
+  @media(max-width:760px){.split{grid-template-columns:1fr;}.brandside{display:none;}}
+
+  /* LEFT: form (eye lands here first) */
+  .formside{padding:44px 44px;display:flex;flex-direction:column;justify-content:center;}
+  .fwrap{width:100%;max-width:330px;margin:0 auto;}
+  .fwrap h2{font-family:var(--font-serif);font-size:24px;font-weight:600;margin-bottom:5px;}
+  .fwrap .sub{color:var(--text-muted);font-size:13.5px;margin-bottom:22px;}
+  .social{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+  .sbtn{display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px;font-size:14px;font-weight:500;background:var(--bg);color:var(--text);cursor:pointer;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);}
+  .sbtn:hover{border-color:var(--accent);}.sbtn:active{transform:translateY(1px);}
+  .sbtn .ic{width:18px;height:18px;display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--text-muted);}
+  .divider{display:flex;align-items:center;gap:12px;color:var(--text-faint);font-size:11.5px;font-family:var(--font-mono);margin:16px 0;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border-soft);}
+  .field{margin-bottom:14px;}
+  .field .lbl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .field label{font-size:12px;color:var(--text-muted);}
+  .field .fp{font-size:11.5px;color:var(--accent);cursor:pointer;}
+  .inp{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;font-size:14px;background:var(--bg);color:var(--text);font-family:var(--font-ui);transition:border-color var(--t-fast) var(--ease);}
+  .inp:focus{outline:none;border-color:var(--accent);}
+  .inp::placeholder{color:var(--text-faint);}
+  .btn{width:100%;font-family:var(--font-ui);font-size:14px;font-weight:600;padding:12px;border-radius:var(--radius-sm);border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);cursor:pointer;margin-top:4px;transition:filter var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);}
+  .btn:hover{filter:brightness(1.07);}.btn:active{transform:translateY(1px);}
+  .swap{text-align:center;font-size:13px;color:var(--text-muted);margin-top:20px;}
+  .swap a{color:var(--accent);font-weight:600;cursor:pointer;}
+  .fineprint{text-align:center;font-size:11px;color:var(--text-faint);margin-top:16px;line-height:1.5;}
+  .back{font-size:12.5px;color:var(--accent);cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;}
+  .pane{animation:fade var(--t-med) var(--ease);}
+  @keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+  .hidden{display:none;}
+
+  /* RIGHT: simple decorative panel (map comes later) */
+  .brandside{position:relative;border-left:1px solid var(--border);padding:40px 40px;display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 85% 90%, var(--accent-soft) 0%, transparent 55%),
+      linear-gradient(160deg, var(--surface) 0%, var(--bg) 100%);
+    transition:background var(--t-slow) var(--ease);}
+  .brandside .slogan{font-family:var(--font-serif);font-size:28px;font-weight:600;line-height:1.14;letter-spacing:-.01em;max-width:13ch;}
+  .brandside .tagline{font-size:14px;color:var(--text-muted);margin-top:14px;max-width:32ch;line-height:1.6;}
+  /* bottom-right reserved for the course map (later) */
+  .brandside .later{position:absolute;bottom:18px;right:20px;font-family:var(--font-mono);font-size:9.5px;color:var(--text-faint);opacity:.6;}
+
+  .hint{max-width:980px;margin:16px auto 0;font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint);text-align:center;}
+  .hint b{color:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="nav">
+    <span class="logo">khoud<span class="cur"></span>ng</span>
+    <div class="right"><div class="toggle"><button id="td" class="sel">Dark</button><button id="tl">Light</button></div></div>
+  </div>
+
+  <div class="split">
+    <!-- LEFT: form -->
+    <div class="formside">
+      <!-- LOG IN -->
+      <div class="fwrap pane" id="login">
+        <h2>Welcome back</h2>
+        <div class="sub">Log in to pick up where you left off.</div>
+        <div class="social">
+          <div class="sbtn"><span class="ic">GH</span>Continue with GitHub</div>
+          <div class="sbtn"><span class="ic">G</span>Continue with Google</div>
+        </div>
+        <div class="divider">or with email</div>
+        <div class="field"><div class="lbl"><label>Email</label></div><input class="inp" placeholder="you@example.com"/></div>
+        <div class="field"><div class="lbl"><label>Password</label><span class="fp" data-go="forgot">Forgot?</span></div><input class="inp" type="password" placeholder="••••••••"/></div>
+        <button class="btn">Log in</button>
+        <div class="swap">New here? <a data-go="signup">Create an account</a></div>
+      </div>
+
+      <!-- SIGN UP -->
+      <div class="fwrap pane hidden" id="signup">
+        <h2>Start learning</h2>
+        <div class="sub">Create an account. Self-paced, nothing locked.</div>
+        <div class="social">
+          <div class="sbtn"><span class="ic">GH</span>Sign up with GitHub</div>
+          <div class="sbtn"><span class="ic">G</span>Sign up with Google</div>
+        </div>
+        <div class="divider">or with email</div>
+        <div class="field"><div class="lbl"><label>Email</label></div><input class="inp" placeholder="you@example.com"/></div>
+        <div class="field"><div class="lbl"><label>Password</label></div><input class="inp" type="password" placeholder="choose a password"/></div>
+        <button class="btn">Create account</button>
+        <div class="swap">Already have an account? <a data-go="login">Log in</a></div>
+        <div class="fineprint">By signing up you agree to the terms and privacy policy.</div>
+      </div>
+
+      <!-- FORGOT -->
+      <div class="fwrap pane hidden" id="forgot">
+        <span class="back" data-go="login">&larr; back to log in</span>
+        <h2>Reset your password</h2>
+        <div class="sub">Enter your email and we'll send a reset link.</div>
+        <div class="field"><div class="lbl"><label>Email</label></div><input class="inp" placeholder="you@example.com"/></div>
+        <button class="btn">Send reset link</button>
+        <div class="fineprint">Signed up with GitHub or Google? Just use that button on the log in screen.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: simple decorative panel (map later) -->
+    <div class="brandside">
+      <div class="slogan">Learn to code like it's 2016.</div>
+      <div class="tagline">A real standard, a built-in editor that grades you, and a world you fill in as you learn.</div>
+      <span class="later">map goes here later</span>
+    </div>
+  </div>
+  <div class="hint">interactive: switch <b>Log in / Create account / Forgot</b> via the links · <b>Dark / Light</b> · form left, decorative panel right (map returns later)</div>
+
+<script>
+  const $=s=>document.querySelector(s);
+  $('#td').onclick=()=>{document.documentElement.dataset.theme='dark';$('#td').classList.add('sel');$('#tl').classList.remove('sel');};
+  $('#tl').onclick=()=>{document.documentElement.dataset.theme='light';$('#tl').classList.add('sel');$('#td').classList.remove('sel');};
+  function go(id){
+    ['login','signup','forgot'].forEach(x=>$('#'+x).classList.add('hidden'));
+    const el=$('#'+id); el.classList.remove('hidden'); el.classList.remove('pane'); void el.offsetWidth; el.classList.add('pane');
+  }
+  document.querySelectorAll('[data-go]').forEach(a=>a.onclick=()=>go(a.dataset.go));
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+id: p08-repeat-rows
+title: Repeat rows
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Write vs WriteLine with a separator: read n, row i prints the number i, i times, space-separated, no trailing
+# space. Row length grows with the row.
+cases:
+  - { stdin: "3", note: "1 / 2 2 / 3 3 3" }
+  - { stdin: "1", note: "just 1" }
+  - { stdin: "4", note: "1 / 2 2 / 3 3 3 / 4 4 4 4" }
+  - { stdin: "2", note: "1 / 2 2" }

@@ -1,0 +1,13 @@
+id: p05-fix-the-frame
+title: Fix the frame
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# The STARTER is intentionally broken (missing semicolon). The SOLUTION is the
+# corrected program, which is what the oracle runs to produce the expected output.
+cases:
+  - { stdin: "", note: no-input; broken skeleton fixed to compile and print the target }

@@ -1,0 +1,16 @@
+id: p10-fix-slash-vs-percent
+title: Fix slash versus percent
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter prints total / groupSize (the number of groups) but should print the LEFTOVER total % groupSize.
+# No compiler error; wrong value. Fix: change / to %.
+cases:
+  - { stdin: "17\n5",  note: "want 2 (leftover), buggy prints 3 (groups)" }
+  - { stdin: "20\n5",  note: "want 0, buggy prints 4" }
+  - { stdin: "4\n5",   note: "want 4, buggy prints 0" }
+  - { stdin: "100\n7", note: "want 2, buggy prints 14" }

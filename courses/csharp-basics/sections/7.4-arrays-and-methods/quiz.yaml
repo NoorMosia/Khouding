@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 7.4 (array parameters; an array is passed by reference so element mutation is visible to the
+# caller, unlike a copied int; a method can return an int[]; reassigning the parameter does NOT reach
+# the caller). Assumes Ch.1-6 (esp. 6.4 by-value) and 7.1-7.3. Methods are static; Main drives I/O.
+
+section: csharp-basics/7.4-arrays-and-methods
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "A method does `a[0] = a[0] + 1` on its `int[]` parameter. After the call, what does the caller's array show at index 0?"
+    options:
+      - { id: a, text: "the increased value: the method changed the shared array" }
+      - { id: b, text: "the original value: the array was copied" }
+      - { id: c, text: "0, the default" }
+      - { id: d, text: "a compile error" }
+    answer: a
+    rationale: "An array is passed by reference, so the parameter and the caller's variable refer to the same array. An element change is visible to the caller."
+
+  - id: q2
+    type: truefalse
+    prompt: "Passing a plain `int` to a method and changing the parameter also changes the caller's int."
+    answer: false
+    rationale: "A value like int is copied (Chapter 6). The method changes its own copy; the caller's int is unchanged. This is the contrast with arrays."
+
+  - id: q3
+    type: mcq
+    prompt: "Inside a method, `a = new int[] { 9, 9 };` is run on the `int[]` parameter `a`. What does the caller see?"
+    options:
+      - { id: a, text: "no change: reassigning the parameter does not affect the caller" }
+      - { id: b, text: "the caller's array becomes { 9, 9 }" }
+      - { id: c, text: "a compile error" }
+      - { id: d, text: "the caller's array becomes empty" }
+    answer: a
+    rationale: "The parameter is a copy of the reference. Reassigning it repoints only the method's copy. Only element changes (a[i] = ...) reach the caller."
+
+  - id: q4
+    type: mcq
+    prompt: "What is the return type of a method that builds and returns an int array?"
+    options:
+      - { id: a, text: "int[]" }
+      - { id: b, text: "int" }
+      - { id: c, text: "void" }
+      - { id: d, text: "array" }
+    answer: a
+    rationale: "A method returning an int array declares its return type as int[], e.g. static int[] Range(int n)."
+
+  - id: q5
+    type: mcq
+    prompt: "You want a method to double every element so the CALLER'S array changes. Which works?"
+    options:
+      - { id: a, text: "a void method that does a[i] = a[i] * 2 in a for loop" }
+      - { id: b, text: "a void method that does a = new int[...] with doubled values" }
+      - { id: c, text: "a foreach that assigns x = x * 2" }
+      - { id: d, text: "it is impossible to change the caller's array" }
+    answer: a
+    rationale: "Writing elements through the shared reference reaches the caller. Reassigning the parameter does not, and foreach cannot assign."
+
+  - id: q6
+    type: truefalse
+    prompt: "A method can take both an array and a plain int as parameters, e.g. CountOver(int[] a, int threshold)."
+    answer: true
+    rationale: "Parameters can mix types. The array is shared by reference; the int is a copy."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the parameter type for a method that receives an int array:  static int Sum(____ a) { ... }"
+    accept: ["int[]"]
+    rationale: "An int array parameter is written int[]."

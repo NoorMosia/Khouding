@@ -1,0 +1,19 @@
+id: p07-compute-then-tier
+title: Compute, then tier
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read quantity and unit price (ints), total = quantity * price. Tier the total:
+#   total >= 100: inside -> total >= 500 ? "premium" : "bulk";  else "standard".
+# Cases reach standard, bulk, premium, and the 100/500 edges.
+cases:
+  - { stdin: "2\n10",  note: "total 20 -> standard" }
+  - { stdin: "20\n10", note: "total 200 -> bulk" }
+  - { stdin: "100\n10", note: "total 1000 -> premium" }
+  - { stdin: "10\n10", note: "total 100 edge -> bulk (>= 100)" }
+  - { stdin: "50\n10", note: "total 500 edge -> premium (>= 500)" }
+  - { stdin: "9\n11",  note: "total 99 -> standard (just under 100)" }

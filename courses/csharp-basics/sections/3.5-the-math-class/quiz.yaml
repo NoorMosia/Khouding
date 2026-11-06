@@ -1,0 +1,89 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 3.5 (the Math class: calling a library function, Sqrt/Pow/Round/Abs/
+# Max/Min/PI, the using System / namespace story, reading the library). Assumes
+# Ch.1-2 and 3.1-3.4.
+
+section: csharp-basics/3.5-the-math-class
+pass: 5            # need >= 5 of 8 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `Math.Sqrt(16)` return?"
+    options:
+      - { id: a, text: "4" }
+      - { id: b, text: "8" }
+      - { id: c, text: "16" }
+      - { id: d, text: "256" }
+    answer: a
+    rationale: "Math.Sqrt returns the square root, and the square root of 16 is 4."
+
+  - id: q2
+    type: mcq
+    prompt: "What does `Math.Pow(2, 3)` return?"
+    options:
+      - { id: a, text: "8" }
+      - { id: b, text: "6" }
+      - { id: c, text: "9" }
+      - { id: d, text: "23" }
+    answer: a
+    rationale: "Math.Pow(2, 3) is 2 to the power of 3, which is 8."
+
+  - id: q3
+    type: mcq
+    prompt: "Which call gives the larger of two numbers `a` and `b`?"
+    options:
+      - { id: a, text: "Math.Max(a, b)" }
+      - { id: b, text: "Math.Min(a, b)" }
+      - { id: c, text: "Math.Abs(a, b)" }
+      - { id: d, text: "Math.Larger(a, b)" }
+    answer: a
+    rationale: "Math.Max returns the larger of the two arguments."
+
+  - id: q4
+    type: mcq
+    prompt: "What type do most `Math` functions like `Math.Sqrt` return?"
+    options:
+      - { id: a, text: "double" }
+      - { id: b, text: "int" }
+      - { id: c, text: "string" }
+      - { id: d, text: "it depends on the input" }
+    answer: a
+    rationale: "Most Math functions return a double, even when the value happens to be whole (Math.Sqrt(16) is the double 4)."
+
+  - id: q5
+    type: truefalse
+    prompt: "`using System;` adds the Math functions to your program; without it they would not exist."
+    answer: false
+    rationale: "Math always exists in the System namespace. `using System;` only lets you write Math.Sqrt instead of the full name System.Math.Sqrt. It shortens names, it does not add capability."
+
+  - id: q6
+    type: mcq
+    prompt: "With `using System;` at the top, `Math.Sqrt(9)` is short for which full name?"
+    options:
+      - { id: a, text: "System.Math.Sqrt(9)" }
+      - { id: b, text: "Console.Math.Sqrt(9)" }
+      - { id: c, text: "Sqrt.Math.System(9)" }
+      - { id: d, text: "Math.System.Sqrt(9)" }
+    answer: a
+    rationale: "Math lives in the System namespace, so its full name is System.Math.Sqrt. using System drops the System. prefix."
+
+  - id: q7
+    type: truefalse
+    prompt: "If a function you need is on the cheatsheet but was not walked through in the reading, you are expected to read the reference and use it."
+    answer: true
+    rationale: "Reading the library and calling a function you were not hand-held through is part of the craft this section builds."
+
+  - id: q8
+    type: fillblank
+    prompt: "Fill the class name used to call a square root:  ____.Sqrt(25)"
+    accept: ["Math"]
+    rationale: "Math.Sqrt(25) calls the square-root function in the Math class."

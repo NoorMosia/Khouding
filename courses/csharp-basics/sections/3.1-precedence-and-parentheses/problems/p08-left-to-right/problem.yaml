@@ -1,0 +1,15 @@
+id: p08-left-to-right
+title: Left to right
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read a, b, c; print a - b + c = (a - b) + c left to right (NOT a - (b + c)).
+cases:
+  - { stdin: "10\n4\n3",  note: "(6) + 3 = 9; a-(b+c) would be 3" }
+  - { stdin: "5\n5\n5",   note: "(0) + 5 = 5" }
+  - { stdin: "2\n8\n1",   note: "(-6) + 1 = -5, goes negative" }
+  - { stdin: "20\n7\n7",  note: "(13) + 7 = 20" }

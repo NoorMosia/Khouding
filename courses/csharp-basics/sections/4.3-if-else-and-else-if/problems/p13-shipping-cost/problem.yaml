@@ -1,0 +1,17 @@
+id: p13-shipping-cost
+title: Shipping cost by weight
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone chain: <= 500 -> 3, <= 2000 -> 6, <= 5000 -> 10, otherwise "too heavy".
+# Cases reach every outcome, including the refusal branch, and sit on each boundary.
+cases:
+  - { stdin: "500",  note: "3 (upper boundary of first band)" }
+  - { stdin: "2000", note: "6 (boundary)" }
+  - { stdin: "5000", note: "10 (boundary)" }
+  - { stdin: "5001", note: "too heavy (final else)" }
+  - { stdin: "1200", note: "6 (interior)" }

@@ -1,0 +1,17 @@
+id: p09-pass-either-way
+title: Pass either way
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# score >= 90 || bonus == 1 (bonus read as a 0/1 int). if/else -> "pass" / "fail".
+# Cases cover both-false (the only fail) plus each single true path and the score edge.
+cases:
+  - { stdin: "95\n0", note: "high score, no bonus -> pass" }
+  - { stdin: "40\n1", note: "low score but bonus -> pass" }
+  - { stdin: "90\n0", note: "score edge, inclusive -> pass" }
+  - { stdin: "40\n0", note: "neither -> fail" }
+  - { stdin: "89\n0", note: "just below the mark, no bonus -> fail" }

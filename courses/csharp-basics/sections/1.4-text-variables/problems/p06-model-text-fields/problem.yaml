@@ -1,0 +1,14 @@
+id: p06-model-text-fields
+title: Model text fields
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read two text fields (title, author), print each on its own line. No concatenation.
+cases:
+  - { stdin: "Emma\nJane Austen",            note: a book }
+  - { stdin: "The Trial\nFranz Kafka",       note: title with a space }
+  - { stdin: "1984\nGeorge Orwell",          note: numeric-looking title (still text) }

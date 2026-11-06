@@ -1,0 +1,14 @@
+id: p03-echo-a-line
+title: Echo a line
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# A full line may contain spaces; ReadLine captures the whole line.
+cases:
+  - { stdin: "good morning",       note: a line with a space }
+  - { stdin: "ok",                 note: short }
+  - { stdin: "the quick brown fox", note: several words }

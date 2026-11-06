@@ -1,0 +1,76 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 4.4 (combine conditions with && (both), || (either), ! (not); combine with the
+# comparisons from 4.1; parenthesise for clarity; drop a compound condition into an if/else).
+# Assumes 4.1-4.3. Nesting is 4.5; switch is 4.6.
+
+section: csharp-basics/4.4-combining-conditions
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "When is `a && b` true?"
+    options:
+      - { id: a, text: "only when both a and b are true" }
+      - { id: b, text: "when at least one of a or b is true" }
+      - { id: c, text: "only when both a and b are false" }
+      - { id: d, text: "always" }
+    answer: a
+    rationale: "&& means and: the whole expression is true only when both sides are true. If either side is false, it is false."
+
+  - id: q2
+    type: mcq
+    prompt: "When is `a || b` false?"
+    options:
+      - { id: a, text: "only when both a and b are false" }
+      - { id: b, text: "only when both a and b are true" }
+      - { id: c, text: "whenever a is false" }
+      - { id: d, text: "never" }
+    answer: a
+    rationale: "|| means or: it is true when at least one side is true, so it is false only when both sides are false."
+
+  - id: q3
+    type: truefalse
+    prompt: "`!(5 > 3)` evaluates to False."
+    answer: true
+    rationale: "5 > 3 is True, and ! flips it, so !(5 > 3) is False."
+
+  - id: q4
+    type: mcq
+    prompt: "Which condition is true exactly when x is in the range 10 to 20 inclusive?"
+    options:
+      - { id: a, text: "x >= 10 && x <= 20" }
+      - { id: b, text: "x >= 10 || x <= 20" }
+      - { id: c, text: "x > 10 && x < 20" }
+      - { id: d, text: "x <= 10 && x >= 20" }
+    answer: a
+    rationale: "A range needs both bounds, so use &&. The inclusive edges call for >= and <=. Using || (b) would be true for almost every number."
+
+  - id: q5
+    type: mcq
+    prompt: "Given a = false, b = true, c = true, what is `a && (b || c)`?"
+    options:
+      - { id: a, text: "false" }
+      - { id: b, text: "true" }
+    answer: a
+    rationale: "The parentheses (b || c) are true, but a is false, and false && anything is false."
+
+  - id: q6
+    type: truefalse
+    prompt: "In C#, you write the and operator as the word `and`."
+    answer: false
+    rationale: "C# uses the symbol && for and and || for or. The words and / or are not operators and cause a compile error."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the operator that makes this true only when BOTH comparisons hold:  age >= 18 ____ age < 65"
+    accept: ["&&"]
+    rationale: "&& is and: both sides must be true for the whole condition to be true."

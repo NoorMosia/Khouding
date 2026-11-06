@@ -1,0 +1,83 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 5.5 (break stops the loop entirely; continue skips the rest of the current pass and goes
+# to the next; both work in while and for; while(true) needs a reachable break). Assumes 5.1-5.4.
+# End of Chapter 5.
+
+section: csharp-basics/5.5-loop-control
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does break do?"
+    options:
+      - { id: a, text: "ends the loop immediately; remaining passes do not happen" }
+      - { id: b, text: "skips the rest of the current pass but keeps looping" }
+      - { id: c, text: "restarts the loop from the beginning" }
+      - { id: d, text: "pauses the loop for one pass" }
+    answer: a
+    rationale: "break leaves the loop entirely. The rest of the body and all remaining passes are skipped."
+
+  - id: q2
+    type: mcq
+    prompt: "What does continue do?"
+    options:
+      - { id: a, text: "skips the rest of the current pass and goes to the next one" }
+      - { id: b, text: "ends the loop immediately" }
+      - { id: c, text: "skips every remaining pass" }
+      - { id: d, text: "repeats the current pass" }
+    answer: a
+    rationale: "continue skips the rest of the current body and moves to the next pass; the loop keeps going."
+
+  - id: q3
+    type: mcq
+    prompt: "Summing only positive numbers in a list, skipping the rest, calls for which statement?"
+    options:
+      - { id: a, text: "continue, to skip the non-positive values and keep going" }
+      - { id: b, text: "break, to stop at the first non-positive value" }
+      - { id: c, text: "neither works for this" }
+      - { id: d, text: "both do exactly the same thing here" }
+    answer: a
+    rationale: "You want to ignore some values but process the rest, so continue skips the non-qualifying ones while the loop runs on."
+
+  - id: q4
+    type: mcq
+    prompt: "Stopping a search as soon as you find the first match calls for which statement?"
+    options:
+      - { id: a, text: "break, to leave the loop once the match is found" }
+      - { id: b, text: "continue, to skip the match" }
+      - { id: c, text: "neither" }
+      - { id: d, text: "a second loop" }
+    answer: a
+    rationale: "Once the target is found there is no reason to keep looping, so break exits immediately."
+
+  - id: q5
+    type: truefalse
+    prompt: "A while (true) loop must contain a reachable break (or another exit), or it runs forever."
+    answer: true
+    rationale: "The condition true never ends the loop, so an exit like break inside the body is the only way out."
+
+  - id: q6
+    type: mcq
+    prompt: "In a for loop, after a continue runs, what happens next?"
+    options:
+      - { id: a, text: "the update runs, then the condition is checked for the next pass" }
+      - { id: b, text: "the loop ends" }
+      - { id: c, text: "the update is skipped and the condition is never checked again" }
+      - { id: d, text: "the body runs again from the top without the update" }
+    answer: a
+    rationale: "continue skips the rest of the body, but the for loop's update still runs and then the condition is re-checked."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the statement that stops a loop early:  if (found) { ____; }"
+    accept: ["break"]
+    rationale: "break ends the loop immediately."

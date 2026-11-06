@@ -1,0 +1,12 @@
+id: p01-define-and-call
+title: Define and call
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Define a static void method that prints a fixed line; call it once from Main. No input.
+cases:
+  - { stdin: "", note: "fixed output, no input" }

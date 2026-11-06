@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>khouding, section view 1.3 (full section)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --font-ui:'Inter',system-ui,sans-serif; --font-serif:'Source Serif 4',Georgia,serif; --font-mono:'JetBrains Mono',monospace;
+    --radius:10px; --radius-sm:7px; --ease:cubic-bezier(.25,.8,.35,1); --t-fast:140ms; --t-med:240ms; --t-slow:300ms;
+  }
+  [data-theme="dark"]{
+    --bg:#16171d; --surface:#1e2029; --surface-2:#282b36; --panel:#191b22;
+    --border:#2c2f3b; --border-soft:#23252f;
+    --text:#e6e6ea; --text-muted:#9a9cab; --text-faint:#595c6b;
+    --accent:#8a8bf0; --accent-fg:#0f0f26; --accent-soft:#242647;
+    --success:#5bc08a; --success-bg:#16301f; --success-bd:#2b5438;
+    --danger:#e08177; --danger-bg:#331d1b; --danger-bd:#5a2f2a;
+    --code-bg:#121319; --syn-com:#6b6f82;
+    --shadow:0 10px 40px rgba(0,0,0,.4);
+  }
+  [data-theme="light"]{
+    --bg:#f9f9fb; --surface:#f0f0f4; --surface-2:#e6e6ee; --panel:#ffffff;
+    --border:#e2e2ea; --border-soft:#ececf2;
+    --text:#1d1e26; --text-muted:#696b7a; --text-faint:#a8aab8;
+    --accent:#4f4fc4; --accent-fg:#ffffff; --accent-soft:#e2e2f4;
+    --success:#2f9e63; --success-bg:#e0f0e6; --success-bd:#b6dcc5;
+    --danger:#c0564a; --danger-bg:#f7e2df; --danger-bd:#e6bbb4;
+    --code-bg:#f3f3f7; --syn-com:#9ca0ad;
+    --shadow:0 10px 40px rgba(60,60,90,.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-ui);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;padding:24px;transition:background var(--t-slow) var(--ease),color var(--t-slow) var(--ease);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+
+  .frame{max-width:980px;margin:0 auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+  .nav{height:50px;display:flex;align-items:center;gap:16px;padding:0 18px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .logo{font-family:var(--font-mono);font-weight:600;font-size:16px;display:inline-flex;align-items:center;}
+  .logo .cur{display:inline-block;width:2px;height:15px;background:var(--accent);margin:0 1px;position:relative;top:2px;}
+  .logo .cur::before,.logo .cur::after{content:'';position:absolute;left:-3px;width:8px;height:2px;background:var(--accent);}
+  .logo .cur::before{top:0;}.logo .cur::after{bottom:0;}
+  .crumb{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+  .crumb .sep{opacity:.5;}
+  .nav .right{margin-left:auto;display:flex;align-items:center;gap:14px;}
+  .toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px;}
+  .toggle button{font-family:var(--font-ui);font-size:11.5px;border:none;background:transparent;color:var(--text-muted);padding:4px 11px;border-radius:16px;cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .toggle button.sel{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+  .avatar{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:700;}
+
+  .shead{padding:26px 34px 0;}
+  .eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;font-weight:600;}
+  .shead h2{font-family:var(--font-serif);font-size:27px;font-weight:600;letter-spacing:-.015em;margin:7px 0 5px;}
+  .shead .sub{color:var(--text-muted);font-size:14px;margin-bottom:20px;}
+  .stages{display:flex;gap:6px;border-bottom:1px solid var(--border);}
+  .stage{display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:9px 9px 0 0;color:var(--text-muted);cursor:pointer;font-size:14px;background:transparent;border:none;transition:color var(--t-fast) var(--ease);position:relative;top:1px;}
+  .stage:hover{color:var(--text);}
+  .stage .n{width:21px;height:21px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;background:var(--bg);}
+  .stage.active{color:var(--text);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent);}
+  .stage.active .n{border-color:var(--accent);color:var(--accent);}
+  .stage .meta{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);}
+
+  .body{padding:28px 34px 40px;}
+
+  .reading{max-width:660px;}
+  .reading p{font-size:15.5px;line-height:1.72;margin-bottom:15px;}
+  .reading h3{font-family:var(--font-serif);font-size:21px;font-weight:600;letter-spacing:-.01em;margin:44px 0 14px;padding-top:26px;border-top:1px solid var(--border-soft);}
+  .reading h3:first-child{margin-top:0;padding-top:0;border-top:none;}
+  .reading h3 .step{display:block;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+  .reading ul.plain{margin:4px 0 15px;padding-left:20px;}
+  .reading ul.plain li{font-size:15.5px;line-height:1.6;margin-bottom:7px;}
+  .mi{font-family:var(--font-mono);font-size:13px;background:var(--surface-2);color:var(--accent);padding:1px 6px;border-radius:4px;}
+  .callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:13px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14.5px;line-height:1.62;}
+  .callout b{color:var(--text);}
+  .codeblock{background:var(--code-bg);border:1px solid var(--border-soft);border-radius:8px;font-family:var(--font-mono);font-size:13.5px;line-height:1.8;margin:16px 0 8px;overflow-x:auto;}
+  .code{display:grid;grid-template-columns:auto 1fr;}
+  .gutter{text-align:right;color:var(--text-faint);user-select:none;padding:14px 12px 14px 14px;border-right:1px solid var(--border-soft);white-space:pre;background:rgba(127,127,127,.04);}
+  .src{padding:14px 16px;white-space:pre;overflow-x:auto;}
+  .codeblock .c{color:var(--syn-com);font-style:italic;}
+  .codeblock .kw{color:var(--accent);}
+  .codeblock .str{color:var(--success);}
+  .codeblock .num{color:var(--success);}
+  .outcap{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);letter-spacing:.07em;text-transform:uppercase;margin:14px 0 -6px;}
+  .outblock{background:var(--surface);border:1px dashed var(--border);border-radius:8px;padding:11px 15px;font-family:var(--font-mono);font-size:13px;line-height:1.7;margin:8px 0 16px;color:var(--text);white-space:pre;}
+  .errline{background:var(--danger-bg);border:1px solid var(--danger-bd);border-radius:8px;padding:10px 14px;font-family:var(--font-mono);font-size:12.5px;line-height:1.6;margin:11px 0;color:var(--text);white-space:pre-wrap;}
+  .errline .loc{color:var(--danger);}
+  .errcard{border:1px solid var(--border);border-radius:10px;padding:14px 16px 6px;margin:14px 0;}
+  .errcard .when{font-size:14.5px;color:var(--text-muted);margin-bottom:0;}
+  .errcard .mean{font-size:15px;line-height:1.65;}
+
+  .foot{display:flex;align-items:center;gap:14px;margin-top:30px;padding-top:20px;border-top:1px solid var(--border-soft);}
+  .nudge{font-size:13px;color:var(--text-muted);}
+  .link{color:var(--accent);cursor:pointer;text-decoration:none;}
+  .btn{font-family:var(--font-ui);font-size:13.5px;font-weight:600;padding:9px 20px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .btn:hover{border-color:var(--accent);}
+  .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);}
+  .btn.primary:hover{filter:brightness(1.07);}
+
+  .pane{animation:fade var(--t-med) var(--ease);}
+  @keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+  .hidden{display:none;}
+
+  .quiz{max-width:600px;}
+  .qprog{display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:11.5px;color:var(--text-muted);margin-bottom:18px;}
+  .qbar{height:5px;flex:1;max-width:180px;background:var(--surface-2);border-radius:3px;overflow:hidden;}
+  .qbar>span{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width var(--t-slow) var(--ease);}
+  .qtype{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);letter-spacing:.06em;text-transform:uppercase;}
+  .qprompt{font-size:17px;margin:9px 0 18px;line-height:1.5;font-weight:500;white-space:pre-wrap;}
+  .qprompt code{font-family:var(--font-mono);font-size:14.5px;background:var(--surface-2);padding:1px 6px;border-radius:4px;}
+  .opt{display:flex;align-items:center;gap:12px;padding:12px 15px;border:1px solid var(--border);border-radius:9px;margin-bottom:9px;cursor:pointer;font-size:14.5px;transition:all var(--t-fast) var(--ease);background:var(--bg);}
+  .opt:hover{border-color:var(--accent);}
+  .opt .r{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--text-faint);flex-shrink:0;}
+  .opt.correct{border-color:var(--success-bd);background:var(--success-bg);}
+  .opt.correct .r{background:var(--success);border-color:var(--success);}
+  .opt.wrong{border-color:var(--danger-bd);background:var(--danger-bg);}
+  .opt.wrong .r{background:var(--danger);border-color:var(--danger);}
+  .opt.locked{pointer-events:none;}
+  .rationale{font-size:13.5px;color:var(--text-muted);background:var(--surface);border-radius:8px;padding:11px 14px;margin-top:10px;line-height:1.55;animation:fade var(--t-med) var(--ease);}
+  .rationale b{color:var(--text);}
+  .qfoot{display:flex;align-items:center;gap:12px;margin-top:18px;}
+
+  .problems{max-width:720px;}
+  .plist-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .lit{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+  .lit b{color:var(--text);}
+  .prow{display:flex;align-items:center;gap:15px;padding:13px 16px;border:1px solid var(--border-soft);border-radius:9px;margin-bottom:9px;background:var(--bg);cursor:pointer;transition:all var(--t-fast) var(--ease);}
+  .prow:hover{border-color:var(--accent);transform:translateX(2px);}
+  .pstate{width:23px;height:23px;border-radius:7px;border:1px solid var(--border);display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);flex-shrink:0;}
+  .pname{font-size:14.5px;flex:1;}
+  .pname .slug{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);margin-left:10px;}
+  .pdiff{color:var(--text-faint);font-size:11px;letter-spacing:2px;}
+  .pgo{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+  .prow:hover .pgo{color:var(--accent);}
+
+  .hint{max-width:980px;margin:16px auto 0;font-family:var(--font-mono);font-size:11.5px;color:var(--text-faint);text-align:center;}
+  .hint b{color:var(--accent);}
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="nav">
+      <span class="logo">khoud<span class="cur"></span>ng</span>
+      <span class="crumb">C# Basics <span class="sep">/</span> Ch.1 <span class="sep">/</span> 1.3 Number variables</span>
+      <div class="right">
+        <div class="toggle"><button id="td" class="sel">Dark</button><button id="tl">Light</button></div>
+        <div class="avatar">N</div>
+      </div>
+    </div>
+
+    <div class="shead">
+      <div class="eyebrow">Section 1.3</div>
+      <h2>Number variables: int and double</h2>
+      <div class="sub">Store numbers, choose the right type, and combine them.</div>
+      <div class="stages">
+        <button class="stage active" data-s="reading"><span class="n">1</span> Reading</button>
+        <button class="stage" data-s="quiz"><span class="n">2</span> Quiz <span class="meta">0/7</span></button>
+        <button class="stage" data-s="problems"><span class="n">3</span> Problems <span class="meta">0/15</span></button>
+      </div>
+    </div>
+
+    <div class="body">
+      <!-- READING -->
+      <div class="pane" id="p-reading"><div class="reading">
+
+        <h3><span class="step">Part 1</span>What a variable is</h3>
+        <p>A variable is a named place that holds a value. You give it a name, you put a value in it, and
+        whenever you use the name you get whatever value it currently holds. You can give it a new value
+        later; the old one is replaced.</p>
+        <p>This section works with variables that hold <b>numbers</b>.</p>
+
+        <h3><span class="step">Part 2</span>Two kinds of number</h3>
+        <p>C# makes you say <i>what kind</i> of number a variable holds. Two you will use constantly:</p>
+        <ul class="plain">
+          <li><span class="mi">int</span> is a whole number. No fractional part. Ages, counts. <span class="mi">0</span>, <span class="mi">42</span>, <span class="mi">-7</span>.</li>
+          <li><span class="mi">double</span> can have a decimal part. Prices, measurements, averages. <span class="mi">3.14</span>, <span class="mi">4.99</span>, <span class="mi">-0.5</span>.</li>
+        </ul>
+        <p>The decision you make every time: <b>can this value ever need a fractional part?</b> If yes,
+        <span class="mi">double</span>. If it is always a whole thing you count, <span class="mi">int</span>.</p>
+        <div class="callout"><b>What a "type" really is.</b> An <span class="mi">int</span> is exact but
+        holds whole numbers only. A <span class="mi">double</span> reaches a vast range but is
+        <b>approximate</b>: it trades perfect accuracy for that range, so you will occasionally see
+        <span class="mi">0.1 + 0.2</span> print as <span class="mi">0.30000000000000004</span>. That is
+        normal for a <span class="mi">double</span>, not a bug. File it away.</div>
+
+        <h3><span class="step">Part 3</span>Declaring and initialising</h3>
+        <p>Write the <b>type</b>, then the <b>name</b>, then a starting value.</p>
+        <div class="codeblock"><div class="code"><div class="gutter">1
+2
+3
+4</div><div class="src"><span class="kw">int</span> age = <span class="num">19</span>;
+<span class="kw">double</span> price = <span class="num">4.99</span>;
+Console.WriteLine(age);
+Console.WriteLine(price);</div></div></div>
+        <div class="outcap">output</div>
+        <div class="outblock">19
+4.99</div>
+        <p>Read <span class="mi">int age = 19;</span> as "make an <span class="mi">int</span> called
+        <span class="mi">age</span>, and put <span class="mi">19</span> in it." The <span class="mi">=</span>
+        does <b>not</b> mean "equals". It means <b>put this value into this variable</b>. Say it as "age
+        <i>gets</i> 19", never "age <i>equals</i> 19". That misreading is the most common beginner trap.</p>
+
+        <h3><span class="step">Part 4</span>Reassigning</h3>
+        <p>Give an existing variable a new value. Do not repeat the type; the variable already exists.</p>
+        <div class="codeblock"><div class="code"><div class="gutter">1
+2
+3</div><div class="src"><span class="kw">int</span> score = <span class="num">10</span>;
+score = <span class="num">25</span>;
+Console.WriteLine(score);</div></div></div>
+        <div class="outcap">output</div>
+        <div class="outblock">25</div>
+        <p>Only the first mention needs the type. After that, just the name. The old
+        <span class="mi">10</span> is gone.</p>
+
+        <h3><span class="step">Part 5</span>A value that never changes: const</h3>
+        <p>Some values should never change once set. Mark one <span class="mi">const</span> and C# stops it
+        being reassigned by mistake. It also gives a bare number a name.</p>
+        <div class="codeblock"><div class="code"><div class="gutter">1
+2
+3</div><div class="src"><span class="kw">const</span> <span class="kw">int</span> DaysInWeek = <span class="num">7</span>;
+<span class="kw">int</span> weeks = <span class="num">3</span>;
+Console.WriteLine(weeks * DaysInWeek);</div></div></div>
+        <div class="outcap">output</div>
+        <div class="outblock">21</div>
+        <p><span class="mi">weeks * 7</span> works, but <span class="mi">weeks * DaysInWeek</span> says what
+        the <span class="mi">7</span> means. Named constants make code read for itself.</p>
+
+        <h3><span class="step">Part 6</span>Using numbers together</h3>
+        <p>Combine numbers in variables with <span class="mi">+</span>, <span class="mi">-</span>, and
+        <span class="mi">*</span>.</p>
+        <div class="codeblock"><div class="code"><div class="gutter">1
+2
+3
+4</div><div class="src"><span class="kw">int</span> apples = <span class="num">3</span>;
+<span class="kw">int</span> oranges = <span class="num">5</span>;
+<span class="kw">int</span> total = apples + oranges;
+Console.WriteLine(total);</div></div></div>
+        <div class="outcap">output</div>
+        <div class="outblock">8</div>
+        <p>That is the whole arithmetic toolkit for now: add, subtract, multiply. (Division has a surprise in
+        it, so it waits for the next chapter.)</p>
+
+        <h3><span class="step">Part 7</span>When it does not compile</h3>
+        <div class="errcard">
+          <p class="when">If you put a decimal into an <span class="mi">int</span>:</p>
+          <div class="errline"><span class="loc">Program.cs(7,21):</span> error CS0266: Cannot implicitly convert type 'double' to 'int'. An explicit conversion exists (are you missing a cast?)</div>
+          <p class="mean"><span class="mi">int</span> holds whole numbers only, so <span class="mi">int price = 4.99;</span>
+          is rejected. If the value can be fractional, make the variable a <span class="mi">double</span>.</p>
+        </div>
+        <div class="errcard">
+          <p class="when">If you use a variable before putting anything in it:</p>
+          <div class="errline"><span class="loc">Program.cs(8,27):</span> error CS0165: Use of unassigned local variable 'total'</div>
+          <p class="mean">You declared the variable but never gave it a value. Assign one before you read from it.</p>
+        </div>
+
+        <h3><span class="step">Part 8</span>What you'll practise</h3>
+        <p>Declaring <span class="mi">int</span>s and <span class="mi">double</span>s, choosing the right
+        type, reassigning, naming fixed values with <span class="mi">const</span>, and combining numbers
+        with <span class="mi">+</span>, <span class="mi">-</span>, and <span class="mi">*</span>. Fifteen reps.
+        Wax on, wax off.</p>
+
+        <div class="foot">
+          <button class="btn primary" onclick="go('quiz')">Got it &rarr; Quiz</button>
+          <span class="nudge">or <a class="link" onclick="go('problems')">jump to the problems</a>, your call</span>
+        </div>
+      </div></div>
+
+      <!-- QUIZ -->
+      <div class="pane hidden" id="p-quiz">
+        <div class="quiz">
+          <div class="qprog"><span id="qnum">Question 1 of 7</span><span class="qbar"><span id="qbarf" style="width:14%"></span></span><span>need 5 to pass</span></div>
+          <div class="qtype" id="qtype"></div>
+          <div class="qprompt" id="qprompt"></div>
+          <div id="qopts"></div>
+          <div id="qrat"></div>
+          <div class="qfoot" id="qfoot"></div>
+        </div>
+      </div>
+
+      <!-- PROBLEMS -->
+      <div class="pane hidden" id="p-problems">
+        <div class="problems">
+          <div class="plist-head">
+            <span class="lit">Section lights at <b>9 of 15</b> solved</span>
+            <span class="lit">&#9679; not yet lit</span>
+          </div>
+          <div class="prow"><span class="pstate">1</span><span class="pname">Declare an int<span class="slug">p01</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">2</span><span class="pname">Declare a double<span class="slug">p02</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">3</span><span class="pname">Choose the type<span class="slug">p03</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">4</span><span class="pname">Reassign a value<span class="slug">p04</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">5</span><span class="pname">A const for days in a week<span class="slug">p05</span></span><span class="pdiff">&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">6</span><span class="pname">Name the magic numbers<span class="slug">p06</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">7</span><span class="pname">Sum two ints<span class="slug">p07</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">8</span><span class="pname">Difference of two ints<span class="slug">p08</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">9</span><span class="pname">Product of two ints<span class="slug">p09</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">10</span><span class="pname">Total cost<span class="slug">p10</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">11</span><span class="pname">Rectangle area<span class="slug">p11</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">12</span><span class="pname">Swap two values<span class="slug">p12</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">13</span><span class="pname">Fix the wrong type<span class="slug">p13</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">14</span><span class="pname">Fix the assignment bug<span class="slug">p14</span></span><span class="pdiff">&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+          <div class="prow"><span class="pstate">15</span><span class="pname">Model the scenario<span class="slug">p15</span></span><span class="pdiff">&#9679;&#9679;&#9679;</span><span class="pgo">open &rarr;</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hint">1.3 authored section, end to end &middot; <b>switch stages</b> &middot; in Quiz, <b>pick an answer</b> for the rationale, then <b>Next</b> &middot; every code block is followed by its output &middot; toggle <b>Dark / Light</b></div>
+
+<script>
+  const $=s=>document.querySelector(s);
+  $('#td').onclick=()=>{document.documentElement.dataset.theme='dark';$('#td').classList.add('sel');$('#tl').classList.remove('sel');};
+  $('#tl').onclick=()=>{document.documentElement.dataset.theme='light';$('#tl').classList.add('sel');$('#td').classList.remove('sel');};
+
+  function go(s){
+    document.querySelectorAll('.pane').forEach(p=>p.classList.add('hidden'));
+    const el=$('#p-'+s); el.classList.remove('hidden'); el.classList.remove('pane'); void el.offsetWidth; el.classList.add('pane');
+    document.querySelectorAll('.stage').forEach(b=>b.classList.toggle('active',b.dataset.s===s));
+  }
+  document.querySelectorAll('.stage').forEach(b=>b.onclick=()=>go(b.dataset.s));
+
+  const Q=[
+    {type:'multiple choice',prompt:'Which type best fits the price of a coffee?',
+      opts:['int','double','either works equally well','neither can hold a price'],ans:1,
+      rat:'A price can be fractional, so double.'},
+    {type:'multiple choice',prompt:'Which type best fits the number of students in a class?',
+      opts:['int','double','a text type','either, it does not matter'],ans:0,
+      rat:'A count of students is always a whole number, so int.'},
+    {type:'true / false',prompt:'In int x = 5; the = tests whether x equals 5.',
+      opts:['True','False'],ans:1,
+      rat:'= stores a value. Read it "x gets 5", not "x equals 5".'},
+    {type:'multiple choice',prompt:'After these two lines, what does score hold?\n  int score = 10;\n  score = 25;',
+      opts:['10','25','35','an error: you cannot change a variable'],ans:1,
+      rat:'Reassignment overwrites. The 10 is gone; score holds 25.'},
+    {type:'true / false',prompt:'A const can be reassigned a new value later in the program.',
+      opts:['True','False'],ans:1,
+      rat:'A const is fixed once set. Trying to reassign it does not compile.'},
+    {type:'fill in the blank',prompt:'To create a whole-number variable called count starting at 0, write:  ____ count = 0;',
+      opts:['int','double','const','num'],ans:0,
+      rat:'int is the whole-number type.'},
+    {type:'multiple choice',prompt:'Why might 0.1 + 0.2 print as 0.30000000000000004?',
+      opts:['it is a bug in C#','double is approximate: it trades exactness for a huge range','you must use int for addition','the numbers are too large'],ans:1,
+      rat:'double stores most decimals a hair off. That is normal, not a bug. int is exact; double is approximate.'},
+  ];
+  let qi=0, answered=false;
+  function renderQ(){
+    const q=Q[qi]; answered=false;
+    $('#qnum').textContent='Question '+(qi+1)+' of 7';
+    $('#qbarf').style.width=((qi+1)/7*100)+'%';
+    $('#qtype').textContent=q.type;
+    $('#qprompt').textContent=q.prompt;
+    const box=$('#qopts'); box.innerHTML='';
+    q.opts.forEach((o,i)=>{const d=document.createElement('div');d.className='opt';d.innerHTML='<span class="r"></span> '+o;d.onclick=()=>pick(i);box.appendChild(d);});
+    $('#qrat').innerHTML=''; $('#qfoot').innerHTML='';
+  }
+  function pick(i){
+    if(answered)return; answered=true;
+    const q=Q[qi];
+    document.querySelectorAll('#qopts .opt').forEach((d,idx)=>{
+      d.classList.add('locked');
+      if(idx===q.ans)d.classList.add('correct');
+      else if(idx===i)d.classList.add('wrong');
+    });
+    const ok=i===q.ans;
+    $('#qrat').innerHTML='<div class="rationale"><b>'+(ok?'Correct.':'Not quite.')+'</b> '+q.rat+'</div>';
+    $('#qfoot').innerHTML = qi<Q.length-1
+      ? '<button class="btn primary" id="qnext">Next question</button>'
+      : '<button class="btn primary" onclick="go(\'problems\')">Finish &rarr; Problems</button>';
+    const nx=$('#qnext'); if(nx) nx.onclick=()=>{qi++;renderQ();};
+  }
+  renderQ();
+</script>
+</body>
+</html>

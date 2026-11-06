@@ -1,0 +1,15 @@
+id: p04-not-equal
+title: Not equal
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read a, b; print a != b. The complement of equality.
+cases:
+  - { stdin: "4\n5",  note: "True (not equal)" }
+  - { stdin: "4\n4",  note: "False (equal)" }
+  - { stdin: "0\n1",  note: "True" }
+  - { stdin: "7\n7",  note: "False" }

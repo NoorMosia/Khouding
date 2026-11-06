@@ -1,0 +1,15 @@
+id: p01-count-up
+title: Count up
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Basic while + counter: read n, print 1..n one per line. Cases vary the count incl. zero.
+cases:
+  - { stdin: "4", note: "several: 1 2 3 4" }
+  - { stdin: "1", note: "one iteration" }
+  - { stdin: "0", note: "zero iterations: prints nothing" }
+  - { stdin: "7", note: "larger count" }

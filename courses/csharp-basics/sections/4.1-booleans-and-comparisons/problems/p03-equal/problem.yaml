@@ -1,0 +1,15 @@
+id: p03-equal
+title: Equal
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read a, b; print a == b. Cases: equal (True) and not equal (False, both directions).
+cases:
+  - { stdin: "4\n4",  note: "True (equal)" }
+  - { stdin: "4\n5",  note: "False" }
+  - { stdin: "5\n4",  note: "False" }
+  - { stdin: "0\n0",  note: "True (both zero)" }

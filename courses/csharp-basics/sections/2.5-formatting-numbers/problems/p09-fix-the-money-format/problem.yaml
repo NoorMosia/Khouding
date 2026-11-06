@@ -1,0 +1,15 @@
+id: p09-fix-the-money-format
+title: Fix the money format
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Starter prints the price as a raw double (no :F2). Fix: add :F2 so money shows two decimals.
+cases:
+  - { stdin: "7.5",   note: must become 7.50 }
+  - { stdin: "10",    note: must become 10.00 }
+  - { stdin: "19.95", note: already two decimals }
+  - { stdin: "0",     note: must become 0.00 }

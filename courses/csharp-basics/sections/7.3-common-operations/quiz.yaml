@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 7.3 (sum; average as (double)sum/Length; max/min seeded from a[0]; count-matching; contains /
+# index-of search returning -1 when absent; empty-array rules). Assumes Ch.1-6, 7.1, 7.2. Arrays as
+# method params are 7.4.
+
+section: csharp-basics/7.3-common-operations
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "Why seed `max` with `a[0]` instead of `0` before the loop?"
+    options:
+      - { id: a, text: "if every element is negative, a seed of 0 would wrongly win" }
+      - { id: b, text: "0 is slower to compare" }
+      - { id: c, text: "a[0] is always the largest" }
+      - { id: d, text: "it makes no difference" }
+    answer: a
+    rationale: "Seeding at 0 breaks when all values are below 0, since no element beats 0. a[0] is a real element, so the result is always one of the array's values."
+
+  - id: q2
+    type: mcq
+    prompt: "To get a true average, which expression is correct?"
+    options:
+      - { id: a, text: "(double)sum / a.Length" }
+      - { id: b, text: "sum / a.Length" }
+      - { id: c, text: "(double)(sum / a.Length)" }
+      - { id: d, text: "sum / (double)0" }
+    answer: a
+    rationale: "Cast before dividing so the division is floating point. sum / a.Length and (double)(sum / a.Length) both do integer division first and lose the fraction."
+
+  - id: q3
+    type: truefalse
+    prompt: "Summing an empty array (length 0) is well defined and gives 0."
+    answer: true
+    rationale: "The loop runs zero times, so sum stays at its starting value of 0. Max, min, and average instead need at least one element."
+
+  - id: q4
+    type: mcq
+    prompt: "A search for a target returns the 0-based index of the first match, or -1 if absent. For `a = {10, 20, 30}` and target 30, what is returned?"
+    options:
+      - { id: a, text: "2" }
+      - { id: b, text: "3" }
+      - { id: c, text: "30" }
+      - { id: d, text: "-1" }
+    answer: a
+    rationale: "30 is at index 2 (0-based). The value -1 is reserved for 'not found'."
+
+  - id: q5
+    type: mcq
+    prompt: "A search returns -1. What does that mean?"
+    options:
+      - { id: a, text: "the target is not in the array" }
+      - { id: b, text: "the target is at the last index" }
+      - { id: c, text: "the array is empty" }
+      - { id: d, text: "an error occurred" }
+    answer: a
+    rationale: "-1 is the sentinel for 'not found' because it is not a valid index."
+
+  - id: q6
+    type: truefalse
+    prompt: "When finding the maximum, the loop can start at index 1 because index 0 is already the seed."
+    answer: true
+    rationale: "max = a[0] uses the first element, so the loop compares the rest, starting at index 1."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the start value that means 'not found yet' for an index-of search:  int found = ____;"
+    accept: ["-1"]
+    rationale: "-1 is not a valid index, so it cleanly signals that no match has been seen."

@@ -1,0 +1,89 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 2.5 (formatting numbers: :F2 fixed decimals, display vs stored,
+# floating-point is not always exact, choosing double vs float). Money as a
+# label plus :F2, no currency symbol. Assumes Ch.1, 2.1-2.4.
+
+section: csharp-basics/2.5-formatting-numbers
+pass: 5            # need >= 5 of 8 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does `$\"{price:F2}\"` do when price is 7.5?"
+    options:
+      - { id: a, text: "shows it as 7.50 (two decimal places)" }
+      - { id: b, text: "shows it as 7.5" }
+      - { id: c, text: "shows it as 8" }
+      - { id: d, text: "it does not compile" }
+    answer: a
+    rationale: "F2 means fixed, two decimal places, so 7.5 is padded to 7.50."
+
+  - id: q2
+    type: mcq
+    prompt: "What does `$\"{value:F2}\"` print when value is 10?"
+    options:
+      - { id: a, text: "10.00" }
+      - { id: b, text: "10" }
+      - { id: c, text: "10.0" }
+      - { id: d, text: "1000" }
+    answer: a
+    rationale: "F2 always shows two decimals, so a whole value prints as 10.00."
+
+  - id: q3
+    type: truefalse
+    prompt: "Formatting with :F2 changes the value stored in the variable."
+    answer: false
+    rationale: "Formatting only changes how the number is displayed. The value in the variable is unchanged."
+
+  - id: q4
+    type: mcq
+    prompt: "What does `$\"{value:F2}\"` print when value is 2.345?"
+    options:
+      - { id: a, text: "2.35 (rounded for display)" }
+      - { id: b, text: "2.345" }
+      - { id: c, text: "2.34" }
+      - { id: d, text: "2.00" }
+    answer: a
+    rationale: "F2 rounds the display to two decimals, giving 2.35. The stored value still holds its full precision."
+
+  - id: q5
+    type: truefalse
+    prompt: "A double can store any decimal value exactly."
+    answer: false
+    rationale: "Floating-point numbers are kept in a fixed amount of space, so some values are stored as the closest approximation. For example 0.1 + 0.2 prints as 0.30000000000000004 raw."
+
+  - id: q6
+    type: mcq
+    prompt: "For everyday numbers, prices, and measurements, which type should you reach for by default?"
+    options:
+      - { id: a, text: "double" }
+      - { id: b, text: "float" }
+      - { id: c, text: "int" }
+      - { id: d, text: "it does not matter" }
+    answer: a
+    rationale: "double is the standard choice (about 15 to 16 digits of precision). float is smaller and less precise; use double unless you have a specific reason not to."
+
+  - id: q7
+    type: mcq
+    prompt: "Why format money with :F2 instead of printing the raw double?"
+    options:
+      - { id: a, text: "a raw double can show too few or too many digits, like 7.5 or 19.950001, which is wrong for money" }
+      - { id: b, text: "a raw double will not compile" }
+      - { id: c, text: "money cannot be stored in a double at all" }
+      - { id: d, text: "there is no difference" }
+    answer: a
+    rationale: "Money needs exactly two decimals. A raw double shows its natural digits (7.5, or stray digits from imprecision), so you format it to a clean two-decimal shape."
+
+  - id: q8
+    type: fillblank
+    prompt: "Fill the blank to print price to two decimal places:  Console.WriteLine($\"{price:____}\");"
+    accept: ["F2", "f2"]
+    rationale: "F2 means fixed-point with two decimal places."

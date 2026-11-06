@@ -1,0 +1,15 @@
+id: p10-build-a-badge
+title: Build a badge
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: read three values, BUILD one composed string from pieces (incl. a number -> text), print it.
+cases:
+  - { stdin: "Ada\nLisbon\n36",      note: typical }
+  - { stdin: "Grace\nNairobi\n85",   note: different values }
+  - { stdin: "Al\nLima\n0",          note: age zero }
+  - { stdin: "Mary\nViet Nam\n41",   note: city with a space }

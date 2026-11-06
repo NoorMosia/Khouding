@@ -1,0 +1,16 @@
+id: p09-guess-capstone
+title: Guess capstone
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: read a secret number, then read guesses with a do-while (always at least one guess),
+# stop when a guess equals the secret, print how many guesses were made. Inputs always end with the secret.
+cases:
+  - { stdin: "7\n3\n5\n7",  note: "secret 7, guesses 3,5,7 -> 3 guesses" }
+  - { stdin: "4\n4",        note: "correct on the first guess -> 1" }
+  - { stdin: "9\n1\n9",     note: "two guesses -> 2" }
+  - { stdin: "2\n8\n8\n2",  note: "wrong guesses may repeat -> 3" }

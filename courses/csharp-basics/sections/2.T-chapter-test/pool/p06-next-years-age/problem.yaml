@@ -1,0 +1,15 @@
+id: p06-next-years-age
+title: Next year's age
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# B, read + compute: parse an age, print age + 1 inside an interpolated sentence.
+cases:
+  - { stdin: "17", note: typical }
+  - { stdin: "0",  note: newborn }
+  - { stdin: "64", note: older }
+  - { stdin: "99", note: large }

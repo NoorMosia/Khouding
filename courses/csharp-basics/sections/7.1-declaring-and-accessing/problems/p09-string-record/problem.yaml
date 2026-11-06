@@ -1,0 +1,14 @@
+id: p09-string-record
+title: A string array record
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# string[2]: set name (index 0) and role (index 1) from reads, print each. Vary text.
+cases:
+  - { stdin: "Ada\nEngineer", note: "normal" }
+  - { stdin: "Linus\nMaintainer", note: "different text" }
+  - { stdin: "Grace\nAdmiral", note: "another" }

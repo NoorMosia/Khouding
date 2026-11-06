@@ -1,0 +1,16 @@
+id: p02-menu-choice
+title: Menu choice
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# switch on a menu int 1/2/3 -> action label, default "invalid". Cases hit each option and the default.
+cases:
+  - { stdin: "1", note: "start" }
+  - { stdin: "2", note: "load" }
+  - { stdin: "3", note: "quit" }
+  - { stdin: "4", note: "out of menu -> invalid (default)" }
+  - { stdin: "0", note: "zero -> invalid (default)" }

@@ -1,0 +1,15 @@
+id: p04-label-a-name
+title: Label a name
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Join a literal label "Name: " to a read name with +.
+cases:
+  - { stdin: "Ada",   note: typical }
+  - { stdin: "Grace", note: different name }
+  - { stdin: "Al",    note: short name }
+  - { stdin: "Jun-ho", note: name with a hyphen }

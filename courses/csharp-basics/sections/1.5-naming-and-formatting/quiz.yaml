@@ -1,0 +1,66 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 1.5 (identifier rules, camelCase vs PascalCase, naming as modeling,
+# formatting is reader-facing). Assumes 1.1-1.4.
+
+section: csharp-basics/1.5-naming-and-formatting
+pass: 4            # need >= 4 of 6 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "Which of these is a LEGAL variable name?"
+    options:
+      - { id: a, text: "2count" }
+      - { id: b, text: "total price" }
+      - { id: c, text: "totalPrice" }
+      - { id: d, text: "class" }
+    answer: c
+    rationale: "totalPrice is legal. 2count starts with a digit, 'total price' has a space, and class is a reserved keyword."
+
+  - id: q2
+    type: truefalse
+    prompt: "You can name a variable `string` (a reserved keyword)."
+    answer: false
+    rationale: "Reserved keywords like string, int, and class already mean something to C# and cannot be variable names."
+
+  - id: q3
+    type: mcq
+    prompt: "By convention, what casing does a LOCAL variable use in C#?"
+    options:
+      - { id: a, text: "camelCase (e.g. totalScore)" }
+      - { id: b, text: "PascalCase (e.g. TotalScore)" }
+      - { id: c, text: "ALL_CAPS (e.g. TOTAL_SCORE)" }
+      - { id: d, text: "it does not matter at all" }
+    answer: a
+    rationale: "Locals use camelCase. PascalCase is the convention for constants and types."
+
+  - id: q4
+    type: mcq
+    prompt: "Which variable name is the clearest for the number of seats in a row?"
+    options:
+      - { id: a, text: "s" }
+      - { id: b, text: "x2" }
+      - { id: c, text: "seatsPerRow" }
+      - { id: d, text: "number" }
+    answer: c
+    rationale: "A good name says what the value is. seatsPerRow tells the reader exactly what it holds."
+
+  - id: q5
+    type: truefalse
+    prompt: "Changing a program's indentation changes what it prints."
+    answer: false
+    rationale: "The compiler ignores indentation and line breaks. They are for the human reader; the output is unchanged."
+
+  - id: q6
+    type: fillblank
+    prompt: "By convention, a const uses ____Case (e.g. DaysInWeek)."
+    accept: ["Pascal", "PascalCase"]
+    rationale: "Constants and types use PascalCase: capitalise every word, including the first."

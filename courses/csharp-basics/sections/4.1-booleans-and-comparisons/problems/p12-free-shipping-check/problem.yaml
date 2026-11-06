@@ -1,0 +1,16 @@
+id: p12-free-shipping-check
+title: Free shipping check
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: read cart total and the free-shipping threshold; print whether total >= threshold.
+# Boundary (exactly on the threshold) counts as qualifying.
+cases:
+  - { stdin: "60\n50", note: "True (over)" }
+  - { stdin: "50\n50", note: "True (exactly on the threshold)" }
+  - { stdin: "40\n50", note: "False (under)" }
+  - { stdin: "0\n50",  note: "False (empty cart)" }

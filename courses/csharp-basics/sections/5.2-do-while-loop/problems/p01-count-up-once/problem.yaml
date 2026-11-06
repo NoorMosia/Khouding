@@ -1,0 +1,15 @@
+id: p01-count-up-once
+title: Count up, at least once
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Basic do-while: read n, print 1..n with a do-while. Even n = 0 prints 1 (the guaranteed first pass).
+cases:
+  - { stdin: "4", note: "1 2 3 4" }
+  - { stdin: "1", note: "just 1" }
+  - { stdin: "0", note: "false at start: still prints 1 (one guaranteed pass)" }
+  - { stdin: "6", note: "1..6" }

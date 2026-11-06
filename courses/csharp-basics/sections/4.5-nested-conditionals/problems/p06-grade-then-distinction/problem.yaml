@@ -1,0 +1,19 @@
+id: p06-grade-then-distinction
+title: Grade, then distinction
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Band by score: >=90 A, >=80 B, >=70 C, else fail. Inside the A band only: >=95 "A with distinction".
+# else-if chain for bands with a nested if inside the top band. Cases reach every leaf incl. both A sub-leaves.
+cases:
+  - { stdin: "97", note: "A band, >=95 -> A with distinction" }
+  - { stdin: "92", note: "A band, below 95 -> A" }
+  - { stdin: "95", note: "edge: 95 -> A with distinction" }
+  - { stdin: "85", note: "B band -> B" }
+  - { stdin: "72", note: "C band -> C" }
+  - { stdin: "50", note: "below 70 -> fail" }
+  - { stdin: "90", note: "A band low edge, below 95 -> A" }

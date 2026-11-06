@@ -1,0 +1,91 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 2.3 (string interpolation: $ prefix, {value} holes, multiple holes,
+# expressions in holes, missing-$ silent bug). Plain {value} only, no format
+# specifiers. Assumes Ch.1, 2.1, 2.2.
+
+section: csharp-basics/2.3-string-interpolation
+pass: 5            # need >= 5 of 8 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What marks a string as interpolated?"
+    options:
+      - { id: a, text: "a $ in front of the opening quote" }
+      - { id: b, text: "a + between the text and the value" }
+      - { id: c, text: "curly braces anywhere in the string" }
+      - { id: d, text: "nothing, every string is interpolated" }
+    answer: a
+    rationale: "The $ prefix makes a string interpolated. Without it, the braces are just ordinary text."
+
+  - id: q2
+    type: mcq
+    prompt: "Given `string name = \"Ada\";`, what does `Console.WriteLine($\"Hello, {name}\")` print?"
+    options:
+      - { id: a, text: "Hello, Ada" }
+      - { id: b, text: "Hello, {name}" }
+      - { id: c, text: "Hello, {Ada}" }
+      - { id: d, text: "it does not compile" }
+    answer: a
+    rationale: "Inside an interpolated string, {name} is replaced by the value of name, so it prints Hello, Ada."
+
+  - id: q3
+    type: truefalse
+    prompt: "An interpolated string can contain more than one hole."
+    answer: true
+    rationale: "You can place as many holes as you need; each is filled with its own value, e.g. $\"{name} is {age}\"."
+
+  - id: q4
+    type: mcq
+    prompt: "What does `Console.WriteLine($\"{n} doubled is {n * 2}\")` print when n is 5?"
+    options:
+      - { id: a, text: "5 doubled is 10" }
+      - { id: b, text: "n doubled is n * 2" }
+      - { id: c, text: "5 doubled is 5 * 2" }
+      - { id: d, text: "10 doubled is 10" }
+    answer: a
+    rationale: "A hole can hold an expression. {n * 2} is computed first (10), so it prints 5 doubled is 10."
+
+  - id: q5
+    type: truefalse
+    prompt: "Forgetting the $ (writing `\"Hello, {name}\"`) causes a compile error."
+    answer: false
+    rationale: "It compiles and runs with no error; it just prints the braces literally (Hello, {name}). That is a silent wrong-output bug, and the fix is to add the $."
+
+  - id: q6
+    type: mcq
+    prompt: "Which single line prints a label and a value like `Total: 30` (with total holding 30)?"
+    options:
+      - { id: a, text: "Console.WriteLine($\"Total: {total}\");" }
+      - { id: b, text: "Console.WriteLine(\"Total: {total}\");" }
+      - { id: c, text: "Console.WriteLine($\"Total: total\");" }
+      - { id: d, text: "Console.WriteLine(\"Total: \" total);" }
+    answer: a
+    rationale: "The $ makes it interpolated and {total} fills in the value. This is the one-line form of Chapter 1's label-then-value across two prints."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the blank so this prints Hello, Ada when name is \"Ada\":  Console.WriteLine(__\"Hello, {name}\");"
+    accept: ["$"]
+    rationale: "The $ prefix turns the string into an interpolated string so {name} is filled in."
+
+  - id: q8
+    type: mcq
+    prompt: |
+      This is the older composite-formatting style. What does it print when name is "Ada" and age is 36?
+        Console.WriteLine("{0} is {1}", name, age);
+    options:
+      - { id: a, text: "Ada is 36" }
+      - { id: b, text: "{0} is {1}" }
+      - { id: c, text: "name is age" }
+      - { id: d, text: "0 is 1" }
+    answer: a
+    rationale: "In composite formatting, {0} is the first argument after the string (name) and {1} is the second (age), so it prints the same as $\"{name} is {age}\". This is the older style you will meet in existing code and slides; this course uses interpolation."

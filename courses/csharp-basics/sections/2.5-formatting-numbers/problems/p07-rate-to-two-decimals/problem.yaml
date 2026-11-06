@@ -1,0 +1,15 @@
+id: p07-rate-to-two-decimals
+title: Rate to two decimals
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# :F2 in a non-money context (a rate). Label + formatted value.
+cases:
+  - { stdin: "1.5",  note: pads to 1.50 }
+  - { stdin: "2.25", note: already two decimals }
+  - { stdin: "3",    note: whole shows as 3.00 }
+  - { stdin: "0.1",  note: pads to 0.10 }

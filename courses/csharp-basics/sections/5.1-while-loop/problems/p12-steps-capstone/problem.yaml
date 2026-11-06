@@ -1,0 +1,18 @@
+id: p12-steps-capstone
+title: Steps capstone
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: sentinel loop (read daily steps until -1) that accumulates two results:
+# total steps, and how many days reached the 10000 goal. Prints both on their own lines.
+# First value -1 -> total 0, goal days 0 (zero iterations).
+cases:
+  - { stdin: "12000\n8000\n10000\n-1", note: "total 30000; goal days: 12000 and 10000 -> 2" }
+  - { stdin: "-1",                     note: "no days -> total 0, goal days 0" }
+  - { stdin: "5000\n-1",               note: "one day under goal -> total 5000, goal days 0" }
+  - { stdin: "10000\n10000\n-1",       note: "both exactly at goal -> total 20000, goal days 2" }
+  - { stdin: "3000\n15000\n-1",        note: "total 18000; goal days 1" }

@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 5.3 (for is a counted loop with init; condition; update on one line; it equals a while
+# with the pieces gathered; counting up/down/step; a for can run zero times; the count pattern).
+# Assumes 5.1-5.2 and Ch.1-4. Nested loops are 5.4.
+
+section: csharp-basics/5.3-for-loop
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "In  for (int i = 0; i < n; i++)  which part runs exactly once, before any pass?"
+    options:
+      - { id: a, text: "the init, int i = 0" }
+      - { id: b, text: "the condition, i < n" }
+      - { id: c, text: "the update, i++" }
+      - { id: d, text: "the body" }
+    answer: a
+    rationale: "The init runs once before the loop starts. The condition is checked before each pass and the update runs after each pass."
+
+  - id: q2
+    type: mcq
+    prompt: "How many times does this body run?  for (int i = 0; i < 4; i++) { ... }"
+    options:
+      - { id: a, text: "four, for i = 0, 1, 2, 3" }
+      - { id: b, text: "five" }
+      - { id: c, text: "three" }
+      - { id: d, text: "forever" }
+    answer: a
+    rationale: "i takes 0, 1, 2, 3 (four values) and stops when i reaches 4, so the body runs four times."
+
+  - id: q3
+    type: truefalse
+    prompt: "Every for loop can be rewritten as a while loop with the same behavior."
+    answer: true
+    rationale: "A for just gathers the init, condition, and update of a while into one header. The two are equivalent."
+
+  - id: q4
+    type: mcq
+    prompt: "What does the update  i += 2  do in a for header?"
+    options:
+      - { id: a, text: "adds 2 to i after each pass, so the loop steps by 2" }
+      - { id: b, text: "multiplies i by 2 each pass" }
+      - { id: c, text: "runs the body twice per pass" }
+      - { id: d, text: "sets i to 2" }
+    answer: a
+    rationale: "i += 2 adds 2 to i after each pass, so the counter steps by 2 (e.g. 0, 2, 4, ...)."
+
+  - id: q5
+    type: truefalse
+    prompt: "A for loop whose condition is false at the start runs its body zero times."
+    answer: true
+    rationale: "Like a while, a for checks its condition before the first pass, so a false-at-start condition means zero passes."
+
+  - id: q6
+    type: mcq
+    prompt: "How many numbers does this print?  for (int i = 5; i >= 1; i--) { Console.WriteLine(i); }"
+    options:
+      - { id: a, text: "five: 5 4 3 2 1" }
+      - { id: b, text: "four" }
+      - { id: c, text: "six" }
+      - { id: d, text: "none, i-- is invalid" }
+    answer: a
+    rationale: "Counting down from 5 to 1 inclusive prints five numbers: 5, 4, 3, 2, 1."
+
+  - id: q7
+    type: fillblank
+    prompt: "A for header has three parts separated by this punctuation mark (give the character):  for (init ___ condition ___ update)"
+    accept: [";", "semicolon"]
+    rationale: "The three parts of a for header are separated by semicolons."

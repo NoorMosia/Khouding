@@ -1,0 +1,15 @@
+id: p11-fix-compare-vs-assign
+title: Fix compare versus assign
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter uses = (assign) instead of == (compare). COMPILE error CS0029 (int cannot go into a bool). Fix: ==.
+cases:
+  - { stdin: "4\n4",  note: "True (equal)" }
+  - { stdin: "4\n5",  note: "False" }
+  - { stdin: "7\n7",  note: "True" }
+  - { stdin: "1\n2",  note: "False" }

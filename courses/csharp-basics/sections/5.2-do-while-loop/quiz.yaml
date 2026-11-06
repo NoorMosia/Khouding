@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 5.2 (do-while runs the body first then checks the condition at the end, so it always
+# runs at least once; the contrast with while when the condition is false at the start; the
+# trailing semicolon). Assumes 5.1 and Ch.1-4. for is 5.3.
+
+section: csharp-basics/5.2-do-while-loop
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What is the minimum number of times a do-while body runs?"
+    options:
+      - { id: a, text: "once, the body runs before the condition is ever checked" }
+      - { id: b, text: "zero, like a while" }
+      - { id: c, text: "exactly as many times as the condition is true" }
+      - { id: d, text: "it depends on the condition only" }
+    answer: a
+    rationale: "A do-while checks the condition at the END, so the body always runs at least once."
+
+  - id: q2
+    type: mcq
+    prompt: "A while and a do-while have the same body and condition. The condition is FALSE at the start. How do they differ?"
+    options:
+      - { id: a, text: "the while runs the body zero times; the do-while runs it once" }
+      - { id: b, text: "they behave identically" }
+      - { id: c, text: "the do-while runs zero times; the while runs once" }
+      - { id: d, text: "both run the body once" }
+    answer: a
+    rationale: "With a false-at-start condition, the while skips the body entirely, but the do-while runs it once before testing."
+
+  - id: q3
+    type: truefalse
+    prompt: "A do-while statement ends with a semicolon after its while condition."
+    answer: true
+    rationale: "do { ... } while (cond); is one statement and needs the trailing semicolon. A plain while loop does not."
+
+  - id: q4
+    type: mcq
+    prompt: "How many lines does this print?  int i = 10; do { Console.WriteLine(i); i++; } while (i < 5);"
+    options:
+      - { id: a, text: "one, it prints 10 then stops" }
+      - { id: b, text: "zero" }
+      - { id: c, text: "five" }
+      - { id: d, text: "it loops forever" }
+    answer: a
+    rationale: "The body runs once (prints 10, i becomes 11), then 11 < 5 is false, so it stops after one line."
+
+  - id: q5
+    type: truefalse
+    prompt: "When you want to read and process input at least once and then maybe repeat, a do-while fits well because the read happens before the condition is tested."
+    answer: true
+    rationale: "The guaranteed first pass means the first read always happens, which suits read-until-stop loops."
+
+  - id: q6
+    type: mcq
+    prompt: "Where is the condition tested in a do-while?"
+    options:
+      - { id: a, text: "at the end, after the body runs" }
+      - { id: b, text: "at the start, before the body" }
+      - { id: c, text: "both before and after each pass" }
+      - { id: d, text: "it has no condition" }
+    answer: a
+    rationale: "The condition sits at the end, which is why the body always runs once first."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the keyword that starts the run-at-least-once loop:  ____ { ... } while (cond);"
+    accept: ["do"]
+    rationale: "do starts the loop; the body runs, then while tests the condition."

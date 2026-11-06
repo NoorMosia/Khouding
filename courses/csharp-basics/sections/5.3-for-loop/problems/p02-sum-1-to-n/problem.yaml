@@ -1,0 +1,15 @@
+id: p02-sum-1-to-n
+title: Sum 1 to n
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Accumulate with a for: read n, print the sum 1+..+n. Zero -> 0.
+cases:
+  - { stdin: "4",  note: "10" }
+  - { stdin: "1",  note: "1" }
+  - { stdin: "0",  note: "zero iterations -> 0" }
+  - { stdin: "10", note: "55" }

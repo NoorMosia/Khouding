@@ -1,0 +1,16 @@
+id: p14-menu
+title: Menu
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# D: switch on a menu int 1/2/3 -> label, default "invalid". Cases hit each case and the default.
+cases:
+  - { stdin: "1", note: "new game" }
+  - { stdin: "2", note: "continue" }
+  - { stdin: "3", note: "exit" }
+  - { stdin: "5", note: "off menu -> invalid (default)" }
+  - { stdin: "0", note: "zero -> invalid (default)" }

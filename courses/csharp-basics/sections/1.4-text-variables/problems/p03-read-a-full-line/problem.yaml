@@ -1,0 +1,14 @@
+id: p03-read-a-full-line
+title: Read a full line
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# The line may contain spaces; a string holds the whole sequence.
+cases:
+  - { stdin: "Ada Lovelace",       note: a full name with a space }
+  - { stdin: "hello",              note: single word }
+  - { stdin: "hello there friend", note: several words }

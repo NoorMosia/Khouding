@@ -1,0 +1,14 @@
+id: p02-declare-a-double
+title: Declare a double
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+cases:
+  - { stdin: "4.99", note: normal price }
+  - { stdin: "0",    note: edge - zero (whole-looking) }
+  - { stdin: "1.5",  note: simple decimal }
+  - { stdin: "-0.5", note: edge - negative fraction }

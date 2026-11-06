@@ -1,0 +1,81 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 2.4 (joining strings with +: join for output, build a stored string,
+# number + string becomes text, + vs interpolation for output). Assumes Ch.1,
+# 2.1, 2.2, 2.3.
+
+section: csharp-basics/2.4-joining-strings
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "On strings, what does the `+` operator do?"
+    options:
+      - { id: a, text: "joins them end to end into one string" }
+      - { id: b, text: "adds their lengths" }
+      - { id: c, text: "compares them" }
+      - { id: d, text: "nothing, + does not work on strings" }
+    answer: a
+    rationale: "On strings, + concatenates: it joins the pieces end to end into a single string."
+
+  - id: q2
+    type: mcq
+    prompt: "With `string a = \"Hello\";` and `string b = \"there\";`, what does `Console.WriteLine(a + b)` print?"
+    options:
+      - { id: a, text: "Hellothere" }
+      - { id: b, text: "Hello there" }
+      - { id: c, text: "Hello + there" }
+      - { id: d, text: "a + b" }
+    answer: a
+    rationale: "Joining a and b with nothing between them gives Hellothere. If you want a space, you join one in as its own piece: a + \" \" + b."
+
+  - id: q3
+    type: truefalse
+    prompt: "`+` can only be used to print; it cannot build a string you store in a variable."
+    answer: false
+    rationale: "A key use of + is building a stored string, e.g. string fullName = first + \" \" + last; which you then use like any other string."
+
+  - id: q4
+    type: mcq
+    prompt: "With `int age = 36;`, what does `Console.WriteLine(\"Age: \" + age)` print?"
+    options:
+      - { id: a, text: "Age: 36" }
+      - { id: b, text: "it does not compile" }
+      - { id: c, text: "Age: age" }
+      - { id: d, text: "Age36" }
+    answer: a
+    rationale: "Joining a number onto a string turns the number into text in the result, so it prints Age: 36."
+
+  - id: q5
+    type: truefalse
+    prompt: "For producing output, `\"Hello, \" + name` and `$\"Hello, {name}\"` print the same thing."
+    answer: true
+    rationale: "For output they are interchangeable. The extra thing + can do is build a stored string from pieces."
+
+  - id: q6
+    type: mcq
+    prompt: |
+      What does this print for first "Ada" and last "Lovelace"?
+        string fullName = first + " " + last;
+        Console.WriteLine(fullName);
+    options:
+      - { id: a, text: "Ada Lovelace" }
+      - { id: b, text: "AdaLovelace" }
+      - { id: c, text: "first last" }
+      - { id: d, text: "fullName" }
+    answer: a
+    rationale: "The three pieces first, a space, and last are joined into fullName, which prints Ada Lovelace."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the blank to join a space between a and b:  Console.WriteLine(a __ \" \" __ b);"
+    accept: ["+"]
+    rationale: "The + operator joins the pieces: a + \" \" + b."

@@ -1,0 +1,15 @@
+id: p06-default-value
+title: The default value
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Fresh int[n], print a[i] without assigning (default 0). Vary n and i in bounds; output always 0.
+cases:
+  - { stdin: "3\n0", note: "first slot default" }
+  - { stdin: "5\n4", note: "last slot default" }
+  - { stdin: "1\n0", note: "edge - length 1" }
+  - { stdin: "10\n7", note: "larger" }

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>wireframe, auth (fidelity 1)</title>
+<style>
+  :root{
+    --ink:#2b2d31;--line:#c9ccd2;--line-2:#dde0e5;--box:#eef0f3;--box-2:#e4e7ec;
+    --paper:#f7f8fa;--muted:#7a7e86;--faint:#a7abb3;--accent:#6d6f76;
+    --mono:ui-monospace,'Cascadia Code',monospace;--ui:system-ui,sans-serif;--serif:Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--ui);background:#d8dadf;color:var(--ink);padding:30px 26px 120px;}
+  .head{max-width:900px;margin:0 auto 10px;}
+  .head h1{font-size:20px;}
+  .head p{color:#55585f;font-size:14px;line-height:1.6;max-width:760px;margin-top:6px;}
+  .caption{max-width:900px;margin:28px auto 8px;font-family:var(--mono);font-size:12px;color:#44474d;}
+  .caption b{color:#000;}
+
+  .app{max-width:900px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .topnav{height:46px;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid var(--line);background:var(--box);}
+  .logo{font-family:var(--mono);font-weight:700;font-size:15px;}
+  .topnav .right{margin-left:auto;display:flex;gap:10px;align-items:center;}
+  .tgl{display:flex;background:var(--box);border:1px solid var(--line);border-radius:18px;padding:3px;}
+  .tgl span{font-size:11px;color:var(--muted);padding:3px 10px;border-radius:14px;}
+  .tgl span.sel{background:var(--paper);color:var(--ink);font-weight:600;}
+
+  /* centered auth card */
+  .stage{padding:48px 20px 60px;display:grid;place-items:center;background:var(--box);}
+  .card{width:380px;max-width:100%;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:30px 28px;}
+  .brandline{font-family:var(--mono);font-weight:700;font-size:16px;text-align:center;margin-bottom:4px;}
+  .card h2{font-family:var(--serif);font-size:22px;text-align:center;margin-bottom:4px;}
+  .card .sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:22px;}
+
+  .social{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
+  .sbtn{display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:11px;font-size:14px;font-weight:500;background:var(--paper);cursor:pointer;}
+  .sbtn .ic{width:18px;height:18px;border-radius:4px;background:var(--box-2);border:1px dashed var(--line);}
+
+  .divider{display:flex;align-items:center;gap:12px;color:var(--faint);font-size:12px;margin:14px 0;}
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line-2);}
+
+  .field{margin-bottom:13px;}
+  .field label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;}
+  .field .inp{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px;background:var(--paper);color:var(--faint);}
+  .field .fp{float:right;font-size:11px;color:var(--muted);}
+  .btn{width:100%;font-family:var(--ui);font-size:14px;font-weight:600;padding:11px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;margin-top:4px;}
+  .swap{text-align:center;font-size:13px;color:var(--muted);margin-top:18px;}
+  .swap a{color:var(--ink);font-weight:600;}
+  .fineprint{text-align:center;font-size:11px;color:var(--faint);margin-top:16px;line-height:1.5;}
+</style>
+</head>
+<body>
+  <div class="head">
+    <h1>Auth, fidelity 1 wireframe</h1>
+    <p>The gate (public zone). Email/password + Google + GitHub, link-by-verified-email (per architecture §7b). One card template, toggles between Log in and Sign up. Social-first for the CS-student audience.</p>
+  </div>
+
+  <!-- LOG IN -->
+  <div class="caption"><b>1. Log in</b></div>
+  <div class="app">
+    <div class="topnav"><span class="logo">k&#9612;ng</span><div class="right"><div class="tgl"><span class="sel">Dark</span><span>Light</span></div></div></div>
+    <div class="stage">
+      <div class="card">
+        <div class="brandline">k&#9612;ng</div>
+        <h2>Welcome back</h2>
+        <div class="sub">Log in to pick up where you left off.</div>
+        <div class="social">
+          <div class="sbtn"><span class="ic"></span>Continue with GitHub</div>
+          <div class="sbtn"><span class="ic"></span>Continue with Google</div>
+        </div>
+        <div class="divider">or with email</div>
+        <div class="field"><label>Email</label><div class="inp">you@example.com</div></div>
+        <div class="field"><label>Password <a class="fp">forgot?</a></label><div class="inp">••••••••</div></div>
+        <button class="btn">Log in</button>
+        <div class="swap">New here? <a>Create an account</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGN UP -->
+  <div class="caption"><b>2. Sign up</b> (same card; social-first; email skips password-reset email burden)</div>
+  <div class="app">
+    <div class="topnav"><span class="logo">k&#9612;ng</span><div class="right"><div class="tgl"><span class="sel">Dark</span><span>Light</span></div></div></div>
+    <div class="stage">
+      <div class="card">
+        <div class="brandline">k&#9612;ng</div>
+        <h2>Start learning</h2>
+        <div class="sub">Create an account. Self-paced, nothing locked.</div>
+        <div class="social">
+          <div class="sbtn"><span class="ic"></span>Sign up with GitHub</div>
+          <div class="sbtn"><span class="ic"></span>Sign up with Google</div>
+        </div>
+        <div class="divider">or with email</div>
+        <div class="field"><label>Email</label><div class="inp">you@example.com</div></div>
+        <div class="field"><label>Password</label><div class="inp">choose a password</div></div>
+        <button class="btn">Create account</button>
+        <div class="swap">Already have an account? <a>Log in</a></div>
+        <div class="fineprint">By signing up you agree to the terms and privacy policy.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption" style="color:#55585f"><b>for your read</b> &rarr; social order GitHub-then-Google (shown) good for the audience? &middot; one card both sides, or a split-screen layout (form + a branded/map panel beside it)? &middot; show the account-linking note anywhere, or keep it invisible (link-by-verified-email just works)?</div>
+</body>
+</html>

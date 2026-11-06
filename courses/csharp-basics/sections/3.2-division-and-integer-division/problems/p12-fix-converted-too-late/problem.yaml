@@ -1,0 +1,16 @@
+id: p12-fix-converted-too-late
+title: Fix the too-late conversion
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter: double result = a / b; both int, so a / b truncates BEFORE widening (prints 3 not 3.5).
+# Fix: convert before dividing, (double)a / b. Clean-dividing values.
+cases:
+  - { stdin: "7\n2",   note: "want 3.5, buggy prints 3" }
+  - { stdin: "9\n4",   note: "want 2.25, buggy prints 2" }
+  - { stdin: "1\n4",   note: "want 0.25, buggy prints 0" }
+  - { stdin: "10\n8",  note: "want 1.25, buggy prints 1" }

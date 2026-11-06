@@ -1,0 +1,15 @@
+id: p03-equal-or-not
+title: Equal or not
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Two-way if/else on ==: equal -> equal, else different.
+cases:
+  - { stdin: "4\n4",  note: "equal" }
+  - { stdin: "4\n5",  note: "different" }
+  - { stdin: "5\n4",  note: "different" }
+  - { stdin: "0\n0",  note: "equal" }

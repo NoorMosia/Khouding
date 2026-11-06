@@ -1,0 +1,71 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 2.1 (Console.ReadLine, prompt-on-own-line, one-shot input model).
+# Assumes Ch.1.
+
+section: csharp-basics/2.1-reading-input
+pass: 4            # need >= 4 of 6 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What type does `Console.ReadLine()` give you?"
+    options:
+      - { id: a, text: "string" }
+      - { id: b, text: "int" }
+      - { id: c, text: "double" }
+      - { id: d, text: "it depends on what the user typed" }
+    answer: a
+    rationale: "ReadLine always returns a string, whatever the text looks like."
+
+  - id: q2
+    type: truefalse
+    prompt: "If the input line is `25`, `Console.ReadLine()` gives you the number 25."
+    answer: false
+    rationale: "It gives you the text \"25\" (a string), not the number 25. Converting it to a number is the next section."
+
+  - id: q3
+    type: mcq
+    prompt: "Where should the prompt go?"
+    options:
+      - { id: a, text: "printed on its own line, before reading" }
+      - { id: b, text: "after reading the input" }
+      - { id: c, text: "a prompt is not needed" }
+      - { id: d, text: "inside the ReadLine call" }
+    answer: a
+    rationale: "Print the prompt first (on its own line), then read. The prompt is just the first thing the program prints."
+
+  - id: q4
+    type: truefalse
+    prompt: "On this platform you type your input live while the program is running."
+    answer: false
+    rationale: "Input is supplied up front and fed to the program; it reads through it line by line. You are not typing live during the run."
+
+  - id: q5
+    type: mcq
+    prompt: |
+      Given input lines `one` then `two`, what does this print?
+        string a = Console.ReadLine();
+        string b = Console.ReadLine();
+        Console.WriteLine(b);
+        Console.WriteLine(a);
+    options:
+      - { id: a, text: "one then two" }
+      - { id: b, text: "two then one" }
+      - { id: c, text: "one then one" }
+      - { id: d, text: "nothing" }
+    answer: b
+    rationale: "The first ReadLine takes `one` into a, the second takes `two` into b. Printing b then a gives two then one."
+
+  - id: q6
+    type: fillblank
+    prompt: "To read a line of input into a variable called line, write:  string line = Console.________();"
+    accept: ["ReadLine"]
+    rationale: "Console.ReadLine() reads the next line of input."

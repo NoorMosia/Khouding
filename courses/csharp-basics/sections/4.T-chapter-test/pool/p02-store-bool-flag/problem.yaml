@@ -1,0 +1,15 @@
+id: p02-store-bool-flag
+title: Store a bool flag
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# A: read an int, store (n >= 0) in a bool, print it. Cases straddle the 0 boundary.
+cases:
+  - { stdin: "5",  note: "non-negative -> True" }
+  - { stdin: "0",  note: "edge: 0 >= 0 -> True" }
+  - { stdin: "-1", note: "negative -> False" }
+  - { stdin: "-100", note: "negative -> False" }

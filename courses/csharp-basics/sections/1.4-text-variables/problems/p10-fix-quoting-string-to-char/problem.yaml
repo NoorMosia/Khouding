@@ -1,0 +1,12 @@
+id: p10-fix-quoting-string-to-char
+title: Fix the quotes (string to char)
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Starter does not compile (char = "A", CS0029). Fix: double quotes -> single quotes.
+cases:
+  - { stdin: "", note: no-input; fix "A" to 'A' so a char compiles and prints A }

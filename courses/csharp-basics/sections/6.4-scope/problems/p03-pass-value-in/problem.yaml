@@ -1,0 +1,15 @@
+id: p03-pass-value-in
+title: Pass the value in
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Pass values in: Main reads a score, passes it to a method that prints score + 10 using only its parameter.
+cases:
+  - { stdin: "5",  note: "15" }
+  - { stdin: "0",  note: "10" }
+  - { stdin: "-4", note: "6" }
+  - { stdin: "90", note: "100" }

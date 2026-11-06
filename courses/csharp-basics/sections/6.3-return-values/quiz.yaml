@@ -1,0 +1,78 @@
+# Checkpoint quiz, machine-readable source of truth (quiz.md is the human mirror).
+# The UI auto-grades from THIS file.
+#
+# Question types:
+#   truefalse  -> answer: true | false
+#   mcq        -> options list; answer: the id of the correct option
+#   fillblank  -> accept: list of accepted answers (case-insensitive, trimmed)
+#
+# Scope: 6.3 (a non-void return type + return statement hands a value back and ends the method;
+# a call is an expression; return-vs-print; a non-void method must return on every path).
+# Assumes 6.1-6.2. Scope is 6.4.
+
+section: csharp-basics/6.3-return-values
+pass: 5            # need >= 5 of 7 to clear the comprehension gate
+shuffle: true
+
+questions:
+  - id: q1
+    type: mcq
+    prompt: "What does a `return` statement do?"
+    options:
+      - { id: a, text: "hands a value back to the caller and ends the method immediately" }
+      - { id: b, text: "prints the value" }
+      - { id: c, text: "pauses the method and resumes later" }
+      - { id: d, text: "declares a new variable" }
+    answer: a
+    rationale: "return gives the value back to the caller and ends the method right there."
+
+  - id: q2
+    type: mcq
+    prompt: "A method is declared `static int Square(int n)`. What must its body do?"
+    options:
+      - { id: a, text: "return an int value on every path" }
+      - { id: b, text: "print an int" }
+      - { id: c, text: "return nothing, because it is static" }
+      - { id: d, text: "take exactly one argument and print it" }
+    answer: a
+    rationale: "A non-void return type means the method must return a value of that type on every path it can take."
+
+  - id: q3
+    type: mcq
+    prompt: "What is the value of the expression `Square(4)` if `Square` returns `n * n`?"
+    options:
+      - { id: a, text: "16, a call to a returning method is an expression standing for the returned value" }
+      - { id: b, text: "nothing, calls are not expressions" }
+      - { id: c, text: "4" }
+      - { id: d, text: "it prints 16 but has no value" }
+    answer: a
+    rationale: "A call to a returning method evaluates to the returned value, so Square(4) is 16 and can be used like any value."
+
+  - id: q4
+    type: truefalse
+    prompt: "A method that returns a value lets the caller decide what to do with it, while a method that prints does the output itself and returns nothing."
+    answer: true
+    rationale: "Returning hands the value back (reusable); printing does the output and returns void."
+
+  - id: q5
+    type: mcq
+    prompt: "Which return type fits a method that answers a yes/no question, like whether a number is even?"
+    options:
+      - { id: a, text: "bool" }
+      - { id: b, text: "int" }
+      - { id: c, text: "string" }
+      - { id: d, text: "void" }
+    answer: a
+    rationale: "A yes/no result is a bool. (void returns nothing, so it cannot answer the question to the caller.)"
+
+  - id: q6
+    type: truefalse
+    prompt: "A non-void method that can finish without hitting a return statement will not compile."
+    answer: true
+    rationale: "Every path of a non-void method must return a value, or the compiler reports that not all paths return."
+
+  - id: q7
+    type: fillblank
+    prompt: "Fill the keyword that hands a value back from a method:  ____ n * n;"
+    accept: ["return"]
+    rationale: "return hands the value back to the caller and ends the method."

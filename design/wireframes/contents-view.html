@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>wireframe, contents view (fidelity 1)</title>
+<style>
+  :root{
+    --ink:#2b2d31;--line:#c9ccd2;--line-2:#dde0e5;--box:#eef0f3;--box-2:#e4e7ec;
+    --paper:#f7f8fa;--muted:#7a7e86;--faint:#a7abb3;--accent:#6d6f76;
+    --mono:ui-monospace,'Cascadia Code',monospace;--ui:system-ui,sans-serif;--serif:Georgia,serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--ui);background:#d8dadf;color:var(--ink);padding:30px 26px 120px;}
+  .head{max-width:900px;margin:0 auto 18px;}
+  .head h1{font-size:20px;}
+  .head p{color:#55585f;font-size:14px;line-height:1.6;max-width:760px;margin-top:6px;}
+
+  .app{max-width:900px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .topnav{height:44px;display:flex;align-items:center;gap:14px;padding:0 16px;border-bottom:1px solid var(--line);background:var(--box);}
+  .logo{font-family:var(--mono);font-weight:700;font-size:14px;}
+  .crumb{font-family:var(--mono);font-size:12px;color:var(--muted);}
+  .ph{background:var(--box-2);border:1px dashed var(--line);border-radius:5px;}
+  .avatar{width:26px;height:26px;border-radius:50%;}
+  .topnav .right{margin-left:auto;display:flex;gap:10px;align-items:center;}
+
+  /* course header */
+  .chead{padding:24px 30px 20px;border-bottom:1px solid var(--line-2);display:flex;align-items:flex-start;gap:20px;}
+  .chead .meta{flex:1;}
+  .chead .eyebrow{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;}
+  .chead h2{font-family:var(--serif);font-size:26px;margin:6px 0 10px;}
+  .headline{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);}
+  .bar{height:7px;width:220px;background:var(--box-2);border-radius:4px;overflow:hidden;}
+  .bar>span{display:block;height:100%;width:22%;background:#8a8d94;}
+  /* contents/map toggle */
+  .viewtoggle{display:flex;background:var(--box);border:1px solid var(--line);border-radius:8px;padding:3px;}
+  .viewtoggle button{font-family:var(--ui);font-size:12.5px;border:none;background:transparent;color:var(--muted);padding:6px 14px;border-radius:6px;cursor:pointer;}
+  .viewtoggle button.sel{background:var(--paper);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+
+  /* continue bar */
+  .continue{margin:16px 30px 0;padding:12px 16px;border:1px solid var(--line-2);border-radius:9px;background:var(--box);display:flex;align-items:center;gap:12px;}
+  .continue .lbl{font-family:var(--mono);font-size:11px;color:var(--muted);}
+  .continue .what{font-size:14px;flex:1;}
+  .continue .what b{font-weight:600;}
+  .btn{font-family:var(--ui);font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:6px;border:1px solid var(--line);background:var(--box-2);color:var(--ink);cursor:pointer;}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+  /* chapters accordion */
+  .toc{padding:14px 30px 26px;}
+  .chapter{border:1px solid var(--line-2);border-radius:10px;margin-bottom:12px;overflow:hidden;background:var(--paper);}
+  .chapter.locked{opacity:.6;}
+  .ch-head{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;}
+  .ch-head:hover{background:var(--box);}
+  .ch-region{width:26px;height:26px;border-radius:7px;background:var(--box-2);border:1px solid var(--line);display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--muted);flex-shrink:0;}
+  .ch-region.lit{background:#cdd7cd;border-color:#9fb39f;color:#3f543f;}
+  .ch-title{flex:1;}
+  .ch-title .n{font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .ch-title .t{font-size:15px;font-weight:600;}
+  .ch-prog{font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+  .ch-caret{color:var(--faint);font-size:12px;transition:transform .15s;}
+  .chapter.open .ch-caret{transform:rotate(90deg);}
+
+  .sections{border-top:1px solid var(--line-2);}
+  .chapter:not(.open) .sections{display:none;}
+  .srow{display:flex;align-items:center;gap:14px;padding:11px 18px 11px 24px;border-bottom:1px solid var(--line-2);cursor:pointer;}
+  .srow:last-child{border-bottom:none;}
+  .srow:hover{background:var(--box);}
+  .s-lit{width:9px;height:9px;border-radius:50%;background:var(--box-2);border:1px solid var(--line);flex-shrink:0;}
+  .s-lit.on{background:#6a8f6a;border-color:#6a8f6a;}
+  .s-name{flex:1;font-size:14px;}
+  .s-name .num{font-family:var(--mono);font-size:11px;color:var(--faint);margin-right:8px;}
+  /* three status markers: reading / quiz / problems */
+  .markers{display:flex;gap:7px;align-items:center;}
+  .mk{font-family:var(--mono);font-size:10px;color:var(--faint);display:flex;align-items:center;gap:4px;border:1px solid var(--line-2);border-radius:5px;padding:2px 6px;}
+  .mk .ic{width:6px;height:6px;border-radius:2px;background:var(--box-2);}
+  .mk.done{color:#3f543f;border-color:#9fb39f;background:#eef3ee;} .mk.done .ic{background:#6a8f6a;}
+  .mk.part{color:#6b5e3e;border-color:#cdbf9c;background:#f5efe3;} .mk.part .ic{background:#c9a86a;}
+
+  .caption{max-width:900px;margin:26px auto 8px;font-family:var(--mono);font-size:12px;color:#44474d;}
+  .caption b{color:#000;}
+</style>
+</head>
+<body>
+  <div class="head">
+    <h1>Contents view, fidelity 1 wireframe</h1>
+    <p>The navigation backbone (must be excellent day one). Course home DEFAULT; Map is the one-click companion. Scannable chapters &rarr; sections, honest rollup progress. Real C# Basics structure.</p>
+  </div>
+
+  <div class="app">
+    <div class="topnav"><span class="logo">k&#9612;ng</span><span class="crumb">Courses / C# Basics</span><div class="right"><span class="ph avatar"></span></div></div>
+
+    <!-- course header + view toggle -->
+    <div class="chead">
+      <div class="meta">
+        <div class="eyebrow">Course</div>
+        <h2>C# Basics</h2>
+        <div class="headline"><span class="bar"><span></span></span><span>Chapter 1 in progress &middot; 22% of the course</span></div>
+      </div>
+      <div class="viewtoggle"><button class="sel">Contents</button><button>Map</button></div>
+    </div>
+
+    <!-- continue -->
+    <div class="continue">
+      <span class="lbl">resume</span>
+      <span class="what">Section <b>1.3 Number variables</b> &middot; Problems 8/15</span>
+      <button class="btn primary">Continue &rarr;</button>
+    </div>
+
+    <!-- accordion -->
+    <div class="toc">
+      <!-- Chapter 1 open -->
+      <div class="chapter open">
+        <div class="ch-head">
+          <span class="ch-region">1</span>
+          <div class="ch-title"><div class="n">Chapter 1 &middot; region</div><div class="t">Getting Started &amp; Variables</div></div>
+          <span class="ch-prog">3 / 8 sections</span>
+          <span class="ch-caret">&#9654;</span>
+        </div>
+        <div class="sections">
+          <div class="srow">
+            <span class="s-lit on"></span><span class="s-name"><span class="num">1.1</span>The parts of a C# program</span>
+            <div class="markers"><span class="mk done"><span class="ic"></span>R</span><span class="mk done"><span class="ic"></span>Q</span><span class="mk done"><span class="ic"></span>15/15</span></div>
+          </div>
+          <div class="srow">
+            <span class="s-lit on"></span><span class="s-name"><span class="num">1.2</span>Output with Console.WriteLine</span>
+            <div class="markers"><span class="mk done"><span class="ic"></span>R</span><span class="mk done"><span class="ic"></span>Q</span><span class="mk done"><span class="ic"></span>12/15</span></div>
+          </div>
+          <div class="srow">
+            <span class="s-lit"></span><span class="s-name"><span class="num">1.3</span>Number variables (int and double)</span>
+            <div class="markers"><span class="mk done"><span class="ic"></span>R</span><span class="mk part"><span class="ic"></span>Q</span><span class="mk part"><span class="ic"></span>8/15</span></div>
+          </div>
+          <div class="srow">
+            <span class="s-lit"></span><span class="s-name"><span class="num">1.4</span>Text variables (string and char)</span>
+            <div class="markers"><span class="mk"><span class="ic"></span>R</span><span class="mk"><span class="ic"></span>Q</span><span class="mk"><span class="ic"></span>0/15</span></div>
+          </div>
+          <div class="srow">
+            <span class="s-lit"></span><span class="s-name"><span class="num">1.5</span>Naming variables well</span>
+            <div class="markers"><span class="mk"><span class="ic"></span>R</span><span class="mk"><span class="ic"></span>Q</span><span class="mk"><span class="ic"></span>0/15</span></div>
+          </div>
+          <div class="srow">
+            <span class="s-lit"></span><span class="s-name"><span class="num">1.6</span>Reading input with Console.ReadLine</span>
+            <div class="markers"><span class="mk"><span class="ic"></span>R</span><span class="mk"><span class="ic"></span>Q</span><span class="mk"><span class="ic"></span>0/15</span></div>
+          </div>
+          <div class="srow">
+            <span class="s-lit"></span><span class="s-name"><span class="num">1.7</span>Converting input to numbers</span>
+            <div class="markers"><span class="mk"><span class="ic"></span>R</span><span class="mk"><span class="ic"></span>Q</span><span class="mk"><span class="ic"></span>0/15</span></div>
+          </div>
+          <div class="srow">
+            <span class="s-lit"></span><span class="s-name"><span class="num">1.8</span>String interpolation &amp; formatting</span>
+            <div class="markers"><span class="mk"><span class="ic"></span>R</span><span class="mk"><span class="ic"></span>Q</span><span class="mk"><span class="ic"></span>0/15</span></div>
+          </div>
+          <div class="srow" style="background:var(--box)">
+            <span class="s-lit"></span><span class="s-name"><span class="num">1.T</span><b>Chapter 1 Test</b> &middot; region boss</span>
+            <div class="markers"><span class="mk"><span class="ic"></span>locked until 1.1&ndash;1.8 attempted</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 2 collapsed -->
+      <div class="chapter">
+        <div class="ch-head">
+          <span class="ch-region">2</span>
+          <div class="ch-title"><div class="n">Chapter 2 &middot; region</div><div class="t">Operators &amp; Arithmetic</div></div>
+          <span class="ch-prog">0 / 6 sections</span>
+          <span class="ch-caret">&#9654;</span>
+        </div>
+        <div class="sections"></div>
+      </div>
+
+      <!-- Chapter 3 collapsed -->
+      <div class="chapter">
+        <div class="ch-head">
+          <span class="ch-region">3</span>
+          <div class="ch-title"><div class="n">Chapter 3 &middot; region</div><div class="t">Decisions</div></div>
+          <span class="ch-prog">0 / 5 sections</span>
+          <span class="ch-caret">&#9654;</span>
+        </div>
+        <div class="sections"></div>
+      </div>
+
+      <!-- later chapters, dimmed -->
+      <div class="chapter locked">
+        <div class="ch-head">
+          <span class="ch-region">4</span>
+          <div class="ch-title"><div class="n">Chapters 4&ndash;8</div><div class="t">Loops &middot; Methods &middot; Arrays &middot; Strings &middot; Collections</div></div>
+          <span class="ch-prog">coming soon</span>
+          <span class="ch-caret">&#9654;</span>
+        </div>
+        <div class="sections"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption"><b>markers per section</b> &rarr; R reading &middot; Q quiz &middot; X/15 problems &middot; the left dot = "lit" (8/15). <b>for your read</b> &rarr; markers as R/Q/count chips (shown) or simpler? &middot; accordion (shown) vs always-expanded? &middot; keep the "region" framing visible here or save it for the map?</div>
+</body>
+</html>

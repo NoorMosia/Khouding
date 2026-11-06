@@ -1,0 +1,20 @@
+id: p12-eligibility-capstone
+title: Eligibility capstone
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+solution:
+  csharp: [solution.cs]
+starter:
+  csharp: [starter.cs]
+# Capstone: approve a loan if income >= 2000 AND age is in 21..65 inclusive AND employed flag == 1.
+# Three factors combined with && (the age part is itself a range &&). if/else -> "approved" / "declined".
+# Cases knock out one factor at a time plus an all-pass and both age edges.
+cases:
+  - { stdin: "2500\n30\n1", note: "all factors pass -> approved" }
+  - { stdin: "1500\n30\n1", note: "income too low -> declined" }
+  - { stdin: "2500\n18\n1", note: "age below band -> declined" }
+  - { stdin: "2500\n70\n1", note: "age above band -> declined" }
+  - { stdin: "2500\n30\n0", note: "not employed -> declined" }
+  - { stdin: "2000\n21\n1", note: "edges: income and low age both inclusive -> approved" }
+  - { stdin: "3000\n65\n1", note: "high age edge inclusive -> approved" }

@@ -1,0 +1,16 @@
+id: p12-receipt
+title: Receipt
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Capstone: read several fields, compute a total, print a multi-line interpolated report
+# with an expression in the final hole. Whole-number prices keep the total clean (no :F2 yet).
+cases:
+  - { stdin: "pens\n3\n2",   note: typical }
+  - { stdin: "notebook\n1\n5", note: quantity one }
+  - { stdin: "chairs\n0\n40", note: quantity zero, total zero }
+  - { stdin: "coffee beans\n10\n7", note: item with a space, larger total }

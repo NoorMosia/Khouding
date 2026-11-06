@@ -1,0 +1,15 @@
+id: p04-inverted-triangle
+title: Inverted triangle
+difficulty: 2
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Outer-dependent inner bound (down): read n, print an inverted triangle; row i has (n - i + 1) stars.
+cases:
+  - { stdin: "4", note: "****, ***, **, *" }
+  - { stdin: "1", note: "single star" }
+  - { stdin: "3", note: "***, **, *" }
+  - { stdin: "5", note: "five rows down to one" }

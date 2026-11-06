@@ -1,0 +1,48 @@
+# Chapter 6 region boss, machine-readable source of truth.
+# A TEST is pooled: a single attempt draws `draw` problems from `pool`, and
+# passing `light_at` of them lights the chapter region on the map.
+# The oracle CLI generates each pool problem's expecteds from its solution.cs,
+# exactly as for a section problem.
+
+id: csharp-basics/6.T
+kind: chapter-test
+title: Chapter 6 Test
+
+draw: 10            # problems served in a single attempt
+light_at: 6         # pass this many of the draw to light Chapter 6 (~60%)
+window_hours: 24    # generous attempt window; miss it or fall short and it just
+                    # does not light, a retry draws a fresh set. No lockouts, ever.
+shuffle: true
+
+# The bank (20). A single attempt draws 10, weighted to a mix of difficulties.
+# Every problem is an I/O program: Main reads input and calls student-defined static
+# methods, then prints the results. Methods are exercised with VARIED ARGUMENTS across
+# cases, so a method hardcoding one answer fails. Anti-hardcoding from both sides: the
+# pool is bigger than the draw, and each problem's cases defeat a single hardcoded result.
+pool:
+  # A, define & call (6.1)
+  - p01-call-once
+  - p02-call-n-times
+  - p03-method-calls-method
+  # B, parameters (6.2)
+  - p04-square-arg
+  - p05-sum-two
+  - p06-repeat-text
+  - p07-report-parity
+  # C, return values (6.3)
+  - p08-square-return
+  - p09-larger
+  - p10-is-even
+  - p11-sum-to
+  - p12-average-of-two
+  # D, scope (6.4)
+  - p13-by-value
+  - p14-private-locals
+  - p15-isolation
+  # E, overloading (6.5)
+  - p16-add-overloads
+  - p17-max-overloads
+  - p18-describe-by-type
+  # F, fix the broken program (debug across 6.1-6.5)
+  - p19-fix-missing-return
+  - p20-fix-no-overload

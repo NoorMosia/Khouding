@@ -1,0 +1,12 @@
+id: p13-aligned-table
+title: Aligned table
+difficulty: 3
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Composes \t (columns) with newlines (rows). Tabs, not spaces.
+cases:
+  - { stdin: "", note: no-input; 3-row 2-column table using tabs and newlines }

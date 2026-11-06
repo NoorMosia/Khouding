@@ -1,0 +1,14 @@
+id: p05-good-names
+title: Declare with good names
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# Read a first name (string) and an age (int) into well-named camelCase variables; print each.
+cases:
+  - { stdin: "Ada\n36",    note: normal }
+  - { stdin: "Sam\n9",     note: short name, small age }
+  - { stdin: "Jonathan\n0", note: edge - age zero }

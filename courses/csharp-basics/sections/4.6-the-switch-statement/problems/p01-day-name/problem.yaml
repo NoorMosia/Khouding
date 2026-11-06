@@ -1,0 +1,16 @@
+id: p01-day-name
+title: Day name
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# switch on an int 1..7 -> weekday name, default "unknown". Cases hit several days and the default.
+cases:
+  - { stdin: "1", note: "Monday" }
+  - { stdin: "3", note: "Wednesday" }
+  - { stdin: "7", note: "Sunday (last valid)" }
+  - { stdin: "0", note: "below range -> unknown (default)" }
+  - { stdin: "9", note: "above range -> unknown (default)" }

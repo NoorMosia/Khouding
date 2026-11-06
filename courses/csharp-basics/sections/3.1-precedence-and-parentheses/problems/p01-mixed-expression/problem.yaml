@@ -1,0 +1,12 @@
+id: p01-mixed-expression
+title: A mixed expression
+difficulty: 1
+grading: stdout-match
+languages: [csharp]
+starter:
+  csharp: [starter.cs]
+solution:
+  csharp: [solution.cs]
+# No input. Print the value of 2 + 3 * 4 (precedence: * before +, so 14 not 20).
+cases:
+  - { stdin: "", note: fixed expression, no input }
