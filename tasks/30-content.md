@@ -23,6 +23,7 @@
 - [ ] 3.3 (Later) a real authoring tool / UI.
 
 ## 4. Later `(LATER)`
-- [ ] 4.1 Java route-map (same mold).
-- [ ] 4.2 C++ route-map.
-- [ ] 4.3 Python route-map.
+- [ ] 4.1 **C# OOP skeleton** `(NEXT after Basics reflection)` — do this before heavy OOP authoring; let the Basics authoring experience inform chapter/section structure first.
+- [ ] 4.2 Java route-map (same mold).
+- [ ] 4.3 C++ route-map.
+- [ ] 4.4 Python route-map.

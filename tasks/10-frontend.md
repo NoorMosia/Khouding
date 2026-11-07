@@ -28,7 +28,7 @@
 
 ## 4. General pages `(NEXT)`
 - [ ] 4.1 Landing / marketing page carrying the "Learn to code like it's 2016" attitude.
-- [ ] 4.2 Course catalog / course home.
+- [ ] 4.2 **Course catalog / "My courses"** — shows ALL courses, published and planned. Published = full card with progress; planned = placeholder card (fog-style map, title, "coming soon", optional "notify me"). Requires `status` field in `course.yaml`. Signals a real curriculum path, not a one-off.
 - [ ] 4.3 Login / signup screens.
 - [ ] 4.4 User profile.
 
