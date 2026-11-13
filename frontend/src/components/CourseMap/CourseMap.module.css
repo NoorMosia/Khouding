@@ -1,0 +1,127 @@
+/* ── CourseMap — map-specific tokens, not in global tokens.css ───────────── */
+
+.wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 20px 24px 28px;
+}
+
+/* Sea background behind the SVG */
+.mapWrap {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+
+[data-theme="dark"] .mapWrap {
+  background: radial-gradient(130% 100% at 50% 0%, #0e0f16 0%, #070810 100%);
+}
+
+[data-theme="light"] .mapWrap {
+  background: radial-gradient(130% 100% at 50% 0%, #d8cdb2 0%, #cec2a4 100%);
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 460px;
+  margin: 0 auto;
+}
+
+/* ── Province fills ──────────────────────────────────────────────────────── */
+.prov {
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  cursor: pointer;
+  transition:
+    fill        var(--t-slow, 300ms) ease,
+    stroke      var(--t-slow, 300ms) ease,
+    filter      var(--t-fast, 140ms) ease;
+}
+
+.prov:hover { filter: brightness(1.15); }
+.prov:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* done = lit chapter */
+[data-theme="dark"]  .prov.done { fill: #2c4a5e; stroke: #7fb0d0; stroke-width: 2.2; }
+[data-theme="light"] .prov.done { fill: #bcd0a2; stroke: #5f7d40; stroke-width: 2.2; }
+
+/* next = in progress or unlocked */
+[data-theme="dark"]  .prov.next { fill: #30333f; stroke: #7f88a6; }
+[data-theme="light"] .prov.next { fill: #e3dbc7; stroke: #9aa06e; }
+
+/* fog = locked / not started */
+[data-theme="dark"]  .prov.fog  { fill: #262935; stroke: #5a627a; }
+[data-theme="light"] .prov.fog  { fill: #ddd4c0; stroke: #a89a72; }
+
+/* ── Province labels ─────────────────────────────────────────────────────── */
+.label {
+  font-family: var(--font-serif, 'Source Serif 4', Georgia, serif);
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  paint-order: stroke;
+  pointer-events: none;
+  user-select: none;
+}
+
+[data-theme="dark"]  .label      { stroke: #0e0f16; stroke-width: 2.5px; }
+[data-theme="light"] .label      { stroke: #d8cdb2; stroke-width: 2.5px; }
+
+[data-theme="dark"]  .label.done,
+[data-theme="dark"]  .label.next { fill: #e6e6ea; }
+[data-theme="dark"]  .label.fog  { fill: #595c6b; font-style: italic; font-size: 10px; }
+
+[data-theme="light"] .label.done,
+[data-theme="light"] .label.next { fill: #2a2720; }
+[data-theme="light"] .label.fog  { fill: #a8a295; font-style: italic; font-size: 10px; }
+
+/* ── Landmark pins ───────────────────────────────────────────────────────── */
+.pin {
+  stroke-width: 1.2;
+  pointer-events: none;
+}
+
+[data-theme="dark"]  .pin { stroke: #191b22; }
+[data-theme="light"] .pin { stroke: #f7f2e6; }
+
+[data-theme="dark"]  .pin.done { fill: #5bc08a; }
+[data-theme="light"] .pin.done { fill: #2f9e63; }
+
+[data-theme="dark"]  .pin.part { fill: #d9b45f; }
+[data-theme="light"] .pin.part { fill: #b08828; }
+
+/* ── Legend ──────────────────────────────────────────────────────────────── */
+.legend {
+  display: flex;
+  gap: 18px;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendSwatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+[data-theme="dark"]  .swatchDone { background: #2c4a5e; border: 1px solid #7fb0d0; }
+[data-theme="dark"]  .swatchNext { background: #30333f; border: 1px solid #7f88a6; }
+[data-theme="dark"]  .swatchFog  { background: #262935; border: 1px solid #5a627a; }
+[data-theme="light"] .swatchDone { background: #bcd0a2; border: 1px solid #5f7d40; }
+[data-theme="light"] .swatchNext { background: #e3dbc7; border: 1px solid #9aa06e; }
+[data-theme="light"] .swatchFog  { background: #ddd4c0; border: 1px solid #a89a72; }

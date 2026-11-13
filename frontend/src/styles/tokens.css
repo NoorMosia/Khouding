@@ -1,0 +1,93 @@
+/* ── Design tokens ───────────────────────────────────────────────────────────
+   Source of truth for all visual values.
+   Theme swap = change data-theme on <html>. No JS color logic elsewhere.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Typography */
+  --font-ui:    'Inter', system-ui, sans-serif;
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --font-mono:  'JetBrains Mono', monospace;
+
+  /* Shape */
+  --radius:    10px;
+  --radius-sm: 7px;
+  --radius-lg: 14px;
+
+  /* Motion — purposeful, ~140–300ms, spring-ish ease */
+  --ease:   cubic-bezier(.25, .8, .35, 1);
+  --t-fast: 140ms;
+  --t-med:  240ms;
+  --t-slow: 300ms;
+
+  /* Scroll spring — subtle bounce for programmatic scrolls */
+  --ease-spring: cubic-bezier(.34, 1.3, .64, 1);
+}
+
+/* ── Dark theme (default) ────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg:          #16171d;
+  --surface:     #1e2029;
+  --surface-2:   #282b36;
+  --panel:       #191b22;
+
+  --border:      #2c2f3b;
+  --border-soft: #23252f;
+
+  --text:        #e6e6ea;
+  --text-muted:  #9a9cab;
+  --text-faint:  #595c6b;
+
+  --accent:      #8a8bf0;
+  --accent-fg:   #0f0f26;
+  --accent-soft: #242647;
+
+  --success:     #5bc08a;
+  --success-bg:  #16301f;
+  --success-bd:  #2b5438;
+
+  --danger:      #e05c5c;
+  --danger-bg:   #2d1414;
+  --danger-bd:   #5a2828;
+
+  --try-bg:      #332a16;
+  --try-bd:      #5a4a24;
+  --try-fg:      #d9b45f;
+
+  --shadow:      0 10px 40px rgba(0, 0, 0, .4);
+  --menu-shadow: 0 14px 40px rgba(0, 0, 0, .5);
+}
+
+/* ── Light theme ─────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:          #f9f9fb;
+  --surface:     #f0f0f4;
+  --surface-2:   #e6e6ee;
+  --panel:       #ffffff;
+
+  --border:      #e2e2ea;
+  --border-soft: #ececf2;
+
+  --text:        #1d1e26;
+  --text-muted:  #696b7a;
+  --text-faint:  #a8aab8;
+
+  --accent:      #4f4fc4;
+  --accent-fg:   #ffffff;
+  --accent-soft: #e2e2f4;
+
+  --success:     #2f9e63;
+  --success-bg:  #e0f0e6;
+  --success-bd:  #b6dcc5;
+
+  --danger:      #c0392b;
+  --danger-bg:   #fdecea;
+  --danger-bd:   #f5c6c2;
+
+  --try-bg:      #f2e8cf;
+  --try-bd:      #ddcca0;
+  --try-fg:      #9a7d2e;
+
+  --shadow:      0 10px 40px rgba(60, 60, 90, .15);
+  --menu-shadow: 0 14px 40px rgba(60, 60, 90, .2);
+}

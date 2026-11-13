@@ -1,13 +1,33 @@
-# Node
-node_modules/
+# ── Secrets & config (NEVER commit values) ──────────────────────────────────
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+*secrets*
+*.pfx
+*.p12
+secrets.json
 
-# .NET build output
+# ── Node ─────────────────────────────────────────────────────────────────────
+node_modules/
+dist/
+.vite/
+
+# ── .NET build output ────────────────────────────────────────────────────────
 bin/
 obj/
+*.user
+*.suo
+.vs/
 
-# Local work/scratch dirs
+# ── .NET User Secrets (stored outside the repo in the user profile) ──────────
+# Already outside the tree; listed here as a reminder only.
+# %APPDATA%\Microsoft\UserSecrets\
+
+# ── Local work/scratch dirs ───────────────────────────────────────────────────
 .khwork/
 
-# OS / editor
+# ── OS / editor ───────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+*.swp

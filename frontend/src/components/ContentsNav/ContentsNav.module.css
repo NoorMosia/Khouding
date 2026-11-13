@@ -1,0 +1,271 @@
+/* ── ContentsNav ─────────────────────────────────────────────────────────────
+   Lives inside the collapsible Sidebar. Fills the sidebarInner scroll area.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Resume bar ──────────────────────────────────────────────────────────── */
+.resume {
+  margin: 10px 10px 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--accent-soft);
+  border-radius: 9px;
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.resumeLabel {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--accent);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.resumeWhat {
+  font-size: 12px;
+  flex: 1;
+  color: var(--text);
+  line-height: 1.35;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resumeBtn {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  color: var(--accent-fg);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: filter var(--t-fast) var(--ease);
+  text-decoration: none;
+  display: inline-block;
+}
+.resumeBtn:hover { filter: brightness(1.1); }
+
+/* ── TOC scroll area ─────────────────────────────────────────────────────── */
+.toc {
+  padding: 8px 10px 20px;
+}
+
+/* ── Chapter card ────────────────────────────────────────────────────────── */
+.chapter {
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: var(--bg);
+  transition: border-color var(--t-fast) var(--ease);
+}
+
+.chapter.open { border-color: var(--border); }
+
+.chapter.locked { opacity: .5; pointer-events: none; }
+
+/* Chapter header row */
+.chHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+  user-select: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-ui);
+  color: var(--text);
+}
+.chHead:hover { background: var(--surface); }
+
+/* Region number badge */
+.regionBadge {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  font-weight: 600;
+  transition: all var(--t-fast) var(--ease);
+}
+
+.regionBadge.lit {
+  background: var(--success-bg);
+  border-color: var(--success-bd);
+  color: var(--success);
+}
+
+.chMeta { flex: 1; min-width: 0; }
+
+.chLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.chTitle {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chProg {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.chCaret {
+  font-size: 9px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  transition: transform var(--t-med) var(--ease);
+  display: block;
+}
+.chapter.open .chCaret { transform: rotate(90deg); }
+
+/* ── Sections accordion (CSS grid-rows trick) ────────────────────────────── */
+.sectionsWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--t-med) var(--ease);
+  border-top: 1px solid transparent;
+  transition:
+    grid-template-rows var(--t-med) var(--ease),
+    border-color       var(--t-fast) var(--ease);
+}
+
+.chapter.open .sectionsWrap {
+  grid-template-rows: 1fr;
+  border-top-color: var(--border-soft);
+}
+
+.sectionsInner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Section row ─────────────────────────────────────────────────────────── */
+.sRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px 9px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease);
+  text-decoration: none;
+  color: var(--text);
+}
+.sRow:last-child { border-bottom: none; }
+.sRow:hover { background: var(--surface); }
+.sRow.active { background: var(--accent-soft); }
+.sRow.isTest { background: var(--surface); }
+.sRow.isTest:hover { background: var(--surface-2); }
+.sRow.active.isTest { background: var(--accent-soft); }
+
+/* Lit dot */
+.litDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  transition: all var(--t-fast) var(--ease);
+}
+
+.litDot.on {
+  background: var(--success);
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px var(--success-bg);
+}
+
+/* Section name */
+.sName {
+  flex: 1;
+  font-size: 12.5px;
+  line-height: 1.3;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sNum {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  margin-right: 7px;
+}
+
+.sRow.active .sName { font-weight: 600; color: var(--accent); }
+.sRow.active .sNum  { color: var(--accent); opacity: .7; }
+
+/* ── Marker badges (R · Q · X/N) ─────────────────────────────────────────── */
+.markers {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.marker {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  padding: 2px 5px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.markerDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--surface-2);
+  flex-shrink: 0;
+}
+
+/* done = green */
+.marker.done {
+  color: var(--success);
+  border-color: var(--success-bd);
+  background: var(--success-bg);
+}
+.marker.done .markerDot { background: var(--success); }
+
+/* partial = amber */
+.marker.partial {
+  color: var(--try-fg);
+  border-color: var(--try-bd);
+  background: var(--try-bg);
+}
+.marker.partial .markerDot { background: var(--try-fg); }

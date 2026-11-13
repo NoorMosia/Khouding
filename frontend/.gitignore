@@ -1,0 +1,8 @@
+# Vite / build
+dist/
+dist-ssr/
+*.local
+.vite/
+
+# Local env (non-secret config only; real secrets never reach the browser)
+.env.local

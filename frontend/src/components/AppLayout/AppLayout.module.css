@@ -1,0 +1,188 @@
+/* ── AppLayout ───────────────────────────────────────────────────────────────
+   Used by all app-zone routes that need the course sidebar.
+   CodingScreen uses its own full-viewport layout, not this.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.appLayout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  /* fills the space below Nav */
+  height: calc(100dvh - 54px);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+.sidebar {
+  --sidebar-open:      300px;
+  --sidebar-collapsed: 48px;
+
+  flex-shrink: 0;
+  width: var(--sidebar-open);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+  transition:
+    width         var(--t-med) var(--ease),
+    border-color  var(--t-slow) var(--ease),
+    background    var(--t-slow) var(--ease);
+  position: relative;
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+  cursor: pointer;
+}
+
+/* ── Sidebar inner — fades out when collapsing ───────────────────────────── */
+.sidebarInner {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 1;
+  transition: opacity var(--t-fast) var(--ease);
+  /* thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sidebar.collapsed .sidebarInner {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Toggle button — lives at the bottom of the sidebar ─────────────────── */
+.toggleBtn {
+  flex-shrink: 0;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--border-soft);
+  color: var(--text-faint);
+  cursor: pointer;
+  transition:
+    color      var(--t-fast) var(--ease),
+    background var(--t-fast) var(--ease);
+}
+
+.toggleBtn:hover {
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+
+/* When collapsed, centre the icon */
+.sidebar.collapsed .toggleBtn {
+  justify-content: center;
+  padding: 0;
+  border-top: none;
+}
+
+/* Chevron icon — pure CSS arrow */
+.chevron {
+  display: block;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform var(--t-med) var(--ease);
+}
+
+.chevron::before,
+.chevron::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+  right: 2px;
+  transition: transform var(--t-med) var(--ease);
+}
+
+/* pointing left (collapse) */
+.chevron::before { top: 5px;  transform: rotate(-40deg); }
+.chevron::after  { top: 9px;  transform: rotate( 40deg); }
+
+/* pointing right (expand) */
+.sidebar.collapsed .chevron::before { transform: rotate( 40deg); }
+.sidebar.collapsed .chevron::after  { transform: rotate(-40deg); }
+
+/* Collapsed indicator strip — visible only when collapsed */
+.collapsedHint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 44px; /* above toggle btn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease);
+  pointer-events: none;
+}
+
+.sidebar.collapsed .collapsedHint {
+  opacity: 1;
+  transition-delay: 60ms; /* wait for sidebarInner to fade out */
+}
+
+.collapsedDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ── Main content area ───────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* ── Mobile: sidebar overlays, hidden by default ─────────────────────────── */
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 50;
+    box-shadow: var(--shadow);
+    /* on mobile, collapsed = fully hidden */
+    width: var(--sidebar-open);
+    transform: translateX(0);
+    transition:
+      transform     var(--t-med) var(--ease),
+      box-shadow    var(--t-med) var(--ease);
+  }
+
+  .sidebar.collapsed {
+    width: var(--sidebar-open);
+    transform: translateX(-100%);
+    box-shadow: none;
+    cursor: default;
+  }
+
+  .sidebar.collapsed .sidebarInner  { opacity: 1; pointer-events: auto; }
+  .sidebar.collapsed .collapsedHint { opacity: 0; }
+
+  .mobileToggle {
+    display: flex;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobileToggle { display: none !important; }
+}
