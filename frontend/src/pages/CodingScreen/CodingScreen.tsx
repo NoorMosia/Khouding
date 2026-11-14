@@ -3,9 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import type * as MonacoType from 'monaco-editor'
 import CheatPanel from '../../components/CheatPanel/CheatPanel'
 import OutputPane from '../../components/OutputPane/OutputPane'
+import StdinFields, { stdinToValues, valuesToStdin } from '../../components/StdinFields/StdinFields'
 import { useSubmission } from '../../hooks/useSubmission'
 import { useTheme } from '../../context/ThemeContext'
-import { useFetch, sectionUrl } from '../../api/client'
+import { useAuth } from '../../context/AuthContext'
+import { useFetch, sectionUrl, progress as progressApi } from '../../api/client'
 import type { ApiSection } from '../../api/types'
 import s from './CodingScreen.module.css'
 
@@ -21,6 +23,7 @@ export default function CodingScreen() {
     problemId: string
   }>()
   const { theme } = useTheme()
+  const { user } = useAuth()
   const navigate = useNavigate()
 
   // Fetch the full section so we have all problems + cheatsheet
@@ -44,6 +47,7 @@ export default function CodingScreen() {
   const [activeTab, setActiveTab]   = useState<TabId>('starter')
   const [collapsed, setCollapsed]   = useState(false)
   const [code, setCode]             = useState('')
+  const [stdinValues, setStdinValues] = useState<string[]>([''])
 
   // Initialise chip states and starter code when section loads
   useEffect(() => {
@@ -55,17 +59,18 @@ export default function CodingScreen() {
     setChipStates(chips)
   }, [section?.id, currentIdx]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Update starter code when problem changes
+  // Update starter code and stdin when problem changes
   useEffect(() => {
     if (!currentProblemFull) return
     const starter = currentProblemFull.starterFiles?.csharp?.[0]?.contents ?? ''
     setCode(starter)
+    setStdinValues(stdinToValues(currentProblemFull.cases[0]?.stdin ?? ''))
   }, [currentProblemFull?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const editorRef = useRef<MonacoType.editor.IStandaloneCodeEditor | null>(null)
   const { result, submit, reset } = useSubmission()
 
-  // Update chips when submission resolves
+  // Update chips when submission resolves; record progress on pass
   useEffect(() => {
     if (result.status === 'passed') {
       setChipStates(prev => {
@@ -73,6 +78,11 @@ export default function CodingScreen() {
         next[currentIdx] = 'solved'
         return next
       })
+      // Record problem solved — fire-and-forget, only when logged in
+      if (user && currentProblemFull && courseId && sectionId) {
+        const problemSlug = currentProblemFull.id.split('/').pop() ?? currentProblemFull.id
+        progressApi.markProblemSolved(courseId, sectionId, problemSlug).catch(() => {})
+      }
     } else if (result.status === 'failed' || result.status === 'compile_error') {
       setChipStates(prev => {
         const next = [...prev]
@@ -80,7 +90,7 @@ export default function CodingScreen() {
         return next
       })
     }
-  }, [result.status, currentIdx])
+  }, [result.status, currentIdx]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleEditorMount = useCallback(
     (editor: MonacoType.editor.IStandaloneCodeEditor) => {
@@ -110,7 +120,10 @@ export default function CodingScreen() {
       kind: 'run',
       language: 'csharp',
       files: [{ path: 'starter.cs', contents: code }],
-      stdin: currentProblemFull.cases[0]?.stdin ?? '',
+      stdin: valuesToStdin(stdinValues),
+      problemId: currentProblemFull.id,
+      courseId,
+      sectionId,
     })
   }
 
@@ -345,6 +358,14 @@ export default function CodingScreen() {
                 saved · csharp
               </span>
             </div>
+          )}
+
+          {activeTab === 'starter' && (
+            <StdinFields
+              values={stdinValues}
+              onChange={setStdinValues}
+              disabled={isRunning}
+            />
           )}
 
           <OutputPane result={result} onClear={reset} />

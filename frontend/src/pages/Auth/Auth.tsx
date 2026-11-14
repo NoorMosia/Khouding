@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import GitHubIcon from '../../components/icons/GitHubIcon'
 import GoogleIcon from '../../components/icons/GoogleIcon'
+import { useAuth } from '../../context/AuthContext'
 import s from './Auth.module.css'
 
 type AuthView = 'login' | 'signup' | 'forgot'
@@ -35,6 +37,26 @@ export default function Auth() {
 // ── Login form ────────────────────────────────────────────────────────────
 
 function LoginForm({ onSwap, onForgot }: { onSwap: () => void; onForgot: () => void }) {
+  const { login } = useAuth()
+  const navigate = useNavigate()
+  const [email, setEmail]       = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError]       = useState<string | null>(null)
+  const [busy, setBusy]         = useState(false)
+
+  async function handleSubmit() {
+    setError(null)
+    setBusy(true)
+    try {
+      await login(email, password)
+      navigate('/courses')
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Login failed')
+    } finally {
+      setBusy(false)
+    }
+  }
+
   return (
     <div className={`${s.formWrap} ${s.pane}`}>
       <h1 className={s.heading}>Welcome back</h1>
@@ -42,14 +64,21 @@ function LoginForm({ onSwap, onForgot }: { onSwap: () => void; onForgot: () => v
 
       <div className={s.social}>
         <SocialBtn icon="github" label="Continue with GitHub" />
-        <SocialBtn icon="google"  label="Continue with Google" />
+        <SocialBtn icon="google" label="Continue with Google" />
       </div>
 
       <div className={s.divider}>or with email</div>
 
+      {error && <p className={s.errorMsg}>{error}</p>}
+
       <div className={s.field}>
         <div className={s.fieldLabel}><label htmlFor="login-email">Email</label></div>
-        <input id="login-email" className={s.input} type="email" placeholder="you@example.com" autoComplete="email" />
+        <input
+          id="login-email" className={s.input} type="email"
+          placeholder="you@example.com" autoComplete="email"
+          value={email} onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+        />
       </div>
 
       <div className={s.field}>
@@ -57,10 +86,17 @@ function LoginForm({ onSwap, onForgot }: { onSwap: () => void; onForgot: () => v
           <label htmlFor="login-pw">Password</label>
           <button className={s.forgotLink} type="button" onClick={onForgot}>Forgot?</button>
         </div>
-        <input id="login-pw" className={s.input} type="password" placeholder="••••••••" autoComplete="current-password" />
+        <input
+          id="login-pw" className={s.input} type="password"
+          placeholder="••••••••" autoComplete="current-password"
+          value={password} onChange={e => setPassword(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+        />
       </div>
 
-      <button className={s.submitBtn} type="button">Log in</button>
+      <button className={s.submitBtn} type="button" onClick={handleSubmit} disabled={busy}>
+        {busy ? 'Logging in…' : 'Log in'}
+      </button>
 
       <p className={s.swap}>
         New here?{' '}
@@ -73,6 +109,26 @@ function LoginForm({ onSwap, onForgot }: { onSwap: () => void; onForgot: () => v
 // ── Sign up form ──────────────────────────────────────────────────────────
 
 function SignupForm({ onSwap }: { onSwap: () => void }) {
+  const { register } = useAuth()
+  const navigate = useNavigate()
+  const [email, setEmail]       = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError]       = useState<string | null>(null)
+  const [busy, setBusy]         = useState(false)
+
+  async function handleSubmit() {
+    setError(null)
+    setBusy(true)
+    try {
+      await register(email, password)
+      navigate('/courses')
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Registration failed')
+    } finally {
+      setBusy(false)
+    }
+  }
+
   return (
     <div className={`${s.formWrap} ${s.pane}`}>
       <h1 className={s.heading}>Start learning</h1>
@@ -80,22 +136,36 @@ function SignupForm({ onSwap }: { onSwap: () => void }) {
 
       <div className={s.social}>
         <SocialBtn icon="github" label="Sign up with GitHub" />
-        <SocialBtn icon="google"  label="Sign up with Google" />
+        <SocialBtn icon="google" label="Sign up with Google" />
       </div>
 
       <div className={s.divider}>or with email</div>
 
+      {error && <p className={s.errorMsg}>{error}</p>}
+
       <div className={s.field}>
         <div className={s.fieldLabel}><label htmlFor="signup-email">Email</label></div>
-        <input id="signup-email" className={s.input} type="email" placeholder="you@example.com" autoComplete="email" />
+        <input
+          id="signup-email" className={s.input} type="email"
+          placeholder="you@example.com" autoComplete="email"
+          value={email} onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+        />
       </div>
 
       <div className={s.field}>
         <div className={s.fieldLabel}><label htmlFor="signup-pw">Password</label></div>
-        <input id="signup-pw" className={s.input} type="password" placeholder="choose a password" autoComplete="new-password" />
+        <input
+          id="signup-pw" className={s.input} type="password"
+          placeholder="choose a password" autoComplete="new-password"
+          value={password} onChange={e => setPassword(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+        />
       </div>
 
-      <button className={s.submitBtn} type="button">Create account</button>
+      <button className={s.submitBtn} type="button" onClick={handleSubmit} disabled={busy}>
+        {busy ? 'Creating account…' : 'Create account'}
+      </button>
 
       <p className={s.swap}>
         Already have an account?{' '}
@@ -132,8 +202,12 @@ function ForgotForm({ onBack }: { onBack: () => void }) {
 // ── Shared social button ──────────────────────────────────────────────────
 
 function SocialBtn({ icon, label }: { icon: 'github' | 'google'; label: string }) {
+  function handleClick() {
+    window.location.href = `/api/auth/login/${icon}`
+  }
+
   return (
-    <button className={s.socialBtn} type="button">
+    <button className={s.socialBtn} type="button" onClick={handleClick}>
       <span className={s.socialIcon} aria-hidden="true">
         {icon === 'github' ? <GitHubIcon size={18} /> : <GoogleIcon size={18} />}
       </span>

@@ -9,6 +9,9 @@ interface RunPayload {
   language: string
   files: CodeFile[]
   stdin?: string
+  problemId: string
+  courseId: string
+  sectionId: string
 }
 
 interface SubmitPayload {

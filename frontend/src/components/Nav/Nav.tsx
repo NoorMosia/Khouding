@@ -1,20 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
+import { useAuth } from '../../context/AuthContext'
 import s from './Nav.module.css'
-
-// Placeholder — replace with real auth context once auth is built
-const MOCK_USER = { name: 'Noortje', email: 'noortje@example.com', initials: 'N' }
-const USE_MOCK_AUTH = false // flip to true to preview logged-in state
 
 export default function Nav() {
   const { theme, toggle } = useTheme()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const avatarRef = useRef<HTMLButtonElement>(null)
   const location = useLocation()
-
-  const loggedIn = USE_MOCK_AUTH
 
   // Close menu on outside click
   useEffect(() => {
@@ -33,6 +30,15 @@ export default function Nav() {
 
   // Close menu on route change
   useEffect(() => { setMenuOpen(false) }, [location.pathname])
+
+  async function handleLogout() {
+    await logout()
+    navigate('/')
+  }
+
+  const initials = user
+    ? (user.displayName.trim()[0] ?? user.email[0] ?? '?').toUpperCase()
+    : '?'
 
   return (
     <nav className={s.nav} role="navigation" aria-label="Main navigation">
@@ -61,7 +67,7 @@ export default function Nav() {
         </div>
 
         {/* Auth: log in button OR avatar */}
-        {loggedIn ? (
+        {user ? (
           <>
             <button
               ref={avatarRef}
@@ -71,7 +77,7 @@ export default function Nav() {
               aria-expanded={menuOpen}
               aria-haspopup="true"
             >
-              {MOCK_USER.initials}
+              {initials}
             </button>
 
             <div
@@ -80,8 +86,8 @@ export default function Nav() {
               role="menu"
             >
               <div className={s.menuWho}>
-                <div className={s.menuName}>{MOCK_USER.name}</div>
-                <div className={s.menuEmail}>{MOCK_USER.email}</div>
+                <div className={s.menuName}>{user.displayName}</div>
+                <div className={s.menuEmail}>{user.email}</div>
               </div>
 
               <div className={s.menuGroup}>Navigate</div>
@@ -102,7 +108,9 @@ export default function Nav() {
 
               <hr className={s.menuDivider} />
 
-              <button className={s.menuItem} role="menuitem">Log out</button>
+              <button className={s.menuItem} role="menuitem" onClick={handleLogout}>
+                Log out
+              </button>
             </div>
           </>
         ) : (

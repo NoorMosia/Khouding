@@ -5,9 +5,10 @@ import CodeBlock from '../../components/CodeBlock/CodeBlock'
 import type { Stage, SectionData } from '../../types/section'
 import QuizStage from './QuizStage'
 import ProblemsStage from './ProblemsStage'
-import { useFetch, sectionUrl } from '../../api/client'
+import { useFetch, sectionUrl, progress as progressApi } from '../../api/client'
 import { apiSectionToData } from '../../api/mappers'
 import type { ApiSection } from '../../api/types'
+import { useAuth } from '../../context/AuthContext'
 import s from './SectionView.module.css'
 
 const ReactMarkdown = lazy(() => import('react-markdown'))
@@ -47,20 +48,27 @@ function SectionContent({
   courseId: string
   sectionId: string
 }) {
-  const [stage, setStage]           = useState<Stage>('reading')
+  const { user } = useAuth()
+  const [stage, setStage]             = useState<Stage>('reading')
   const [readingDone, setReadingDone] = useState(false)
-  const [quizDone, setQuizDone]     = useState(false)
-  const [quizPassed, setQuizPassed] = useState(false)
+  const [quizDone, setQuizDone]       = useState(false)
+  const [quizPassed, setQuizPassed]   = useState(false)
 
   function goTo(next: Stage) {
-    if (next === 'quiz' && !readingDone) setReadingDone(true)
+    if (next === 'quiz' && !readingDone) {
+      setReadingDone(true)
+      if (user) progressApi.markReadingDone(courseId, sectionId).catch(() => {})
+    }
     setStage(next)
   }
 
   function handleQuizFinish(passed: boolean) {
     setQuizDone(true)
     setQuizPassed(passed)
-    if (passed) setStage('problems')
+    if (passed) {
+      if (user) progressApi.markQuizPassed(courseId, sectionId).catch(() => {})
+      setStage('problems')
+    }
   }
 
   type StageStatus = 'default' | 'done' | 'active'

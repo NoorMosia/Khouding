@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 // ── Core fetch helper ─────────────────────────────────────────────────────
 
 async function apiFetch<T>(path: string): Promise<T> {
-  const res = await fetch(path)
+  const res = await fetch(path, { credentials: 'include' })
   if (res.status === 404) throw new NotFoundError(path)
   if (!res.ok) throw new Error(`API ${res.status} on ${path}`)
   return res.json() as Promise<T>
@@ -91,6 +91,44 @@ export const api = {
     apiFetch<ApiProblem>(
       `/api/courses/${courseId}/sections/${sectionId}/problems/${problemId}`
     ),
+}
+
+// ── Progress API ──────────────────────────────────────────────────────────
+
+export interface SectionProgress {
+  readingDone:    boolean
+  quizPassed:     boolean
+  solvedProblems: number
+}
+
+export interface CourseProgress {
+  courseId:  string
+  sections:  Record<string, SectionProgress>
+}
+
+async function apiPost(path: string, body: unknown): Promise<void> {
+  const res = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  if (res.status === 401) return  // not logged in — silently skip
+  if (!res.ok) throw new Error(`API ${res.status} on ${path}`)
+}
+
+export const progress = {
+  get: (courseId: string) =>
+    apiFetch<CourseProgress>(`/api/progress/${courseId}`),
+
+  markReadingDone: (courseId: string, sectionId: string) =>
+    apiPost('/api/progress/reading-done', { courseId, sectionId }),
+
+  markQuizPassed: (courseId: string, sectionId: string) =>
+    apiPost('/api/progress/quiz-passed', { courseId, sectionId }),
+
+  markProblemSolved: (courseId: string, sectionId: string, problemId: string) =>
+    apiPost('/api/progress/problem-solved', { courseId, sectionId, problemId }),
 }
 
 // ── URL-building helpers (used in useFetch calls) ─────────────────────────
