@@ -1,0 +1,11 @@
+id: csharp-basics/1.4-text-variables
+number: "1.4"
+title: "Text variables: string and char"
+subtitle: "Declare and use string and char. Light introduction to bool."
+
+# lights_at: 12 problems. 60% of 12 = 7.2 → 7.
+lights_at: 7
+
+map_name: "The Word Store"
+
+chapter: 1

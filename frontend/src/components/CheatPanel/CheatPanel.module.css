@@ -39,7 +39,7 @@
 }
 
 .panel pre {
-  background: var(--surface);
+  background: var(--syn-bg);
   border: 1px solid var(--border-soft);
   border-radius: 8px;
   padding: 12px 14px;

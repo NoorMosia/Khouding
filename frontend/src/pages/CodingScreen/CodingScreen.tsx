@@ -1,104 +1,71 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import type * as MonacoType from 'monaco-editor'
 import CheatPanel from '../../components/CheatPanel/CheatPanel'
 import OutputPane from '../../components/OutputPane/OutputPane'
 import { useSubmission } from '../../hooks/useSubmission'
 import { useTheme } from '../../context/ThemeContext'
+import { useFetch, sectionUrl } from '../../api/client'
+import type { ApiSection } from '../../api/types'
 import s from './CodingScreen.module.css'
 
-// ── Lazy-load Monaco — never in the initial bundle ────────────────────────
 const MonacoEditor = lazy(() => import('@monaco-editor/react'))
 
-// ── Fixture data (replace with API fetch once backend serves content) ─────
-const FIXTURE_PROBLEM = {
-  id: 'p07-sum-two-ints',
-  title: 'Sum two ints',
-  difficulty: 2 as const,
-  statement: 'Read two whole numbers (one per line), store each in a variable, and print their sum.',
-  inputSpec: 'two lines, each a whole number',
-  outputSpec: 'their sum on a single line',
-  starterCode: `using System;
-
-class Program
-{
-    static void Main()
-    {
-        // Read two whole numbers (one per line), store each in a variable,
-        // and print their sum.
-    }
-}
-`,
-  sectionId: '1.3-number-variables',
-  position: 7,
-  totalInSection: 15,
-}
-
-const FIXTURE_CHEATSHEET = `# Cheatsheet, 1.3 Number variables
-
-*This section only. Forgotten something older? Look it up, be resourceful — that is part of the craft.*
-
-## Declare and initialise
-\`\`\`csharp
-int    age   = 19;      // whole number
-double price = 4.99;    // can be fractional
-\`\`\`
-
-\`type name = value;\`
-
-> **\`=\` means "put this value into the variable", not equality.**
-> Read \`age = 19\` as *"age gets 19"*, not *"age equals 19"*.
-
-## Reassign (no type the second time)
-\`\`\`csharp
-int score = 10;
-score = 25;   // score now holds 25; the 10 is gone
-\`\`\`
-
-## const (a value that never changes)
-\`\`\`csharp
-const int DaysInWeek = 7;
-\`\`\`
-
-## Choosing the type
-
-| Can it be fractional? | Use | Examples |
-|---|---|---|
-| no, a whole count | \`int\` | students, days, clicks |
-| yes, decimals matter | \`double\` | price, height, average |
-
-## Combine with + - *
-\`\`\`csharp
-int total = apples + oranges;
-int area  = width * height;
-\`\`\`
-`
-
-// Mock rail states — 15 problems, p07 is current
 type ChipState = 'unsolved' | 'attempted' | 'solved' | 'current'
-const INITIAL_STATES: ChipState[] = [
-  'solved', 'solved', 'solved', 'solved', 'solved', 'solved',
-  'current',
-  'unsolved', 'unsolved', 'unsolved', 'unsolved', 'unsolved', 'unsolved', 'unsolved', 'unsolved',
-]
-
 type TabId = 'starter' | 'cheatsheet'
 
-// ── Component ─────────────────────────────────────────────────────────────
 export default function CodingScreen() {
-  const { courseId, sectionId, problemId } = useParams()
+  const { courseId, sectionId, problemId } = useParams<{
+    courseId: string
+    sectionId: string
+    problemId: string
+  }>()
   const { theme } = useTheme()
+  const navigate = useNavigate()
 
-  const [collapsed, setCollapsed]   = useState(false)
+  // Fetch the full section so we have all problems + cheatsheet
+  const { data: section, loading, error } = useFetch<ApiSection>(
+    sectionUrl(courseId, sectionId)
+  )
+
+  // Derive the current problem from the URL param
+  const problems = section?.problems ?? []
+  const currentProblemFull = problems.find(p => {
+    const slug = p.id.split('/').pop() ?? ''
+    return slug === problemId || p.id === problemId
+  }) ?? problems[0] ?? null
+
+  const currentIdx = currentProblemFull
+    ? problems.indexOf(currentProblemFull)
+    : 0
+
+  // Chip state — initialised once problems are known
+  const [chipStates, setChipStates] = useState<ChipState[]>([])
   const [activeTab, setActiveTab]   = useState<TabId>('starter')
-  const [chipStates, setChipStates] = useState<ChipState[]>(INITIAL_STATES)
-  const [currentIdx, setCurrentIdx] = useState(6) // 0-based, p07 = index 6
-  const [code, setCode]             = useState(FIXTURE_PROBLEM.starterCode)
+  const [collapsed, setCollapsed]   = useState(false)
+  const [code, setCode]             = useState('')
+
+  // Initialise chip states and starter code when section loads
+  useEffect(() => {
+    if (!section) return
+    const chips: ChipState[] = section.problems.map((p, i) => {
+      if (i === currentIdx) return 'current'
+      return 'unsolved'
+    })
+    setChipStates(chips)
+  }, [section?.id, currentIdx]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Update starter code when problem changes
+  useEffect(() => {
+    if (!currentProblemFull) return
+    const starter = currentProblemFull.starterFiles?.csharp?.[0]?.contents ?? ''
+    setCode(starter)
+  }, [currentProblemFull?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const editorRef = useRef<MonacoType.editor.IStandaloneCodeEditor | null>(null)
   const { result, submit, reset } = useSubmission()
 
-  // Update chip when submission resolves
+  // Update chips when submission resolves
   useEffect(() => {
     if (result.status === 'passed') {
       setChipStates(prev => {
@@ -118,82 +85,115 @@ export default function CodingScreen() {
   const handleEditorMount = useCallback(
     (editor: MonacoType.editor.IStandaloneCodeEditor) => {
       editorRef.current = editor
-    },
-    [],
+    }, []
   )
 
+  // Navigate to a different problem in the same section
+  function navigateToProblem(idx: number) {
+    if (!section || !courseId || !sectionId) return
+    const p = section.problems[idx]
+    if (!p) return
+    const pSlug = p.id.split('/').pop() ?? p.id
+    navigate(`/courses/${courseId}/sections/${sectionId}/problems/${pSlug}`)
+    // Update current chip
+    setChipStates(prev => prev.map((st, i) => {
+      if (i === idx) return st === 'solved' ? 'solved' : 'current'
+      if (i === currentIdx && st === 'current') return 'unsolved'
+      return st
+    }))
+    reset()
+  }
+
   const handleRun = () => {
+    if (!currentProblemFull || !courseId || !sectionId || !problemId) return
     submit({
       kind: 'run',
       language: 'csharp',
       files: [{ path: 'starter.cs', contents: code }],
-      stdin: '3\n4',
+      stdin: currentProblemFull.cases[0]?.stdin ?? '',
     })
   }
 
   const handleSubmit = () => {
+    if (!currentProblemFull || !courseId || !sectionId || !problemId) return
     submit({
       kind: 'submit',
       language: 'csharp',
       files: [{ path: 'starter.cs', contents: code }],
-      problemId: problemId ?? FIXTURE_PROBLEM.id,
-      courseId: courseId ?? 'csharp-basics',
-      sectionId: sectionId ?? FIXTURE_PROBLEM.sectionId,
+      problemId: currentProblemFull.id,
+      courseId,
+      sectionId,
     })
   }
 
-  const isRunning = result.status === 'pending' || result.status === 'running'
-  const solvedCount = chipStates.filter(s => s === 'solved').length
+  const isRunning     = result.status === 'pending' || result.status === 'running'
+  const totalProblems = problems.length
+  const solvedCount   = chipStates.filter(s => s === 'solved').length
+
+  // ── Loading / error states ───────────────────────────────────────────────
+  if (loading) {
+    return (
+      <div className={s.screen}>
+        <div style={{ flex: 1, display: 'grid', placeItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-faint)' }}>
+          loading…
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !section || !currentProblemFull) {
+    return (
+      <div className={s.screen}>
+        <div style={{ flex: 1, display: 'grid', placeItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-faint)' }}>
+          problem not found
+        </div>
+      </div>
+    )
+  }
+
+  const starterFileName = currentProblemFull.starterFiles?.csharp?.[0]?.path ?? 'starter.cs'
 
   return (
     <div className={s.screen}>
       <div className={`${s.workbench} ${collapsed ? s.collapsed : ''}`}>
 
-        {/* ── Col 1: collapsed strip ──────────────────────────────────── */}
+        {/* ── Col 1: collapsed strip ──────────────────────────────── */}
         <div className={`${s.col} ${s.strip}`} aria-hidden={!collapsed}>
           <button
             className={s.stripBtn}
             onClick={() => setCollapsed(false)}
             aria-label="Show problem panel"
-            title="Show problem"
           >
             ☰
           </button>
         </div>
 
-        {/* ── Col 2: problem panel ────────────────────────────────────── */}
-        <div
-          className={`${s.col} ${s.problemPanel}`}
-          aria-hidden={collapsed}
-        >
-          {/* Header */}
+        {/* ── Col 2: problem panel ────────────────────────────────── */}
+        <div className={`${s.col} ${s.problemPanel}`} aria-hidden={collapsed}>
           <div className={s.panelHead}>
             <span className={s.panelTag}>Problem</span>
             <button
               className={s.iconBtn}
               onClick={() => setCollapsed(true)}
               aria-label="Collapse problem panel"
-              title="Collapse"
-            >
-              ◀
-            </button>
+            >◀</button>
           </div>
 
           {/* Rail */}
           <div className={s.rail}>
             <div className={s.railTop}>
-              <span className={s.railLabel}>{currentIdx + 1} of {FIXTURE_PROBLEM.totalInSection}</span>
+              <span className={s.railLabel}>{currentIdx + 1} of {totalProblems}</span>
               <span className={s.railSteppers}>
                 <button
                   className={s.stepper}
-                  onClick={() => setCurrentIdx(i => Math.max(0, i - 1))}
+                  onClick={() => navigateToProblem(currentIdx - 1)}
                   disabled={currentIdx === 0}
                   aria-label="Previous problem"
                 >◀</button>
                 <button
                   className={s.stepper}
-                  onClick={() => setCurrentIdx(i => Math.min(FIXTURE_PROBLEM.totalInSection - 1, i + 1))}
-                  disabled={currentIdx === FIXTURE_PROBLEM.totalInSection - 1}
+                  onClick={() => navigateToProblem(currentIdx + 1)}
+                  disabled={currentIdx >= totalProblems - 1}
                   aria-label="Next problem"
                 >▶</button>
               </span>
@@ -204,7 +204,7 @@ export default function CodingScreen() {
                 <button
                   key={i}
                   className={`${s.chip} ${i === currentIdx ? s.current : state !== 'unsolved' ? s[state] : ''}`}
-                  onClick={() => setCurrentIdx(i)}
+                  onClick={() => navigateToProblem(i)}
                   role="listitem"
                   aria-label={`Problem ${i + 1}, ${state}`}
                   aria-current={i === currentIdx}
@@ -223,79 +223,68 @@ export default function CodingScreen() {
 
           {/* Problem body */}
           <div className={s.problemBody}>
-            <h2 className={s.problemTitle}>{FIXTURE_PROBLEM.title}</h2>
-            <p className={s.problemStatement}>{FIXTURE_PROBLEM.statement}</p>
-
-            <div className={s.ioBox}>
-              <div className={s.ioRow}>
-                <span className={s.ioKey}>in</span>
-                <span>{FIXTURE_PROBLEM.inputSpec}</span>
-              </div>
-              <div className={s.ioRow}>
-                <span className={s.ioKey}>out</span>
-                <span>{FIXTURE_PROBLEM.outputSpec}</span>
-              </div>
-            </div>
+            <h2 className={s.problemTitle}>{currentProblemFull.title}</h2>
+            <p className={s.problemStatement}>
+              {/* statementMarkdown is design.md content — render as plain text for now */}
+              {currentProblemFull.statementMarkdown
+                .replace(/^#.*\n/m, '')   // strip h1
+                .replace(/\*\*/g, '')     // strip bold markers
+                .trim()
+                .split('\n\n')[0]}
+            </p>
 
             <div className={s.difficulty}>
               Difficulty{' '}
               {Array.from({ length: 3 }).map((_, i) => (
-                <span key={i} className={i < FIXTURE_PROBLEM.difficulty ? s.diffDot : s.diffDotFaint}>
-                  ●
-                </span>
+                <span key={i} className={i < currentProblemFull.difficulty ? s.diffDot : s.diffDotFaint}>●</span>
               ))}
             </div>
 
             <div className={s.problemMeta}>
               <div className={s.sectionProgress}>
-                <span>Section 1.3</span>
-                <div className={s.miniBar} role="progressbar" aria-valuenow={solvedCount} aria-valuemax={15}>
-                  <div className={s.miniBarFill} style={{ width: `${(solvedCount / 15) * 100}%` }} />
+                <span>Section {section.number}</span>
+                <div className={s.miniBar}
+                  role="progressbar"
+                  aria-valuenow={solvedCount}
+                  aria-valuemax={totalProblems}
+                >
+                  <div className={s.miniBarFill} style={{ width: `${(solvedCount / totalProblems) * 100}%` }} />
                 </div>
-                <span>{solvedCount}/{FIXTURE_PROBLEM.totalInSection}</span>
+                <span>{solvedCount}/{totalProblems}</span>
               </div>
               <div className={s.helpSlot}>ask for help · coming soon</div>
             </div>
           </div>
         </div>
 
-        {/* ── Col 3: editor + output ──────────────────────────────────── */}
+        {/* ── Col 3: editor + output ──────────────────────────────── */}
         <div className={`${s.col} ${s.editorCol}`}>
-
-          {/* Tab bar */}
           <div className={s.tabs} role="tablist">
             <button
               className={`${s.tab} ${activeTab === 'starter' ? s.active : ''}`}
               onClick={() => setActiveTab('starter')}
               role="tab"
               aria-selected={activeTab === 'starter'}
-              aria-controls="panel-starter"
             >
-              starter.cs
+              {starterFileName}
             </button>
             <button
               className={`${s.tab} ${activeTab === 'cheatsheet' ? s.active : ''}`}
               onClick={() => setActiveTab('cheatsheet')}
               role="tab"
               aria-selected={activeTab === 'cheatsheet'}
-              aria-controls="panel-cheatsheet"
             >
               cheatsheet.md
               <span className={s.tabBadge}>reference</span>
             </button>
             <span className={s.tabHint} aria-hidden="true">
-              {activeTab === 'cheatsheet'
-                ? 'rendered reference · read only'
-                : 'no autocomplete · syntax highlight only'}
+              {activeTab === 'cheatsheet' ? 'rendered reference · read only' : 'no autocomplete · syntax highlight only'}
             </span>
           </div>
 
-          {/* Editor / cheatsheet panels */}
           <div
             className={s.monacoWrapper}
-            id="panel-starter"
             role="tabpanel"
-            aria-hidden={activeTab !== 'starter'}
             style={{ display: activeTab === 'starter' ? 'block' : 'none' }}
           >
             <Suspense fallback={<div className={s.monacoLoader}>loading editor…</div>}>
@@ -319,7 +308,6 @@ export default function CodingScreen() {
                   glyphMargin: false,
                   lineDecorationsWidth: 6,
                   lineNumbersMinChars: 3,
-                  // No IntelliSense, no autocomplete, no squiggles
                   quickSuggestions: false,
                   suggestOnTriggerCharacters: false,
                   acceptSuggestionOnEnter: 'off',
@@ -332,10 +320,7 @@ export default function CodingScreen() {
                   codeLens: false,
                   contextmenu: false,
                   renderValidationDecorations: 'off',
-                  scrollbar: {
-                    verticalScrollbarSize: 6,
-                    horizontalScrollbarSize: 6,
-                  },
+                  scrollbar: { verticalScrollbarSize: 6, horizontalScrollbarSize: 6 },
                 }}
               />
             </Suspense>
@@ -343,35 +328,18 @@ export default function CodingScreen() {
 
           <div
             className={s.cheatPanel}
-            id="panel-cheatsheet"
             role="tabpanel"
-            aria-hidden={activeTab !== 'cheatsheet'}
             style={{ display: activeTab === 'cheatsheet' ? 'flex' : 'none', flexDirection: 'column' }}
           >
             <Suspense fallback={<span style={{ color: 'var(--text-faint)', fontSize: 12 }}>loading…</span>}>
-              <CheatPanel markdown={FIXTURE_CHEATSHEET} />
+              <CheatPanel markdown={section.cheatsheetMarkdown} />
             </Suspense>
           </div>
 
-          {/* Toolbar — hidden when cheatsheet is active */}
           {activeTab === 'starter' && (
             <div className={s.toolbar}>
-              <button
-                className="btn"
-                onClick={handleRun}
-                disabled={isRunning}
-                aria-label="Run code"
-              >
-                Run
-              </button>
-              <button
-                className="btn btn--primary"
-                onClick={handleSubmit}
-                disabled={isRunning}
-                aria-label="Submit code for grading"
-              >
-                Submit
-              </button>
+              <button className="btn" onClick={handleRun} disabled={isRunning}>Run</button>
+              <button className="btn btn--primary" onClick={handleSubmit} disabled={isRunning}>Submit</button>
               <span className={s.toolbarStat}>
                 <span className={s.saveDot} aria-hidden="true" />
                 saved · csharp
@@ -379,10 +347,8 @@ export default function CodingScreen() {
             </div>
           )}
 
-          {/* Output pane */}
           <OutputPane result={result} onClear={reset} />
         </div>
-
       </div>
     </div>
   )

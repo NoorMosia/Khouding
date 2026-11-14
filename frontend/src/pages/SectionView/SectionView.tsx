@@ -1,26 +1,52 @@
 import { lazy, Suspense, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import type { Stage } from '../../types/section'
+import rehypeHighlight from 'rehype-highlight'
+import CodeBlock from '../../components/CodeBlock/CodeBlock'
+import type { Stage, SectionData } from '../../types/section'
 import QuizStage from './QuizStage'
 import ProblemsStage from './ProblemsStage'
-import { SECTION_1_3 } from './fixture'
+import { useFetch, sectionUrl } from '../../api/client'
+import { apiSectionToData } from '../../api/mappers'
+import type { ApiSection } from '../../api/types'
 import s from './SectionView.module.css'
 
-// Lazy-load react-markdown — only used in Reading stage
 const ReactMarkdown = lazy(() => import('react-markdown'))
 
-// Fixture: use the real 1.3 data regardless of URL params for now.
-// Replace with an API fetch keyed on sectionId once the backend serves content.
-function useSection() {
-  return SECTION_1_3
-}
-
-type StageState = 'default' | 'done' | 'active'
+// Stable references — defined outside components to avoid recreating on every render
+const rehypePlugins = [rehypeHighlight] as const
+const mdComponents = { pre: CodeBlock } as const
 
 export default function SectionView() {
-  const { courseId, sectionId } = useParams()
-  const section = useSection()
+  const { courseId, sectionId } = useParams<{ courseId: string; sectionId: string }>()
 
+  const { data: raw, loading, error } = useFetch<ApiSection>(
+    sectionUrl(courseId, sectionId)
+  )
+  const section: SectionData | null = raw && courseId
+    ? apiSectionToData(raw, courseId)
+    : null
+
+  if (loading) return <Loading />
+  if (error || !section) return <Error />
+
+  return <SectionContent
+    section={section}
+    courseId={courseId!}
+    sectionId={sectionId!}
+  />
+}
+
+// ── SectionContent (only renders when section data is ready) ──────────────
+
+function SectionContent({
+  section,
+  courseId,
+  sectionId,
+}: {
+  section: SectionData
+  courseId: string
+  sectionId: string
+}) {
   const [stage, setStage]           = useState<Stage>('reading')
   const [readingDone, setReadingDone] = useState(false)
   const [quizDone, setQuizDone]     = useState(false)
@@ -37,7 +63,8 @@ export default function SectionView() {
     if (passed) setStage('problems')
   }
 
-  function stageState(target: Stage): StageState {
+  type StageStatus = 'default' | 'done' | 'active'
+  function stageState(target: Stage): StageStatus {
     if (stage === target) return 'active'
     if (target === 'reading' && readingDone) return 'done'
     if (target === 'quiz' && quizDone && quizPassed) return 'done'
@@ -45,20 +72,18 @@ export default function SectionView() {
   }
 
   const stageLabels: Record<Stage, string> = {
-    reading: 'Concept, one analogy, a worked example.',
-    quiz: 'Comprehension checkpoint before you drill.',
+    reading:  'Concept, one analogy, a worked example.',
+    quiz:     'Comprehension checkpoint before you drill.',
     problems: 'Fifteen reps. Wax on, wax off.',
   }
 
   return (
     <div className={`${s.page} page-enter`}>
-      {/* ── Section header ─────────────────────────────────────────── */}
       <div className={s.shead}>
         <p className="eyebrow">Section {section.number}</p>
         <h1 className={s.title}>{section.title}</h1>
         <p className={s.subtitle}>{stageLabels[stage]}</p>
 
-        {/* Stage switcher */}
         <div className={s.stages} role="tablist">
           {(['reading', 'quiz', 'problems'] as Stage[]).map((id, i) => {
             const state = stageState(id)
@@ -90,13 +115,11 @@ export default function SectionView() {
         </div>
       </div>
 
-      {/* ── Stage body ─────────────────────────────────────────────── */}
       <div className={s.body}>
-
         {stage === 'reading' && (
           <div className={`${s.pane} ${s.reading}`} role="tabpanel">
             <Suspense fallback={<span style={{ color: 'var(--text-faint)', fontSize: 13 }}>loading…</span>}>
-              <ReactMarkdown>{section.readingMarkdown}</ReactMarkdown>
+              <ReactMarkdown rehypePlugins={rehypePlugins} components={mdComponents}>{section.readingMarkdown}</ReactMarkdown>
             </Suspense>
             <div className={s.readingFoot}>
               <button className="btn btn--primary" onClick={() => goTo('quiz')}>
@@ -116,7 +139,7 @@ export default function SectionView() {
         {stage === 'quiz' && (
           <div className={s.pane} role="tabpanel">
             <QuizStage
-              key={`quiz-${quizDone}`} // remount on retry
+              key={`quiz-${quizDone}`}
               config={section.quiz}
               onFinish={handleQuizFinish}
             />
@@ -126,15 +149,30 @@ export default function SectionView() {
         {stage === 'problems' && (
           <div className={s.pane} role="tabpanel">
             <ProblemsStage
-              courseId={courseId ?? section.courseId}
-              sectionId={sectionId ?? section.id}
+              courseId={courseId}
+              sectionId={sectionId}
               problems={section.problems}
               lightsAt={section.lightsAt}
             />
           </div>
         )}
-
       </div>
+    </div>
+  )
+}
+
+function Loading() {
+  return (
+    <div style={{ flex: 1, display: 'grid', placeItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-faint)' }}>
+      loading section…
+    </div>
+  )
+}
+
+function Error() {
+  return (
+    <div style={{ flex: 1, display: 'grid', placeItems: 'center', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-faint)' }}>
+      section not found
     </div>
   )
 }

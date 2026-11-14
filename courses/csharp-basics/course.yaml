@@ -1,0 +1,58 @@
+# C# Basics — course-level metadata
+# Source of truth for the ingester. Authored fields; most confirmed post-authoring.
+# See tasks/70-architecture.md §5 "course.yaml".
+
+id: csharp-basics
+title: "C# Basics"
+status: published          # published | planned
+
+# Country for the course map (one real country per course).
+# Working default: Austria (9 Bundesländer = 9 chapters).
+# Confirmed post-authoring once chapter count is locked.
+country: austria
+
+# Chapter → province mapping (Bundesland order west to east, roughly).
+# Confirmed once all chapters are authored.
+chapters:
+  - number: 1
+    title: "Getting Started & Variables"
+    region_title: "The Foundations"
+    province: Oberösterreich    # lit, starting province
+  - number: 2
+    title: "Input & Interaction"
+    region_title: "The Conversation"
+    province: Niederösterreich
+  - number: 3
+    title: "Operators & Arithmetic"
+    region_title: "The Toolkit"
+    province: Steiermark
+  - number: 4
+    title: "Decisions"
+    region_title: "The Crossroads"
+    province: Tirol
+  - number: 5
+    title: "Loops"
+    region_title: "The Cycle"
+    province: Kärnten
+  - number: 6
+    title: "Methods"
+    region_title: "The Workshop"
+    province: Salzburg
+  - number: 7
+    title: "Arrays"
+    region_title: "The Grid"
+    province: Burgenland
+  - number: 8
+    title: "Strings"
+    region_title: "The Library"
+    province: Vorarlberg
+  - number: 9
+    title: "Collections"
+    region_title: "The Vault"
+    province: Wien
+
+# Exam reveal (deferred — authored once the course exam is written).
+# exam_reveal:
+#   flag: "🇦🇹"
+#   country_name: Austria
+#   fact: "..."

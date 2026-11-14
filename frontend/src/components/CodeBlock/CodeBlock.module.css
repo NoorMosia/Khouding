@@ -1,0 +1,78 @@
+/* ── Code block — faithful port of the section-view-1.1 mockup ──────────────
+   Structure: .codeblock > .code > [.gutter | .src]
+   The gutter is a fixed-width column with line numbers.
+   The src column holds the highlighted spans from rehype-highlight.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.codeblock {
+  background: var(--syn-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.8;
+  margin: 16px 0 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.code {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-width: 0;
+}
+
+.gutter {
+  text-align: right;
+  color: var(--text-faint);
+  user-select: none;
+  padding: 14px 12px 14px 14px;
+  border-right: 1px solid var(--border-soft);
+  white-space: pre;
+  background: rgba(127, 127, 127, .04);
+  line-height: 1.8;
+  opacity: .7;
+  flex-shrink: 0;
+}
+
+.src {
+  padding: 14px 20px 14px 14px;
+  white-space: pre;
+  overflow-x: visible;
+  min-width: 0;
+  /* colour tokens applied via syntax.css hljs classes on child spans */
+}
+
+/* Output blocks — dashed border, muted, no line numbers (matches .outblock in mockup) */
+.outblock {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 11px 15px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 8px 0 16px;
+  color: var(--text);
+  white-space: pre;
+}
+
+/* Error / compiler output blocks — red tint, matches .errline in mockup */
+.errblock {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-bd);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  margin: 11px 0;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+/* The file/line location part e.g. "Program.cs(9,46):" */
+.errblock :global(.err-loc) {
+  color: var(--danger);
+}

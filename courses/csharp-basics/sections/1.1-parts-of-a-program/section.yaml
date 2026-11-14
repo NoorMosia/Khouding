@@ -1,0 +1,13 @@
+id: csharp-basics/1.1-parts-of-a-program
+number: "1.1"
+title: "The parts of a C# program"
+subtitle: "Where does code go, and what is all the structure around it?"
+
+# lights_at: how many solved problems light this section (~60% of problem count).
+# Derived problem count: 6. 60% of 6 = 3.6 → 4 (rounded sensibly).
+lights_at: 4
+
+# map_name: landmark label shown on the course map pin.
+map_name: "Hello World"
+
+chapter: 1

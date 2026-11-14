@@ -1,0 +1,11 @@
+id: csharp-basics/1.5-naming-and-formatting
+number: "1.5"
+title: "Naming and formatting"
+subtitle: "Write code a human can read: good names and clean layout."
+
+# lights_at: 8 problems. 60% of 8 = 4.8 → 5.
+lights_at: 5
+
+map_name: "The Style Guide"
+
+chapter: 1

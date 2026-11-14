@@ -56,6 +56,16 @@
 
   --shadow:      0 10px 40px rgba(0, 0, 0, .4);
   --menu-shadow: 0 14px 40px rgba(0, 0, 0, .5);
+
+  /* Syntax highlighting — own palette, NOT the brand accent */
+  --syn-bg:  #121319;
+  --syn-kw:  #9d9bff;   /* keywords: int, void, using, if … */
+  --syn-ty:  #7fc8e8;   /* types: Console, Program, string … */
+  --syn-fn:  #e4cf8f;   /* function names, member access */
+  --syn-str: #cf9f8a;   /* string literals */
+  --syn-num: #86d3b0;   /* numeric literals */
+  --syn-com: #6b6f82;   /* comments (also italic) */
+  --syn-op:  #c8c8d0;   /* operators, punctuation */
 }
 
 /* ── Light theme ─────────────────────────────────────────────────────────── */
@@ -90,4 +100,14 @@
 
   --shadow:      0 10px 40px rgba(60, 60, 90, .15);
   --menu-shadow: 0 14px 40px rgba(60, 60, 90, .2);
+
+  /* Syntax highlighting — own palette, tuned for the light background */
+  --syn-bg:  #f3f3f7;
+  --syn-kw:  #5a4fd0;   /* keywords */
+  --syn-ty:  #1f6f99;   /* types */
+  --syn-fn:  #8a6d1e;   /* functions */
+  --syn-str: #a6476b;   /* strings */
+  --syn-num: #1f7d7d;   /* numbers */
+  --syn-com: #9ca0ad;   /* comments */
+  --syn-op:  #3a3a4a;   /* operators, punctuation */
 }

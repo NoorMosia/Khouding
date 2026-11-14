@@ -1,0 +1,61 @@
+/* ── Syntax highlighting theme ───────────────────────────────────────────────
+   Maps highlight.js class names to our --syn-* design tokens.
+   Works in both reading (react-markdown + rehype-highlight) and the
+   cheatsheet panel. The editor (Monaco) uses its own internal theme.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Code block container */
+pre code.hljs {
+  display: block;
+  padding: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+code.hljs { padding: 0; }
+
+/* ── Token colours ───────────────────────────────────────────────────────── */
+
+/* Keywords: int, double, string, bool, void, using, class, static, const,
+   if, else, for, while, return, new, var, null, true, false … */
+.hljs-keyword,
+.hljs-built_in { color: var(--syn-kw); }
+
+/* Type names, class names, namespace identifiers */
+.hljs-type,
+.hljs-title.class_,
+.hljs-title.class_.inherited__ { color: var(--syn-ty); }
+
+/* Function / method names */
+.hljs-title.function_,
+.hljs-title.function { color: var(--syn-fn); }
+
+/* String literals */
+.hljs-string,
+.hljs-template-variable,
+.hljs-doctag { color: var(--syn-str); }
+
+/* Numeric literals */
+.hljs-number,
+.hljs-literal { color: var(--syn-num); }
+
+/* Comments */
+.hljs-comment { color: var(--syn-com); font-style: italic; }
+
+/* Operators, punctuation — keep them readable but slightly muted */
+.hljs-operator,
+.hljs-punctuation { color: var(--syn-op); }
+
+/* Attributes / decorators */
+.hljs-attribute,
+.hljs-selector-attr { color: var(--syn-fn); }
+
+/* Variables / parameters */
+.hljs-variable,
+.hljs-params { color: var(--text); }
+
+/* Everything else inherits --text */
+.hljs { color: var(--text); }
