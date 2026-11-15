@@ -3,11 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 import type * as MonacoType from 'monaco-editor'
 import CheatPanel from '../../components/CheatPanel/CheatPanel'
 import OutputPane from '../../components/OutputPane/OutputPane'
+import ProgressToast from '../../components/ProgressToast/ProgressToast'
 import StdinFields, { stdinToValues, valuesToStdin } from '../../components/StdinFields/StdinFields'
 import { useSubmission } from '../../hooks/useSubmission'
 import { useTheme } from '../../context/ThemeContext'
 import { useAuth } from '../../context/AuthContext'
-import { useFetch, sectionUrl, progress as progressApi } from '../../api/client'
+import { useFetch, sectionUrl, progress as progressApi, drafts as draftsApi, submissions as submissionsApi, NotFoundError } from '../../api/client'
 import type { ApiSection } from '../../api/types'
 import s from './CodingScreen.module.css'
 
@@ -49,15 +50,34 @@ export default function CodingScreen() {
   const [code, setCode]             = useState('')
   const [stdinValues, setStdinValues] = useState<string[]>([''])
 
-  // Initialise chip states and starter code when section loads
+  // Fetch attempted/solved state from submissions on section load
   useEffect(() => {
     if (!section) return
-    const chips: ChipState[] = section.problems.map((p, i) => {
-      if (i === currentIdx) return 'current'
-      return 'unsolved'
-    })
-    setChipStates(chips)
-  }, [section?.id, currentIdx]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!user || !courseId || !sectionId) {
+      // Not logged in: all unsolved except current
+      setChipStates(section.problems.map((_, i) =>
+        i === currentIdx ? 'current' : 'unsolved'
+      ))
+      return
+    }
+    submissionsApi.attempted(courseId, sectionId)
+      .then(({ attempted, solved }) => {
+        const solvedSet   = new Set(solved)
+        const attemptedSet = new Set(attempted)
+        setChipStates(section.problems.map((p, i) => {
+          const slug = p.id.split('/').pop() ?? p.id
+          if (i === currentIdx)        return 'current'
+          if (solvedSet.has(slug))     return 'solved'
+          if (attemptedSet.has(slug))  return 'attempted'
+          return 'unsolved'
+        }))
+      })
+      .catch(() => {
+        setChipStates(section.problems.map((_, i) =>
+          i === currentIdx ? 'current' : 'unsolved'
+        ))
+      })
+  }, [section?.id, user, courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update starter code and stdin when problem changes
   useEffect(() => {
@@ -67,8 +87,38 @@ export default function CodingScreen() {
     setStdinValues(stdinToValues(currentProblemFull.cases[0]?.stdin ?? ''))
   }, [currentProblemFull?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Load saved draft on mount / problem change (overrides starter if present)
+  useEffect(() => {
+    if (!user || !courseId || !sectionId || !problemId || !currentProblemFull) return
+    const problemSlug = currentProblemFull.id.split('/').pop() ?? currentProblemFull.id
+    draftsApi.get(courseId, sectionId, problemSlug)
+      .then(d => setCode(d.code))
+      .catch(err => {
+        // 404 means no draft yet — keep starter code
+        if (!(err instanceof NotFoundError)) console.warn('draft load error', err)
+      })
+  }, [currentProblemFull?.id, user]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Debounced draft save — fires 1 s after the user stops typing
+  const draftSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const problemSlugRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!currentProblemFull) return
+    problemSlugRef.current = currentProblemFull.id.split('/').pop() ?? currentProblemFull.id
+  }, [currentProblemFull?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleCodeChange = useCallback((v: string) => {
+    setCode(v)
+    if (!user || !courseId || !sectionId || !problemSlugRef.current) return
+    if (draftSaveTimer.current) clearTimeout(draftSaveTimer.current)
+    draftSaveTimer.current = setTimeout(() => {
+      draftsApi.save(courseId, sectionId, problemSlugRef.current!, v).catch(() => {})
+    }, 1000)
+  }, [user, courseId, sectionId]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const editorRef = useRef<MonacoType.editor.IStandaloneCodeEditor | null>(null)
   const { result, submit, reset } = useSubmission()
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
 
   // Update chips when submission resolves; record progress on pass
   useEffect(() => {
@@ -76,6 +126,16 @@ export default function CodingScreen() {
       setChipStates(prev => {
         const next = [...prev]
         next[currentIdx] = 'solved'
+        // Compute new solved count to check for section lights-at
+        const newSolvedCount = next.filter(s => s === 'solved').length
+        if (section) {
+          const lightsAt = section.lightsAt ?? 0
+          if (newSolvedCount === lightsAt) {
+            setToastMessage(`Section complete! Chapter test unlocked.`)
+          } else if (newSolvedCount === lightsAt - 1) {
+            setToastMessage(`1 problem to go to light this section.`)
+          }
+        }
         return next
       })
       // Record problem solved — fire-and-forget, only when logged in
@@ -142,6 +202,7 @@ export default function CodingScreen() {
   const isRunning     = result.status === 'pending' || result.status === 'running'
   const totalProblems = problems.length
   const solvedCount   = chipStates.filter(s => s === 'solved').length
+  const hasInput      = currentProblemFull?.cases.some(c => c.stdin !== '') ?? false
 
   // ── Loading / error states ───────────────────────────────────────────────
   if (loading) {
@@ -169,7 +230,6 @@ export default function CodingScreen() {
   return (
     <div className={s.screen}>
       <div className={`${s.workbench} ${collapsed ? s.collapsed : ''}`}>
-
         {/* ── Col 1: collapsed strip ──────────────────────────────── */}
         <div className={`${s.col} ${s.strip}`} aria-hidden={!collapsed}>
           <button
@@ -185,11 +245,21 @@ export default function CodingScreen() {
         <div className={`${s.col} ${s.problemPanel}`} aria-hidden={collapsed}>
           <div className={s.panelHead}>
             <span className={s.panelTag}>Problem</span>
-            <button
-              className={s.iconBtn}
-              onClick={() => setCollapsed(true)}
-              aria-label="Collapse problem panel"
-            >◀</button>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <a
+                href={`/courses/${courseId}/sections/${sectionId}`}
+                className={s.iconBtn}
+                aria-label="Back to section"
+                style={{ textDecoration: 'none', fontSize: 13 }}
+              >
+                ←
+              </a>
+              <button
+                className={s.iconBtn}
+                onClick={() => setCollapsed(true)}
+                aria-label="Collapse problem panel"
+              >◀</button>
+            </div>
           </div>
 
           {/* Rail */}
@@ -216,7 +286,7 @@ export default function CodingScreen() {
               {chipStates.map((state, i) => (
                 <button
                   key={i}
-                  className={`${s.chip} ${i === currentIdx ? s.current : state !== 'unsolved' ? s[state] : ''}`}
+                  className={`${s.chip} ${i === currentIdx ? s.current : ''} ${chipStates[i] === 'solved' ? s.solved : ''} ${chipStates[i] === 'attempted' ? s.attempted : ''}`}
                   onClick={() => navigateToProblem(i)}
                   role="listitem"
                   aria-label={`Problem ${i + 1}, ${state}`}
@@ -237,14 +307,12 @@ export default function CodingScreen() {
           {/* Problem body */}
           <div className={s.problemBody}>
             <h2 className={s.problemTitle}>{currentProblemFull.title}</h2>
-            <p className={s.problemStatement}>
-              {/* statementMarkdown is design.md content — render as plain text for now */}
-              {currentProblemFull.statementMarkdown
-                .replace(/^#.*\n/m, '')   // strip h1
-                .replace(/\*\*/g, '')     // strip bold markers
-                .trim()
-                .split('\n\n')[0]}
-            </p>
+
+            {currentProblemFull.instruction && (
+              <p className={s.problemStatement}>{currentProblemFull.instruction}</p>
+            )}
+
+            <ExampleIO problem={currentProblemFull} />
 
             <div className={s.difficulty}>
               Difficulty{' '}
@@ -265,7 +333,6 @@ export default function CodingScreen() {
                 </div>
                 <span>{solvedCount}/{totalProblems}</span>
               </div>
-              <div className={s.helpSlot}>ask for help · coming soon</div>
             </div>
           </div>
         </div>
@@ -291,7 +358,7 @@ export default function CodingScreen() {
               <span className={s.tabBadge}>reference</span>
             </button>
             <span className={s.tabHint} aria-hidden="true">
-              {activeTab === 'cheatsheet' ? 'rendered reference · read only' : 'no autocomplete · syntax highlight only'}
+              {activeTab === 'cheatsheet' ? 'rendered reference · read only' : ''}
             </span>
           </div>
 
@@ -306,7 +373,7 @@ export default function CodingScreen() {
                 language="csharp"
                 theme={theme === 'light' ? 'vs' : 'vs-dark'}
                 value={code}
-                onChange={v => setCode(v ?? '')}
+                onChange={v => handleCodeChange(v ?? '')}
                 onMount={handleEditorMount}
                 options={{
                   fontSize: 13,
@@ -353,6 +420,14 @@ export default function CodingScreen() {
             <div className={s.toolbar}>
               <button className="btn" onClick={handleRun} disabled={isRunning}>Run</button>
               <button className="btn btn--primary" onClick={handleSubmit} disabled={isRunning}>Submit</button>
+              {result.status === 'passed' && currentIdx < totalProblems - 1 && (
+                <button
+                  className={s.nextBtn}
+                  onClick={() => navigateToProblem(currentIdx + 1)}
+                >
+                  Next →
+                </button>
+              )}
               <span className={s.toolbarStat}>
                 <span className={s.saveDot} aria-hidden="true" />
                 saved · csharp
@@ -365,12 +440,38 @@ export default function CodingScreen() {
               values={stdinValues}
               onChange={setStdinValues}
               disabled={isRunning}
+              hasInput={hasInput}
             />
           )}
 
           <OutputPane result={result} onClear={reset} />
         </div>
       </div>
+      <ProgressToast message={toastMessage} onDone={() => setToastMessage(null)} />
+    </div>
+  )
+}
+
+// ── ExampleIO ─────────────────────────────────────────────────────────────
+// Shows the first test case as an input/output example in the problem panel.
+
+import type { ApiProblem } from '../../api/types'
+
+function ExampleIO({ problem }: { problem: ApiProblem }) {
+  const first = problem.cases[0]
+  if (!first) return null
+
+  const output = first.expected.replace(/\n$/, '') // trim trailing newline for display
+
+  return (
+    <div className={s.ioBox}>
+      {first.stdin && (
+        <div className={s.ioRow}>
+          <span className={s.ioKey}>in</span>
+          <span>{first.stdin}</span>
+        </div>
+      )}
+      <span style={{ whiteSpace: 'pre', fontFamily: 'var(--font-mono)', fontSize: 12 }}>{output}</span>
     </div>
   )
 }

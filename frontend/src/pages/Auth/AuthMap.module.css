@@ -1,0 +1,43 @@
+.wrap {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  height: 65%;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 35%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%);
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+}
+
+.prov {
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+}
+
+[data-theme="dark"]  .prov.next { fill: #30333f; stroke: #7f88a6; }
+[data-theme="dark"]  .prov.fog  { fill: #262935; stroke: #5a627a; }
+[data-theme="light"] .prov.next { fill: #e3dbc7; stroke: #9aa06e; }
+[data-theme="light"] .prov.fog  { fill: #ddd4c0; stroke: #a89a72; }
+
+.label {
+  font-family: var(--font-serif, 'Source Serif 4', Georgia, serif);
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  paint-order: stroke;
+  pointer-events: none;
+  user-select: none;
+}
+
+[data-theme="dark"]  .label { stroke: #0e0f16; stroke-width: 2.5px; }
+[data-theme="light"] .label { stroke: #d8cdb2; stroke-width: 2.5px; }
+
+[data-theme="dark"]  .label.next { fill: #e6e6ea; }
+[data-theme="dark"]  .label.fog  { fill: #595c6b; font-style: italic; font-size: 10px; }
+[data-theme="light"] .label.next { fill: #2a2720; }
+[data-theme="light"] .label.fog  { fill: #a8a295; font-style: italic; font-size: 10px; }

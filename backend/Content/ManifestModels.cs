@@ -26,6 +26,8 @@ public record ChapterManifest(
     string Title,
     string RegionTitle,
     string Province,
+    string City,
+    string Fact,
     IReadOnlyList<SectionManifest> Sections,
     ChapterTestManifest? Test
 );
@@ -56,6 +58,7 @@ public record ProblemManifest(
     // Starter files per language: { "csharp": [ { Path, Contents } ] }
     IReadOnlyDictionary<string, IReadOnlyList<CodeFileManifest>> StarterFiles,
     string StatementMarkdown,
+    string Instruction,      // extracted from starter comments, shown in problem panel
     IReadOnlyList<TestCaseManifest> Cases
 );
 

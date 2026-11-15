@@ -7,49 +7,63 @@ title: "C# Basics"
 status: published          # published | planned
 
 # Country for the course map (one real country per course).
-# Working default: Austria (9 Bundesländer = 9 chapters).
-# Confirmed post-authoring once chapter count is locked.
 country: austria
 
-# Chapter → province mapping (Bundesland order west to east, roughly).
-# Confirmed once all chapters are authored.
 chapters:
   - number: 1
     title: "Getting Started & Variables"
     region_title: "The Foundations"
-    province: Oberösterreich    # lit, starting province
+    province: Oberösterreich
+    city: "Linz"
+    fact: "Linz is home to the Ars Electronica Center, one of Europe's leading museums of digital art and technology."
   - number: 2
     title: "Input & Interaction"
     region_title: "The Conversation"
     province: Niederösterreich
+    city: "St. Pölten"
+    fact: "St. Pölten became the state capital only in 1986, making it one of the newest provincial capitals in Europe."
   - number: 3
     title: "Operators & Arithmetic"
     region_title: "The Toolkit"
     province: Steiermark
+    city: "Graz"
+    fact: "Graz has the largest medieval old town north of the Alps, and is Austria's second-largest city."
   - number: 4
     title: "Decisions"
     region_title: "The Crossroads"
     province: Tirol
+    city: "Innsbruck"
+    fact: "Innsbruck hosted the Winter Olympics twice, in 1964 and 1976, the only city to do so back-to-back."
   - number: 5
     title: "Loops"
     region_title: "The Cycle"
     province: Kärnten
+    city: "Klagenfurt"
+    fact: "Klagenfurt sits on the Wörthersee, the warmest large lake in the Alps."
   - number: 6
     title: "Methods"
     region_title: "The Workshop"
     province: Salzburg
+    city: "Salzburg"
+    fact: "Mozart was born in Salzburg in 1756. The city has been a UNESCO World Heritage Site since 1996."
   - number: 7
     title: "Arrays"
     region_title: "The Grid"
     province: Burgenland
+    city: "Eisenstadt"
+    fact: "Eisenstadt is the smallest state capital in Austria, and is where composer Joseph Haydn spent most of his working life."
   - number: 8
     title: "Strings"
     region_title: "The Library"
     province: Vorarlberg
+    city: "Bregenz"
+    fact: "Bregenz hosts the Bregenz Festival, famous for its stage built directly on Lake Constance."
   - number: 9
     title: "Collections"
     region_title: "The Vault"
     province: Wien
+    city: "Vienna"
+    fact: "Vienna was the capital of the Habsburg Empire for over 600 years and remains one of the most livable cities in the world."
 
 # Exam reveal (deferred — authored once the course exam is written).
 # exam_reveal:

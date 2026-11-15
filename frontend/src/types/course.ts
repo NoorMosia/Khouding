@@ -19,6 +19,9 @@ export interface ChapterNav {
   number: string        // e.g. "1"
   title: string
   regionTitle: string   // map region label
+  province: string
+  city: string
+  fact: string
   sections: SectionNav[]
   isLocked: boolean
 }

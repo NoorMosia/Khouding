@@ -1,0 +1,7 @@
+id: csharp-basics/9.2-iterating-a-list
+number: "9.2"
+title: "Iterating a List"
+subtitle: "Loop over every item in a List using foreach and for to process or display the contents."
+lights_at: 7
+map_name: "List Circuit"
+chapter: 9

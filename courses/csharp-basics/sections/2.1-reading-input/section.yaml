@@ -1,0 +1,7 @@
+id: csharp-basics/2.1-reading-input
+number: "2.1"
+title: "Reading Input"
+subtitle: "Read text typed by the user with Console.ReadLine and store it in a variable."
+lights_at: 5
+map_name: "The Input Gate"
+chapter: 2

@@ -1,0 +1,7 @@
+id: csharp-basics/6.1-defining-and-calling
+number: "6.1"
+title: "Defining and Calling"
+subtitle: "Write a named method and call it from other places in the program to avoid repeating code."
+lights_at: 6
+map_name: "The Method Hall"
+chapter: 6

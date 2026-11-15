@@ -207,6 +207,14 @@
   font-weight: 700;
   border-color: transparent;
 }
+/* current AND solved: green fill with accent ring */
+.chip.solved.current {
+  background: var(--chip-solved-bg, var(--success-bg));
+  border-color: var(--chip-solved-bd, var(--success-bd));
+  color: var(--chip-solved-fg, var(--success));
+  box-shadow: 0 0 0 2px var(--success);
+  font-weight: 700;
+}
 
 .railLegend {
   display: flex;
@@ -415,6 +423,19 @@
   border-top: 1px solid var(--border);
   flex-shrink: 0;
 }
+
+.nextBtn {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--success);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.nextBtn:hover { opacity: .75; }
 
 .toolbarStat {
   margin-left: auto;

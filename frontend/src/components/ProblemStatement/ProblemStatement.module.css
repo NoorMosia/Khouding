@@ -1,0 +1,60 @@
+/* Problem statement — rendered inside the narrow problem panel */
+.statement { font-size: 13.5px; line-height: 1.65; color: var(--text); }
+
+.statement h1 {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.statement h2 {
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  margin: 14px 0 6px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 10.5px;
+  letter-spacing: .04em;
+}
+
+.statement p { margin-bottom: 8px; }
+
+.statement code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--surface-2);
+  color: var(--accent);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.statement pre {
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  margin: 8px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.statement pre code {
+  background: none;
+  color: var(--text);
+  padding: 0;
+}
+
+.statement ul,
+.statement ol {
+  padding-left: 18px;
+  margin-bottom: 8px;
+}
+
+.statement li { margin-bottom: 3px; }
+
+.statement strong { font-weight: 600; }
+.statement em { font-style: italic; color: var(--text-muted); }

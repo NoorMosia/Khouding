@@ -1,4 +1,4 @@
-/* ── CourseMap — map-specific tokens, not in global tokens.css ───────────── */
+/* ── CourseMap ────────────────────────────────────────────────────────────── */
 
 .wrap {
   flex: 1;
@@ -6,6 +6,14 @@
   flex-direction: column;
   min-height: 0;
   padding: 20px 24px 28px;
+}
+
+.mapRow {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  min-height: 0;
+  align-items: flex-start;
 }
 
 /* Sea background behind the SVG */
@@ -17,13 +25,8 @@
   min-height: 0;
 }
 
-[data-theme="dark"] .mapWrap {
-  background: radial-gradient(130% 100% at 50% 0%, #0e0f16 0%, #070810 100%);
-}
-
-[data-theme="light"] .mapWrap {
-  background: radial-gradient(130% 100% at 50% 0%, #d8cdb2 0%, #cec2a4 100%);
-}
+[data-theme="dark"]  .mapWrap { background: radial-gradient(130% 100% at 50% 0%, #0e0f16 0%, #070810 100%); }
+[data-theme="light"] .mapWrap { background: radial-gradient(130% 100% at 50% 0%, #d8cdb2 0%, #cec2a4 100%); }
 
 .svg {
   display: block;
@@ -38,24 +41,16 @@
   stroke-width: 1.6;
   stroke-linejoin: round;
   cursor: pointer;
-  transition:
-    fill        var(--t-slow, 300ms) ease,
-    stroke      var(--t-slow, 300ms) ease,
-    filter      var(--t-fast, 140ms) ease;
+  transition: fill var(--t-slow, 300ms) ease, stroke var(--t-slow, 300ms) ease, filter var(--t-fast, 140ms) ease;
 }
 
-.prov:hover { filter: brightness(1.15); }
+.prov:hover        { filter: brightness(1.15); }
 .prov:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* done = lit chapter */
 [data-theme="dark"]  .prov.done { fill: #2c4a5e; stroke: #7fb0d0; stroke-width: 2.2; }
 [data-theme="light"] .prov.done { fill: #bcd0a2; stroke: #5f7d40; stroke-width: 2.2; }
-
-/* next = in progress or unlocked */
 [data-theme="dark"]  .prov.next { fill: #30333f; stroke: #7f88a6; }
 [data-theme="light"] .prov.next { fill: #e3dbc7; stroke: #9aa06e; }
-
-/* fog = locked / not started */
 [data-theme="dark"]  .prov.fog  { fill: #262935; stroke: #5a627a; }
 [data-theme="light"] .prov.fog  { fill: #ddd4c0; stroke: #a89a72; }
 
@@ -81,26 +76,131 @@
 [data-theme="light"] .label.next { fill: #2a2720; }
 [data-theme="light"] .label.fog  { fill: #a8a295; font-style: italic; font-size: 10px; }
 
-/* ── Landmark pins ───────────────────────────────────────────────────────── */
-.pin {
-  stroke-width: 1.2;
-  pointer-events: none;
+/* ── Side panel ──────────────────────────────────────────────────────────── */
+.panel {
+  width: 220px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+  background: var(--bg);
+  animation: panelIn var(--t-med) var(--ease) both;
 }
 
-[data-theme="dark"]  .pin { stroke: #191b22; }
-[data-theme="light"] .pin { stroke: #f7f2e6; }
+.panel.panelDone {
+  border-color: var(--success-bd);
+  background: var(--success-bg);
+}
 
-[data-theme="dark"]  .pin.done { fill: #5bc08a; }
-[data-theme="light"] .pin.done { fill: #2f9e63; }
+@keyframes panelIn {
+  from { opacity: 0; transform: translateX(8px); }
+  to   { opacity: 1; transform: none; }
+}
 
-[data-theme="dark"]  .pin.part { fill: #d9b45f; }
-[data-theme="light"] .pin.part { fill: #b08828; }
+.panelClose {
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: none;
+  color: var(--text-faint);
+  font-size: 18px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  transition: color var(--t-fast) var(--ease);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.panelClose:hover { color: var(--text); }
 
-/* ── Legend ──────────────────────────────────────────────────────────────── */
+.panelHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.panelHeadRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.panelRegion {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-faint);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.panelTitle {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 2px;
+}
+
+.panelProvince {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.panelReveal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panelCity {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.panelFact {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.panelUnlocked {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--success);
+}
+
+.panelLocked {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panelHint {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Legend + info row ───────────────────────────────────────────────────── */
+.legendRow {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
 .legend {
   display: flex;
   gap: 18px;
-  margin-top: 12px;
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-faint);
@@ -125,3 +225,51 @@
 [data-theme="light"] .swatchDone { background: #bcd0a2; border: 1px solid #5f7d40; }
 [data-theme="light"] .swatchNext { background: #e3dbc7; border: 1px solid #9aa06e; }
 [data-theme="light"] .swatchFog  { background: #ddd4c0; border: 1px solid #a89a72; }
+
+/* ── Info button + popover ───────────────────────────────────────────────── */
+.infoWrap {
+  position: relative;
+}
+
+.infoBtn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-serif);
+  font-size: 12px;
+  font-style: italic;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all var(--t-fast) var(--ease);
+}
+.infoBtn:hover { border-color: var(--accent); color: var(--accent); }
+
+.infoPopover {
+  position: absolute;
+  bottom: 28px;
+  right: 0;
+  width: 240px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  box-shadow: 0 4px 20px rgba(0,0,0,.12);
+  animation: panelIn var(--t-fast) var(--ease) both;
+  z-index: 10;
+}
+
+.infoPopover strong {
+  display: block;
+  color: var(--text);
+  font-size: 12.5px;
+  margin-bottom: 6px;
+}
+
+.infoPopover p { margin: 0; }

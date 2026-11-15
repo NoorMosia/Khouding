@@ -1,4 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 134.32 134.32" role="img" aria-label="khouding">
+  <!-- Stylized I-beam mark: white on indigo rounded square -->
+  <!-- crossbars: 60px wide, 11px tall, centered at x=67.16 -->
+  <!-- stem: 11px wide, centered at x=67.16 -->
   <rect width="134.32" height="134.32" rx="29.55" fill="#8a8bf0"/>
-  <path d="M53.610 103.660L43.710 103.660L43.710 30.660L53.610 30.660L53.610 71.060L63.710 71.060L78.510 48.660L89.710 48.660L72.410 74.960L90.610 103.660L79.210 103.660L63.810 79.560L53.610 79.560" fill="#0f0f26"/>
+  <!-- top crossbar -->
+  <rect x="37.16" y="20" width="60" height="11" fill="#ffffff"/>
+  <!-- stem -->
+  <rect x="61.66" y="20" width="11" height="94.32" fill="#ffffff"/>
+  <!-- bottom crossbar -->
+  <rect x="37.16" y="103.32" width="60" height="11" fill="#ffffff"/>
 </svg>

@@ -1,0 +1,7 @@
+id: csharp-basics/8.6-files
+number: "8.6"
+title: "Files"
+subtitle: "Read text from a file and write text to a file using File.ReadAllText and File.WriteAllText."
+lights_at: 6
+map_name: "The File Archive"
+chapter: 8

@@ -1,0 +1,7 @@
+id: csharp-basics/4.6-the-switch-statement
+number: "4.6"
+title: "The switch Statement"
+subtitle: "Match a value against multiple cases using switch and choose the right case block to execute."
+lights_at: 6
+map_name: "The Switch Tower"
+chapter: 4

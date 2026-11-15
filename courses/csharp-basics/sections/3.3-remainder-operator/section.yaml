@@ -1,0 +1,7 @@
+id: csharp-basics/3.3-remainder-operator
+number: "3.3"
+title: "Remainder Operator"
+subtitle: "Use % to find the remainder after division and apply it to cycle-detection and even/odd checks."
+lights_at: 7
+map_name: "Remainder Ridge"
+chapter: 3

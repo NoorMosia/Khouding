@@ -1,0 +1,7 @@
+id: csharp-basics/4.5-nested-conditionals
+number: "4.5"
+title: "Nested Conditionals"
+subtitle: "Place if statements inside other if blocks to handle decisions that depend on earlier decisions."
+lights_at: 7
+map_name: "Nested Crossroads"
+chapter: 4

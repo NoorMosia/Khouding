@@ -1,21 +1,31 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import GitHubIcon from '../../components/icons/GitHubIcon'
 import GoogleIcon from '../../components/icons/GoogleIcon'
 import { useAuth } from '../../context/AuthContext'
+import AuthMap from './AuthMap'
 import s from './Auth.module.css'
 
 type AuthView = 'login' | 'signup' | 'forgot'
 
 export default function Auth() {
   const [view, setView] = useState<AuthView>('login')
+  const [searchParams] = useSearchParams()
+
+  const oauthError = searchParams.get('error')
+  const oauthErrorMessage = oauthError ? {
+    callback_failed:        'Sign-in failed. Please try again.',
+    no_email:               'Your account has no verified email address. Use email and password instead.',
+    account_creation_failed:'Could not create an account. Please try again.',
+    login_link_failed:      'Could not link your account. Please try again.',
+  }[oauthError] ?? 'Something went wrong. Please try again.' : null
 
   return (
     <div className={`${s.page} page-enter`}>
       <div className={s.split}>
         {/* ── Form side ──────────────────────────────────────────── */}
         <div className={s.formSide}>
-          {view === 'login'  && <LoginForm  onSwap={() => setView('signup')} onForgot={() => setView('forgot')} />}
+          {view === 'login'  && <LoginForm  onSwap={() => setView('signup')} onForgot={() => setView('forgot')} oauthError={oauthErrorMessage} />}
           {view === 'signup' && <SignupForm onSwap={() => setView('login')} />}
           {view === 'forgot' && <ForgotForm onBack={() => setView('login')} />}
         </div>
@@ -27,7 +37,7 @@ export default function Auth() {
             A real standard, a built-in editor that grades you, and a world
             you fill in as you learn.
           </div>
-          <span className={s.brandLater}>map goes here later</span>
+          <AuthMap />
         </div>
       </div>
     </div>
@@ -36,7 +46,7 @@ export default function Auth() {
 
 // ── Login form ────────────────────────────────────────────────────────────
 
-function LoginForm({ onSwap, onForgot }: { onSwap: () => void; onForgot: () => void }) {
+function LoginForm({ onSwap, onForgot, oauthError }: { onSwap: () => void; onForgot: () => void; oauthError?: string | null }) {
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail]       = useState('')
@@ -69,6 +79,7 @@ function LoginForm({ onSwap, onForgot }: { onSwap: () => void; onForgot: () => v
 
       <div className={s.divider}>or with email</div>
 
+      {oauthError && <p className={s.errorMsg}>{oauthError}</p>}
       {error && <p className={s.errorMsg}>{error}</p>}
 
       <div className={s.field}>
@@ -179,18 +190,59 @@ function SignupForm({ onSwap }: { onSwap: () => void }) {
 // ── Forgot password form ──────────────────────────────────────────────────
 
 function ForgotForm({ onBack }: { onBack: () => void }) {
+  const { forgotPassword } = useAuth()
+  const [email, setEmail]   = useState('')
+  const [busy, setBusy]     = useState(false)
+  const [sent, setSent]     = useState(false)
+  const [error, setError]   = useState<string | null>(null)
+
+  async function handleSubmit() {
+    if (!email.trim()) return
+    setError(null)
+    setBusy(true)
+    try {
+      await forgotPassword(email)
+      setSent(true)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Something went wrong')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  if (sent) {
+    return (
+      <div className={`${s.formWrap} ${s.pane}`}>
+        <button className={s.backLink} type="button" onClick={onBack}>← back to log in</button>
+        <h1 className={s.heading}>Check your email</h1>
+        <p className={s.sub}>
+          If an account exists for <strong>{email}</strong>, a reset link is on its way. Check your spam folder if it doesn't arrive.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className={`${s.formWrap} ${s.pane}`}>
       <button className={s.backLink} type="button" onClick={onBack}>← back to log in</button>
       <h1 className={s.heading}>Reset your password</h1>
       <p className={s.sub}>Enter your email and we'll send a reset link.</p>
 
+      {error && <p className={s.errorMsg}>{error}</p>}
+
       <div className={s.field}>
         <div className={s.fieldLabel}><label htmlFor="forgot-email">Email</label></div>
-        <input id="forgot-email" className={s.input} type="email" placeholder="you@example.com" autoComplete="email" />
+        <input
+          id="forgot-email" className={s.input} type="email"
+          placeholder="you@example.com" autoComplete="email"
+          value={email} onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+        />
       </div>
 
-      <button className={s.submitBtn} type="button">Send reset link</button>
+      <button className={s.submitBtn} type="button" onClick={handleSubmit} disabled={busy || !email.trim()}>
+        {busy ? 'Sending…' : 'Send reset link'}
+      </button>
 
       <p className={s.finePrint}>
         Signed up with GitHub or Google? Just use that button on the log in screen.

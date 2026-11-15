@@ -1,0 +1,7 @@
+id: csharp-basics/3.2-division-and-integer-division
+number: "3.2"
+title: "Division and Integer Division"
+subtitle: "Distinguish float division from integer division and predict which one applies in a given expression."
+lights_at: 8
+map_name: "The Division Dock"
+chapter: 3

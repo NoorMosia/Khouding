@@ -6,7 +6,9 @@ import Catalog from './pages/Catalog/Catalog'
 import CourseHome from './pages/CourseHome/CourseHome'
 import SectionView from './pages/SectionView/SectionView'
 import CodingScreen from './pages/CodingScreen/CodingScreen'
+import ChapterTestScreen from './pages/ChapterTestScreen/ChapterTestScreen'
 import Auth from './pages/Auth/Auth'
+import ResetPassword from './pages/Auth/ResetPassword'
 import Profile from './pages/Profile/Profile'
 
 export const router = createBrowserRouter([
@@ -19,6 +21,7 @@ export const router = createBrowserRouter([
       { index: true,                   element: <Landing /> },
       { path: 'auth/login',            element: <Auth /> },
       { path: 'auth/register',         element: <Auth /> },
+      { path: 'auth/reset-password',   element: <ResetPassword /> },
       { path: 'courses',               element: <Catalog /> },
       { path: 'profile',               element: <Profile /> },
       { path: 'profile/login-methods', element: <Profile /> },
@@ -28,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: 'courses/:courseId/sections/:sectionId/problems/:problemId',
         element: <CodingScreen />,
+      },
+      {
+        path: 'courses/:courseId/tests/:testId',
+        element: <ChapterTestScreen />,
       },
 
       // ── App zone: sidebar via AppLayout ──────────────────────────────────

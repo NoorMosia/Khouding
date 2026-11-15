@@ -1,0 +1,7 @@
+id: csharp-basics/8.3-transforming
+number: "8.3"
+title: "Transforming"
+subtitle: "Change case, remove whitespace, and replace substrings using ToUpper, Trim, and Replace."
+lights_at: 8
+map_name: "Transform Workshop"
+chapter: 8

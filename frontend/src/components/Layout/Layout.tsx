@@ -5,16 +5,25 @@ import s from './Layout.module.css'
 
 export default function Layout() {
   const { pathname } = useLocation()
-  // Coding screen is full-viewport — no footer
-  const hideFooter = pathname.includes('/problems/')
+  const isAppZone = pathname.includes('/problems/') ||
+    pathname.includes('/sections/') ||
+    pathname.includes('/tests/') ||
+    (pathname.includes('/courses/') && pathname.split('/').length > 3)
+  const hideFooter = pathname.includes('/problems/') || pathname.includes('/tests/')
 
   return (
     <div className={s.layout}>
       <Nav />
       <main className={s.main}>
-        <Outlet />
+        {isAppZone ? (
+          <Outlet />
+        ) : (
+          <div className={s.scroll}>
+            <Outlet />
+            {!hideFooter && <Footer />}
+          </div>
+        )}
       </main>
-      {!hideFooter && <Footer />}
     </div>
   )
 }

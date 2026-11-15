@@ -1,0 +1,7 @@
+id: csharp-basics/8.4-splitting-and-joining
+number: "8.4"
+title: "Splitting and Joining"
+subtitle: "Break a string into an array with Split and reassemble an array into a string with string.Join."
+lights_at: 7
+map_name: "Split and Join Yard"
+chapter: 8

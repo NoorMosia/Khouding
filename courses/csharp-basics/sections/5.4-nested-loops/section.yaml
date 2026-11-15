@@ -1,0 +1,7 @@
+id: csharp-basics/5.4-nested-loops
+number: "5.4"
+title: "Nested Loops"
+subtitle: "Produce grid-like output and process two-dimensional data by placing loops inside loops."
+lights_at: 7
+map_name: "The Loop Labyrinth"
+chapter: 5

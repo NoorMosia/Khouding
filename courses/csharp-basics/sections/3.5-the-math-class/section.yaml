@@ -1,0 +1,7 @@
+id: csharp-basics/3.5-the-math-class
+number: "3.5"
+title: "The Math Class"
+subtitle: "Call static methods on Math such as Abs, Pow, Sqrt, and Round to solve numeric problems."
+lights_at: 8
+map_name: "The Math Tower"
+chapter: 3

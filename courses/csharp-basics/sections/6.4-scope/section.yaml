@@ -1,0 +1,7 @@
+id: csharp-basics/6.4-scope
+number: "6.4"
+title: "Scope"
+subtitle: "Identify where a variable is visible and avoid name-conflict errors by understanding variable scope."
+lights_at: 6
+map_name: "Scope Boundary"
+chapter: 6

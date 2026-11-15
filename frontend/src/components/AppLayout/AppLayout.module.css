@@ -42,10 +42,9 @@
   overflow-x: hidden;
   opacity: 1;
   transition: opacity var(--t-fast) var(--ease);
-  /* thin scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+  scrollbar-width: none;
 }
+.sidebarInner::-webkit-scrollbar { display: none; }
 
 .sidebar.collapsed .sidebarInner {
   opacity: 0;

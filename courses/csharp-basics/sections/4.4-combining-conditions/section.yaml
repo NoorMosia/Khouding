@@ -1,0 +1,7 @@
+id: csharp-basics/4.4-combining-conditions
+number: "4.4"
+title: "Combining Conditions"
+subtitle: "Build compound conditions using &&, ||, and ! to test multiple things at once."
+lights_at: 7
+map_name: "Logic Junction"
+chapter: 4

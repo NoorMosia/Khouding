@@ -1,0 +1,7 @@
+id: csharp-basics/7.4-arrays-and-methods
+number: "7.4"
+title: "Arrays and Methods"
+subtitle: "Pass arrays to methods and return arrays from methods to keep array-processing logic reusable."
+lights_at: 7
+map_name: "Array Transit"
+chapter: 7

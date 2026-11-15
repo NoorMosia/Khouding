@@ -2,12 +2,16 @@ using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Backend.Auth;
+using Backend.ChapterTests;
 using Backend.Content;
 using Backend.Data;
+using Backend.Drafts;
+using Backend.Email;
 using Backend.Execution;
 using Backend.Progress;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Resend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +107,18 @@ if (!string.IsNullOrEmpty(githubClientId) && !string.IsNullOrEmpty(githubClientS
 
 builder.Services.AddAuthorization();
 
+// ── Email (Resend) ─────────────────────────────────────────────────────────────
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    o.ApiToken = builder.Configuration["Resend:ApiKey"]
+        ?? throw new InvalidOperationException(
+            "Missing 'Resend:ApiKey'. Set it via .NET User Secrets (local) or an environment variable (prod).");
+});
+builder.Services.AddTransient<IResend, ResendClient>();
+builder.Services.AddTransient<EmailService>();
+
 // ── Content ingester — singleton, runs at startup ──────────────────────────────
 builder.Services.AddSingleton<ContentIngester>();
 
@@ -136,6 +152,21 @@ app.UseAuthorization();
 // ── Run the content ingester at startup ───────────────────────────────────────
 var ingester = app.Services.GetRequiredService<ContentIngester>();
 ingester.IngestAll();
+
+// ── Ensure UserProfiles table exists (idempotent, safe to remove after first deploy) ──
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await db.Database.ExecuteSqlRawAsync("""
+        CREATE TABLE IF NOT EXISTS "UserProfiles" (
+            "Id"          uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
+            "UserId"      text        NOT NULL REFERENCES "AspNetUsers"("Id") ON DELETE CASCADE,
+            "DisplayName" text        NOT NULL,
+            "UpdatedAt"   timestamptz NOT NULL DEFAULT now()
+        );
+        CREATE UNIQUE INDEX IF NOT EXISTS "IX_UserProfiles_UserId" ON "UserProfiles" ("UserId");
+        """);
+}
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.MapGet("/api/health", () => Results.Ok(new { status = "ok", service = "backend" }))
@@ -184,11 +215,17 @@ app.MapAuthEndpoints();
 // ── Progress endpoints ────────────────────────────────────────────────────────
 app.MapProgressEndpoints();
 
+// ── Draft endpoints ───────────────────────────────────────────────────────────
+app.MapDraftEndpoints();
+
+// ── Chapter test endpoints ─────────────────────────────────────────────────────
+app.MapChapterTestEndpoints();
+
 // ── Submission endpoints ───────────────────────────────────────────────────────
 
 var submissions = new ConcurrentDictionary<string, SubmissionRecord>();
 
-app.MapPost("/api/submissions", async (SubmissionRequest req, ContentIngester ing, GradingService grading) =>
+app.MapPost("/api/submissions", async (SubmissionRequest req, ContentIngester ing, GradingService grading, AppDbContext db, HttpContext ctx) =>
 {
     // Resolve the problem from the manifest
     ProblemManifest? problem = null;
@@ -205,6 +242,10 @@ app.MapPost("/api/submissions", async (SubmissionRequest req, ContentIngester in
     var id     = Guid.NewGuid().ToString("N")[..12];
     var record = new SubmissionRecord(id, req.Kind, "running", req);
     submissions[id] = record;
+
+    var userId = ctx.User.Identity?.IsAuthenticated == true
+        ? ctx.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+        : null;
 
     var files = req.Files.Select(f => new Backend.Execution.CodeFile(f.Path, f.Contents)).ToArray();
 
@@ -230,6 +271,34 @@ app.MapPost("/api/submissions", async (SubmissionRequest req, ContentIngester in
             );
 
             submissions[id] = record with { Status = result.Status, Result = result };
+
+            // Persist to database when user is authenticated
+            if (userId is not null && req.CourseId is not null && req.SectionId is not null && req.ProblemId is not null)
+            {
+                try
+                {
+                    using var scope = app.Services.CreateScope();
+                    var persistDb = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                    var code = req.Files.FirstOrDefault()?.Contents ?? string.Empty;
+                    persistDb.Submissions.Add(new SubmissionRow
+                    {
+                        UserId    = userId,
+                        ProblemId = req.ProblemId,
+                        CourseId  = req.CourseId,
+                        SectionId = req.SectionId,
+                        Language  = req.Language,
+                        Code      = code,
+                        Kind      = req.Kind,
+                        Status    = result.Status,
+                        ResultJson = System.Text.Json.JsonSerializer.Serialize(result),
+                    });
+                    await persistDb.SaveChangesAsync();
+                }
+                catch
+                {
+                    // Persistence failure must never break the submission response
+                }
+            }
         }
         catch (Exception ex)
         {

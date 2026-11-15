@@ -1,0 +1,7 @@
+id: csharp-basics/6.2-parameters
+number: "6.2"
+title: "Parameters"
+subtitle: "Pass values into a method through parameters and use them inside the method body."
+lights_at: 7
+map_name: "Parameter Pass"
+chapter: 6

@@ -1,0 +1,7 @@
+id: csharp-basics/6.3-return-values
+number: "6.3"
+title: "Return Values"
+subtitle: "Send a computed result back to the caller by declaring a return type and using return."
+lights_at: 8
+map_name: "The Return Depot"
+chapter: 6

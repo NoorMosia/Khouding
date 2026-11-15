@@ -196,3 +196,29 @@
   border-top: 1px solid var(--border-soft);
   margin: 4px 0;
 }
+
+.menuTheme {
+  display: flex;
+  gap: 4px;
+  padding: 4px 6px;
+}
+
+.menuThemeBtn {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  padding: 6px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease);
+}
+.menuThemeBtn:hover { border-color: var(--accent); color: var(--text); }
+.menuThemeBtn.activeTheme {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}

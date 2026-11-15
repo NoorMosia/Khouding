@@ -1,0 +1,7 @@
+id: csharp-basics/6.5-overloading
+number: "6.5"
+title: "Overloading"
+subtitle: "Define multiple methods with the same name but different parameter lists to handle varied inputs."
+lights_at: 6
+map_name: "Overload Junction"
+chapter: 6

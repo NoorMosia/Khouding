@@ -96,9 +96,10 @@ export const api = {
 // ── Progress API ──────────────────────────────────────────────────────────
 
 export interface SectionProgress {
-  readingDone:    boolean
-  quizPassed:     boolean
-  solvedProblems: number
+  readingDone:      boolean
+  quizPassed:       boolean
+  solvedProblems:   number
+  solvedProblemIds: string[]
 }
 
 export interface CourseProgress {
@@ -129,6 +130,90 @@ export const progress = {
 
   markProblemSolved: (courseId: string, sectionId: string, problemId: string) =>
     apiPost('/api/progress/problem-solved', { courseId, sectionId, problemId }),
+}
+
+export interface AttemptedResponse {
+  attempted: string[]
+  solved:    string[]
+}
+
+export const submissions = {
+  attempted: (courseId: string, sectionId: string) =>
+    apiFetch<AttemptedResponse>(`/api/submissions/attempted/${courseId}/${sectionId}`),
+}
+
+// ── Chapter test API ──────────────────────────────────────────────────────
+
+import type { ApiProblem } from './types'
+
+export interface ChapterTestData {
+  testId:              string
+  title:               string
+  draw:                number
+  lightAt:             number
+  attemptId:           string
+  problems:            ApiProblem[]
+  cheatsheetMarkdowns: string[]
+}
+
+export interface CompleteResult {
+  passed:      boolean
+  solvedCount: number
+  lightAt:     number
+}
+
+async function apiPostJson<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  if (!res.ok) throw new Error(`API ${res.status} on ${path}`)
+  return res.json() as Promise<T>
+}
+
+export const chapterTestsApi = {
+  get: (courseId: string, testId: string, redraw = false) =>
+    apiFetch<ChapterTestData>(
+      `/api/courses/${courseId}/tests/${testId}${redraw ? '?redraw=true' : ''}`
+    ),
+
+  status: (courseId: string, testId: string) =>
+    apiFetch<{ passed: boolean }>(`/api/courses/${courseId}/tests/${testId}/status`),
+
+  complete: (courseId: string, testId: string, attemptId: string, solvedCount: number) =>
+    apiPostJson<CompleteResult>(
+      `/api/courses/${courseId}/tests/${testId}/complete`,
+      { attemptId, solvedCount }
+    ),
+}
+
+// ── Drafts API ────────────────────────────────────────────────────────────
+
+async function apiPut(path: string, body: unknown): Promise<void> {
+  const res = await fetch(path, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
+  if (res.status === 401) return  // not logged in — silently skip
+  if (!res.ok) throw new Error(`API ${res.status} on ${path}`)
+}
+
+export interface DraftResponse {
+  code: string
+}
+
+export const drafts = {
+  get: (courseId: string, sectionId: string, problemId: string) =>
+    apiFetch<DraftResponse>(
+      `/api/drafts/${courseId}/${sectionId}/${problemId}`
+    ),
+
+  save: (courseId: string, sectionId: string, problemId: string, code: string) =>
+    apiPut(`/api/drafts/${courseId}/${sectionId}/${problemId}`, { code }),
 }
 
 // ── URL-building helpers (used in useFetch calls) ─────────────────────────

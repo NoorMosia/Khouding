@@ -42,31 +42,11 @@ export default function Nav() {
 
   return (
     <nav className={s.nav} role="navigation" aria-label="Main navigation">
-      {/* Logo */}
       <Link to="/" className={s.logo} aria-label="khouding home">
         khoud<span className={s.cursor} aria-hidden="true" />ng
       </Link>
 
       <div className={s.right}>
-        {/* Theme toggle */}
-        <div className={s.toggle} role="group" aria-label="Theme">
-          <button
-            className={`${s.toggleBtn} ${theme === 'dark' ? s.active : ''}`}
-            onClick={() => theme === 'light' && toggle()}
-            aria-pressed={theme === 'dark'}
-          >
-            Dark
-          </button>
-          <button
-            className={`${s.toggleBtn} ${theme === 'light' ? s.active : ''}`}
-            onClick={() => theme === 'dark' && toggle()}
-            aria-pressed={theme === 'light'}
-          >
-            Light
-          </button>
-        </div>
-
-        {/* Auth: log in button OR avatar */}
         {user ? (
           <>
             <button
@@ -100,11 +80,27 @@ export default function Nav() {
 
               <div className={s.menuGroup}>You</div>
               <Link to="/profile" className={s.menuItem} role="menuitem">Account &amp; profile</Link>
-              <Link to="/profile/login-methods" className={s.menuItem} role="menuitem">Login methods</Link>
-              <Link to="/profile/preferences" className={s.menuItem} role="menuitem">Preferences</Link>
               <span className={`${s.menuItem} ${s.soon}`} role="menuitem" aria-disabled="true">
                 Badges &amp; shield (soon)
               </span>
+
+              <hr className={s.menuDivider} />
+
+              <div className={s.menuGroup}>Appearance</div>
+              <div className={s.menuTheme}>
+                <button
+                  className={`${s.menuThemeBtn} ${theme === 'dark' ? s.activeTheme : ''}`}
+                  onClick={() => theme === 'light' && toggle()}
+                >
+                  Dark
+                </button>
+                <button
+                  className={`${s.menuThemeBtn} ${theme === 'light' ? s.activeTheme : ''}`}
+                  onClick={() => theme === 'dark' && toggle()}
+                >
+                  Light
+                </button>
+              </div>
 
               <hr className={s.menuDivider} />
 
@@ -114,9 +110,27 @@ export default function Nav() {
             </div>
           </>
         ) : (
-          <Link to="/auth/login" className={s.loginBtn}>
-            Log in
-          </Link>
+          <>
+            <div className={s.toggle} role="group" aria-label="Theme">
+              <button
+                className={`${s.toggleBtn} ${theme === 'dark' ? s.active : ''}`}
+                onClick={() => theme === 'light' && toggle()}
+                aria-pressed={theme === 'dark'}
+              >
+                Dark
+              </button>
+              <button
+                className={`${s.toggleBtn} ${theme === 'light' ? s.active : ''}`}
+                onClick={() => theme === 'dark' && toggle()}
+                aria-pressed={theme === 'light'}
+              >
+                Light
+              </button>
+            </div>
+            <Link to="/auth/login" className={s.loginBtn}>
+              Log in
+            </Link>
+          </>
         )}
       </div>
     </nav>

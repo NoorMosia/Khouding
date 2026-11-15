@@ -1,0 +1,7 @@
+id: csharp-basics/3.1-precedence-and-parentheses
+number: "3.1"
+title: "Precedence and Parentheses"
+subtitle: "Apply operator precedence rules and use parentheses to control evaluation order."
+lights_at: 6
+map_name: "Order of Operations"
+chapter: 3

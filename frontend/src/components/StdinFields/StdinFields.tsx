@@ -1,16 +1,16 @@
 import s from './StdinFields.module.css'
 
 interface StdinFieldsProps {
-  /** Current values, one per input line */
   values: string[]
   onChange: (values: string[]) => void
   disabled?: boolean
+  hasInput?: boolean
 }
 
 const ORDINALS = ['1st', '2nd', '3rd', '4th', '5th']
 
-export default function StdinFields({ values, onChange, disabled }: StdinFieldsProps) {
-  if (values.length === 0) return null
+export default function StdinFields({ values, onChange, disabled, hasInput }: StdinFieldsProps) {
+  if (!hasInput || values.length === 0) return null
 
   function update(i: number, val: string) {
     const next = [...values]
@@ -21,7 +21,7 @@ export default function StdinFields({ values, onChange, disabled }: StdinFieldsP
   return (
     <div className={s.wrap}>
       <span className={s.label}>
-        stdin <span className={s.hint}>· Run only</span>
+        input <span className={s.hint}>· Run only</span>
       </span>
       <div className={s.fields}>
         {values.map((val, i) => (

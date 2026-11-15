@@ -123,7 +123,9 @@ interface SectionRowProps {
 function SectionRow({ section, courseId, isActive }: SectionRowProps) {
   const isLit = !section.isTest && section.solvedProblems >= section.lightsAt
 
-  const url = `/courses/${courseId}/sections/${section.id}`
+  const url = section.isTest
+    ? `/courses/${courseId}/tests/${section.id}`
+    : `/courses/${courseId}/sections/${section.id}`
 
   return (
     <Link

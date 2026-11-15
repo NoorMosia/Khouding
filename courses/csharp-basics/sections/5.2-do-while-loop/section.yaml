@@ -1,0 +1,7 @@
+id: csharp-basics/5.2-do-while-loop
+number: "5.2"
+title: "do-while Loop"
+subtitle: "Execute a block at least once and then repeat it while a condition remains true."
+lights_at: 5
+map_name: "Do-While Depot"
+chapter: 5

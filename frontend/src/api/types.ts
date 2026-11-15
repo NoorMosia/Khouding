@@ -29,7 +29,9 @@ export interface ApiChapter {
   title: string
   regionTitle: string
   province: string
-  sections: ApiSectionSummary[]   // sections inside a chapter (no content — just nav fields)
+  city: string
+  fact: string
+  sections: ApiSectionSummary[]
   test: ApiChapterTest | null
 }
 
@@ -92,6 +94,7 @@ export interface ApiProblem {
   languages: string[]
   starterFiles: Record<string, ApiCodeFile[]>
   statementMarkdown: string
+  instruction: string
   cases: ApiTestCase[]
 }
 

@@ -1,0 +1,7 @@
+id: csharp-basics/2.2-converting-to-numbers
+number: "2.2"
+title: "Converting to Numbers"
+subtitle: "Parse string input into int and double using int.Parse, double.Parse, and Convert."
+lights_at: 9
+map_name: "The Converter"
+chapter: 2

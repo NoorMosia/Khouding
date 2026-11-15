@@ -1,0 +1,7 @@
+id: csharp-basics/2.3-string-interpolation
+number: "2.3"
+title: "String Interpolation"
+subtitle: "Embed variable values directly inside strings using the $ prefix and curly braces."
+lights_at: 7
+map_name: "Interpolation Square"
+chapter: 2

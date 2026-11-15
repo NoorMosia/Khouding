@@ -1,0 +1,7 @@
+id: csharp-basics/7.1-declaring-and-accessing
+number: "7.1"
+title: "Declaring and Accessing"
+subtitle: "Declare an array of a fixed size and read or write individual elements by index."
+lights_at: 6
+map_name: "Array Entrance"
+chapter: 7

@@ -1,0 +1,7 @@
+id: csharp-basics/3.4-updating-a-variable
+number: "3.4"
+title: "Updating a Variable"
+subtitle: "Modify a variable in place using compound assignment operators like +=, -=, and ++."
+lights_at: 5
+map_name: "The Update Station"
+chapter: 3

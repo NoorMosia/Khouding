@@ -1,0 +1,7 @@
+id: csharp-basics/9.1-introducing-list
+number: "9.1"
+title: "Introducing List"
+subtitle: "Create a List<T>, add items to it, and access elements by index."
+lights_at: 6
+map_name: "List Landing"
+chapter: 9

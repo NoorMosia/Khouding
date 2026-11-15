@@ -14,10 +14,13 @@ interface AuthState {
 }
 
 interface AuthActions {
-  login:    (email: string, password: string) => Promise<void>
-  register: (email: string, password: string) => Promise<void>
-  logout:   () => Promise<void>
-  refresh:  () => Promise<void>
+  login:             (email: string, password: string) => Promise<void>
+  register:          (email: string, password: string) => Promise<void>
+  logout:            () => Promise<void>
+  refresh:           () => Promise<void>
+  forgotPassword:    (email: string) => Promise<void>
+  resetPassword:     (email: string, token: string, newPassword: string) => Promise<void>
+  updateDisplayName: (displayName: string) => Promise<void>
 }
 
 type AuthContextValue = AuthState & AuthActions
@@ -84,8 +87,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setState({ user: null, loading: false })
   }, [])
 
+  const forgotPassword = useCallback(async (email: string) => {
+    const res = await fetch('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email }),
+    })
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}))
+      throw new Error(body.error ?? 'Request failed')
+    }
+  }, [])
+
+  const resetPassword = useCallback(async (email: string, token: string, newPassword: string) => {
+    const res = await fetch('/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email, token, newPassword }),
+    })
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}))
+      const msg = body.errors ? (body.errors as string[]).join(' ') : (body.error ?? 'Reset failed')
+      throw new Error(msg)
+    }
+  }, [])
+
+  const updateDisplayName = useCallback(async (displayName: string) => {
+    const res = await fetch('/api/auth/display-name', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ displayName }),
+    })
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}))
+      throw new Error(body.error ?? 'Update failed')
+    }
+    const user: AuthUser = await res.json()
+    setState(s => ({ ...s, user }))
+  }, [])
+
   return (
-    <AuthContext.Provider value={{ ...state, login, register, logout, refresh }}>
+    <AuthContext.Provider value={{ ...state, login, register, logout, refresh, forgotPassword, resetPassword, updateDisplayName }}>
       {children}
     </AuthContext.Provider>
   )

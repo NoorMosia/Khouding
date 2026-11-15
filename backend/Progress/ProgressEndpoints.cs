@@ -34,7 +34,11 @@ public static class ProgressEndpoints
                     g => new SectionProgress(
                         ReadingDone: g.Any(p => p.Kind == ProgressKind.ReadingDone),
                         QuizPassed:  g.Any(p => p.Kind == ProgressKind.QuizPassed),
-                        SolvedProblems: g.Count(p => p.Kind == ProgressKind.ProblemSolved)
+                        SolvedProblems: g.Count(p => p.Kind == ProgressKind.ProblemSolved),
+                        SolvedProblemIds: g
+                            .Where(p => p.Kind == ProgressKind.ProblemSolved && p.ProblemId is not null)
+                            .Select(p => p.ProblemId!)
+                            .ToList()
                     ));
 
             return Results.Ok(new CourseProgressResponse(courseId, bySection));
@@ -68,7 +72,30 @@ public static class ProgressEndpoints
             return Results.Ok(new { ok = true });
         }).RequireAuthorization();
 
-        // POST /api/progress/problem-solved
+        // GET /api/submissions/attempted/{courseId}/{sectionId}
+        // Returns the slugs of problems the user has attempted but not yet passed.
+        app.MapGet("/api/submissions/attempted/{courseId}/{sectionId}", async (
+            string courseId,
+            string sectionId,
+            ClaimsPrincipal principal,
+            AppDbContext db) =>
+        {
+            var userId = GetUserId(principal);
+            if (userId is null) return Results.Unauthorized();
+
+            var rows = await db.Submissions
+                .Where(s => s.UserId == userId && s.CourseId == courseId && s.SectionId == sectionId)
+                .Select(s => new { s.ProblemId, s.Status })
+                .ToListAsync();
+
+            // A problem is attempted if it has any submission, solved if any submission passed.
+            var solved   = rows.Where(r => r.Status == "passed") .Select(r => r.ProblemId.Split('/').Last()).ToHashSet();
+            var attempted = rows.Where(r => r.Status != "passed").Select(r => r.ProblemId.Split('/').Last()).ToHashSet();
+            // Remove from attempted anything that is also solved
+            attempted.ExceptWith(solved);
+
+            return Results.Ok(new { attempted = attempted.ToList(), solved = solved.ToList() });
+        }).RequireAuthorization();
         app.MapPost("/api/progress/problem-solved", async (
             ProblemSolvedRequest req,
             ClaimsPrincipal principal,
@@ -134,5 +161,5 @@ public static class ProgressKind
 record ReadingDoneRequest(string CourseId, string SectionId);
 record QuizPassedRequest(string CourseId, string SectionId);
 record ProblemSolvedRequest(string CourseId, string SectionId, string ProblemId);
-record SectionProgress(bool ReadingDone, bool QuizPassed, int SolvedProblems);
+record SectionProgress(bool ReadingDone, bool QuizPassed, int SolvedProblems, List<string> SolvedProblemIds);
 record CourseProgressResponse(string CourseId, Dictionary<string, SectionProgress> Sections);

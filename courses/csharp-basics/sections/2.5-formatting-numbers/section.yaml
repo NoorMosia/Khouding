@@ -1,0 +1,7 @@
+id: csharp-basics/2.5-formatting-numbers
+number: "2.5"
+title: "Formatting Numbers"
+subtitle: "Control how numbers display using format strings like :F2, :C, and :N inside interpolated strings."
+lights_at: 6
+map_name: "The Format Mint"
+chapter: 2

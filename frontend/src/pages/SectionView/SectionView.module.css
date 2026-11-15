@@ -13,6 +13,10 @@
 /* ── Section header ──────────────────────────────────────────────────────── */
 .shead {
   padding: 26px 36px 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
 }
 
 .title {
@@ -237,30 +241,57 @@
   max-width: 600px;
 }
 
-.quizProgress {
+/* Quiz pills rail */
+.quizPills {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.quizPill {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
   color: var(--text-muted);
-  margin-bottom: 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all var(--t-fast) var(--ease);
+  flex-shrink: 0;
 }
 
-.quizBar {
-  height: 5px;
-  flex: 1;
-  max-width: 180px;
-  background: var(--surface-2);
-  border-radius: 3px;
-  overflow: hidden;
+.quizPill:hover { border-color: var(--accent); color: var(--accent); }
+
+.quizPill.quizPillCurrent {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
-.quizBarFill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 3px;
-  transition: width var(--t-slow) var(--ease);
+.quizPill.quizPillCorrect {
+  background: var(--success-bg);
+  border-color: var(--success-bd);
+  color: var(--success);
+}
+
+.quizPill.quizPillWrong {
+  background: var(--danger-bg);
+  border-color: var(--danger-bd);
+  color: var(--danger);
+}
+
+.quizPillMeta {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-faint);
+  margin-left: 4px;
 }
 
 .qType {

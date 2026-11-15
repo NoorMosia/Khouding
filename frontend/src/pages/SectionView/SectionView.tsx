@@ -1,11 +1,12 @@
-import { lazy, Suspense, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { lazy, Suspense, useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import rehypeHighlight from 'rehype-highlight'
 import CodeBlock from '../../components/CodeBlock/CodeBlock'
 import type { Stage, SectionData } from '../../types/section'
 import QuizStage from './QuizStage'
 import ProblemsStage from './ProblemsStage'
-import { useFetch, sectionUrl, progress as progressApi } from '../../api/client'
+import { useFetch, sectionUrl, progress as progressApi, NotFoundError } from '../../api/client'
+import type { CourseProgress } from '../../api/client'
 import { apiSectionToData } from '../../api/mappers'
 import type { ApiSection } from '../../api/types'
 import { useAuth } from '../../context/AuthContext'
@@ -19,21 +20,42 @@ const mdComponents = { pre: CodeBlock } as const
 
 export default function SectionView() {
   const { courseId, sectionId } = useParams<{ courseId: string; sectionId: string }>()
+  const { user } = useAuth()
 
   const { data: raw, loading, error } = useFetch<ApiSection>(
     sectionUrl(courseId, sectionId)
   )
+
+  const [courseProgress, setCourseProgress] = useState<CourseProgress | null>(null)
+
+  useEffect(() => {
+    if (!user || !courseId) { setCourseProgress(null); return }
+    progressApi.get(courseId)
+      .then(p => setCourseProgress(p))
+      .catch(err => { if (!(err instanceof NotFoundError)) setCourseProgress(null) })
+  }, [user, courseId])
+
   const section: SectionData | null = raw && courseId
-    ? apiSectionToData(raw, courseId)
+    ? apiSectionToData(
+        raw,
+        courseId,
+        courseProgress && sectionId
+          ? new Set(courseProgress.sections[sectionId]?.solvedProblemIds ?? [])
+          : undefined,
+      )
     : null
 
   if (loading) return <Loading />
   if (error || !section) return <Error />
 
+  const secProgress = courseProgress?.sections[sectionId ?? '']
+
   return <SectionContent
     section={section}
     courseId={courseId!}
     sectionId={sectionId!}
+    initialReadingDone={secProgress?.readingDone ?? false}
+    initialQuizPassed={secProgress?.quizPassed ?? false}
   />
 }
 
@@ -43,16 +65,23 @@ function SectionContent({
   section,
   courseId,
   sectionId,
+  initialReadingDone,
+  initialQuizPassed,
 }: {
   section: SectionData
   courseId: string
   sectionId: string
+  initialReadingDone: boolean
+  initialQuizPassed: boolean
 }) {
   const { user } = useAuth()
-  const [stage, setStage]             = useState<Stage>('reading')
-  const [readingDone, setReadingDone] = useState(false)
-  const [quizDone, setQuizDone]       = useState(false)
-  const [quizPassed, setQuizPassed]   = useState(false)
+
+  const initialStage: Stage = initialQuizPassed ? 'problems' : initialReadingDone ? 'quiz' : 'reading'
+
+  const [stage, setStage]             = useState<Stage>(initialStage)
+  const [readingDone, setReadingDone] = useState(initialReadingDone)
+  const [quizDone, setQuizDone]       = useState(initialQuizPassed)
+  const [quizPassed, setQuizPassed]   = useState(initialQuizPassed)
 
   function goTo(next: Stage) {
     if (next === 'quiz' && !readingDone) {
@@ -88,9 +117,16 @@ function SectionContent({
   return (
     <div className={`${s.page} page-enter`}>
       <div className={s.shead}>
-        <p className="eyebrow">Section {section.number}</p>
+        <p className="eyebrow">
+          <Link to={`/courses/${courseId}`} style={{ color: 'var(--text-faint)', textDecoration: 'none', fontSize: 12 }}>
+            ← map
+          </Link>
+          {' · '}Section {section.number}
+        </p>
         <h1 className={s.title}>{section.title}</h1>
-        <p className={s.subtitle}>{stageLabels[stage]}</p>
+        <p className={s.subtitle}>
+          {stage === 'reading' ? section.subtitle : stageLabels[stage]}
+        </p>
 
         <div className={s.stages} role="tablist">
           {(['reading', 'quiz', 'problems'] as Stage[]).map((id, i) => {

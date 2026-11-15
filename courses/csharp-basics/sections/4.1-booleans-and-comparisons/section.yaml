@@ -1,0 +1,7 @@
+id: csharp-basics/4.1-booleans-and-comparisons
+number: "4.1"
+title: "Booleans and Comparisons"
+subtitle: "Write comparison expressions using ==, !=, <, >, <=, and >= to produce true or false values."
+lights_at: 7
+map_name: "The Comparison Gate"
+chapter: 4

@@ -1,0 +1,7 @@
+id: csharp-basics/5.3-for-loop
+number: "5.3"
+title: "for Loop"
+subtitle: "Count through a range of values using a for loop with an initializer, condition, and increment."
+lights_at: 9
+map_name: "The Counter Track"
+chapter: 5

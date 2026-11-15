@@ -1,0 +1,7 @@
+id: csharp-basics/5.5-loop-control
+number: "5.5"
+title: "Loop Control"
+subtitle: "Exit a loop early with break and skip iterations with continue to shape loop behaviour precisely."
+lights_at: 7
+map_name: "The Control Room"
+chapter: 5

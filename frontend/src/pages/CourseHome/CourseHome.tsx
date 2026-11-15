@@ -28,9 +28,7 @@ export default function CourseHome() {
 
       <CourseMap
         chapters={course.chapters}
-        onChapterClick={chapterId => {
-          console.log('chapter clicked', chapterId)
-        }}
+        courseId={course.id}
       />
     </div>
   )

@@ -1,0 +1,7 @@
+id: csharp-basics/8.5-building-and-parsing
+number: "8.5"
+title: "Building and Parsing"
+subtitle: "Construct strings efficiently with StringBuilder and extract typed values from string input."
+lights_at: 7
+map_name: "The Builder's Yard"
+chapter: 8

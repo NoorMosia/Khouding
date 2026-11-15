@@ -1,0 +1,7 @@
+id: csharp-basics/9.5-lists-and-methods
+number: "9.5"
+title: "Lists and Methods"
+subtitle: "Pass a List into a method and return a List from a method to keep list logic modular."
+lights_at: 6
+map_name: "List Transit"
+chapter: 9

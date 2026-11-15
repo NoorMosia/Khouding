@@ -1,0 +1,17 @@
+Need a beautiful, modern landing page.
+
+use as much of screen width as possible.
+
+Added images folder. use them.
+
+"a real standard, grades your code and your pace" should be described pictorially.
+
+The courses should have an image and the cards should have sharper edges.
+The course image should just be like "C# basics", "C# Classes and Objects", same 
+for java and c++.
+
+COurses page should follow same theme. my courses and "courses" pages should 
+be clearly separable.
+
+Course categories can be by language by now. and maybe also difficulty. 
+But also think forward to html and css, react courses that could be introduced.

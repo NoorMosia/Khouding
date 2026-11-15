@@ -1,0 +1,7 @@
+id: csharp-basics/8.1-string-as-text
+number: "8.1"
+title: "String as Text"
+subtitle: "Access individual characters by index, check string length, and understand strings as sequences of chars."
+lights_at: 6
+map_name: "Character Street"
+chapter: 8

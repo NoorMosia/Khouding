@@ -1,0 +1,7 @@
+id: csharp-basics/4.3-if-else-and-else-if
+number: "4.3"
+title: "if-else and else-if"
+subtitle: "Handle multiple outcomes by chaining else-if branches and providing a final else fallback."
+lights_at: 8
+map_name: "The Fork in the Road"
+chapter: 4

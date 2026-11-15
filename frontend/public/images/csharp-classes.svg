@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360">
+  <rect width="600" height="360" fill="#ff6b6b"/>
+  <text x="32" y="48" font-family="Georgia, serif" font-size="13" font-weight="400" fill="rgba(0,0,0,0.45)" letter-spacing="1">C#  ·  Intermediate</text>
+  <text x="32" y="200" font-family="Georgia, serif" font-size="96" font-weight="700" fill="#0f0f0f" letter-spacing="-3">C#</text>
+  <text x="32" y="270" font-family="Georgia, serif" font-size="42" font-weight="700" fill="#0f0f0f" letter-spacing="-1">Classes &amp;</text>
+  <text x="32" y="318" font-family="Georgia, serif" font-size="42" font-weight="700" fill="#0f0f0f" letter-spacing="-1">Objects.</text>
+</svg>

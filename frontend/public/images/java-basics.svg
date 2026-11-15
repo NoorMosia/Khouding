@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360">
+  <rect width="600" height="360" fill="#fbbf24"/>
+  <text x="32" y="48" font-family="Georgia, serif" font-size="13" font-weight="400" fill="rgba(0,0,0,0.45)" letter-spacing="1">Java  ·  Beginner</text>
+  <text x="32" y="210" font-family="Georgia, serif" font-size="110" font-weight="700" fill="#0f0f0f" letter-spacing="-4">Java</text>
+  <text x="32" y="296" font-family="Georgia, serif" font-size="56" font-weight="700" fill="#0f0f0f" letter-spacing="-2">Basics.</text>
+</svg>

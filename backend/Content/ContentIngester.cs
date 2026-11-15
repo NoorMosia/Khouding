@@ -61,6 +61,15 @@ public class ContentIngester
         return section?.Problems.FirstOrDefault(p => p.Id == $"{courseId}/{sectionId}/{problemId}");
     }
 
+    public ChapterTestManifest? GetChapterTest(string courseId, string testId)
+    {
+        if (!_courses.TryGetValue(courseId, out var course)) return null;
+        var fullId = testId.Contains('/') ? testId : $"{courseId}/{testId}";
+        return course.Chapters
+            .Select(ch => ch.Test)
+            .FirstOrDefault(t => t != null && t.Id == fullId);
+    }
+
     // ── Ingest ────────────────────────────────────────────────────────────
 
     public void IngestAll()
@@ -159,6 +168,8 @@ public class ContentIngester
                 Title:       meta?.Title ?? $"Chapter {chNum}",
                 RegionTitle: meta?.RegionTitle ?? $"Chapter {chNum}",
                 Province:    meta?.Province ?? "",
+                City:        meta?.City ?? "",
+                Fact:        meta?.Fact ?? "",
                 Sections:    sections.AsReadOnly(),
                 Test:        test
             ));
@@ -286,6 +297,22 @@ public class ContentIngester
             ? File.ReadAllText(designPath)
             : spec.Title ?? slug;
 
+        // Extract instruction from starter comments and strip them from the code
+        var starterRaw = starterFiles.TryGetValue("csharp", out var csFiles) && csFiles.Count > 0
+            ? csFiles[0].Contents
+            : "";
+        var (instruction, cleanedCode) = ExtractInstruction(starterRaw);
+
+        // Rebuild starter files with stripped code
+        if (!string.IsNullOrEmpty(instruction) && starterFiles.ContainsKey("csharp"))
+        {
+            var csFilename = starterFiles["csharp"][0].Path;
+            starterFiles["csharp"] = new List<CodeFileManifest>
+            {
+                new CodeFileManifest(csFilename, cleanedCode)
+            }.AsReadOnly();
+        }
+
         // Merge problem.yaml cases with expected.json outputs
         var cases = spec.Cases!.Zip(expectedDoc.Cases!, (c, e) =>
             new TestCaseManifest(
@@ -303,6 +330,7 @@ public class ContentIngester
             Languages:        spec.Languages!.AsReadOnly(),
             StarterFiles:     starterFiles,
             StatementMarkdown: statement,
+            Instruction:      instruction,
             Cases:            cases
         );
     }
@@ -443,6 +471,73 @@ public class ContentIngester
         return char.ToUpperInvariant(rest[0]) + rest[1..];
     }
 
+    /// <summary>
+    /// Removes leading comment lines (// ...) from a C# starter file.
+    /// A blank slate is better than task instructions in a comment.
+    /// Only removes lines at the top of the file before any non-comment, non-blank line.
+    /// </summary>
+    private static string StripLeadingComments(string source)
+    {
+        var lines = source.Split('\n');
+        int firstNonComment = 0;
+        for (int i = 0; i < lines.Length; i++)
+        {
+            var trimmed = lines[i].TrimStart();
+            if (trimmed.StartsWith("//"))
+                firstNonComment = i + 1;
+            else if (trimmed.Length > 0)
+                break;
+        }
+        var result = string.Join('\n', lines[firstNonComment..]).TrimStart('\n');
+        return result;
+    }
+
+    /// <summary>
+    /// Extracts the leading // comment lines from inside Main() as the problem instruction,
+    /// and returns the starter code with those lines removed.
+    /// </summary>
+    private static (string instruction, string cleanedCode) ExtractInstruction(string source)
+    {
+        var lines = source.Split('\n');
+        var commentLines = new List<string>();
+        var cleanLines   = new List<string>();
+        bool inMain      = false;
+        bool extractDone = false;
+
+        foreach (var line in lines)
+        {
+            var trimmed = line.TrimStart();
+
+            if (!inMain && trimmed.Contains("static void Main"))
+                inMain = true;
+
+            if (inMain && !extractDone)
+            {
+                if (trimmed.StartsWith("//"))
+                {
+                    // Strip the "// " or "//" prefix
+                    var text = trimmed.Length > 2 && trimmed[2] == ' '
+                        ? trimmed[3..]
+                        : trimmed[2..];
+                    commentLines.Add(text);
+                    continue; // don't add to cleanLines
+                }
+                else if (commentLines.Count > 0 && trimmed.Length > 0)
+                {
+                    // First non-comment, non-blank line after comments — extraction done
+                    extractDone = true;
+                }
+            }
+
+            cleanLines.Add(line);
+        }
+
+        var instruction = string.Join('\n', commentLines).Trim();
+        // Remove blank lines left at the top of Main body
+        var cleaned = string.Join('\n', cleanLines);
+        return (instruction, cleaned);
+    }
+
     private static string NormaliseAnswer(object? raw)
     {
         if (raw is null) return "";
@@ -471,6 +566,8 @@ public class ContentIngester
         public string? Title      { get; set; }
         public string? RegionTitle { get; set; }
         public string? Province   { get; set; }
+        public string? City       { get; set; }
+        public string? Fact       { get; set; }
     }
 
     private class SectionYaml

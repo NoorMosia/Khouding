@@ -1,0 +1,7 @@
+id: csharp-basics/9.3-modifying-a-list
+number: "9.3"
+title: "Modifying a List"
+subtitle: "Add, insert, and remove items from a List at runtime using Add, Insert, and Remove."
+lights_at: 7
+map_name: "List Workshop"
+chapter: 9

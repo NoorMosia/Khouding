@@ -261,16 +261,6 @@
   line-height: 1.6;
 }
 
-.brandLater {
-  position: absolute;
-  bottom: 18px;
-  right: 20px;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  color: var(--text-faint);
-  opacity: .6;
-}
-
 /* Error message */
 .errorMsg {
   color: var(--danger, #e05252);
